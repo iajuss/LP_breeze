@@ -54,10 +54,10 @@ npm run lint
 npm run build
 ```
 
-Para o teste de navegador, instale o Chromium do Playwright e execute:
+Para o teste de navegador, instale o navegador headless do Playwright e execute:
 
 ```powershell
-npx playwright install chromium
+npx playwright install --only-shell chromium
 npm run test:e2e
 ```
 
@@ -70,12 +70,6 @@ Em 19 de agosto de 2026, passaram:
 - validação de tipos TypeScript;
 - lint;
 - build de produção do Next.js.
-
-Para executar o E2E pela primeira vez, instale o navegador do Playwright:
-
-```powershell
-npx playwright install --only-shell chromium
-```
 
 ## Pendências para produção
 

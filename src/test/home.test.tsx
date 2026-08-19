@@ -10,4 +10,7 @@ it("renders Breeze’s primary destination", () => {
     }),
   ).toBeInTheDocument();
   expect(screen.getByRole("button", { name: /encontrar um espaço/i })).toHaveClass("text-[var(--foreground)]");
+  expect(document.getElementById("espacos")).toHaveClass("scroll-mt-28");
+  expect(document.getElementById("como-funciona")).toHaveClass("scroll-mt-28");
+  expect(document.getElementById("empresas")).toHaveClass("scroll-mt-28");
 });

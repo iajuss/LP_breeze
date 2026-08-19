@@ -3,7 +3,7 @@ import { VenueCard } from "./venue-card";
 
 export function FeaturedVenues() {
   return (
-    <section className="w-full py-20" id="espacos">
+    <section className="w-full scroll-mt-28 py-20" id="espacos">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-10 flex items-end justify-between gap-4">
           <div>

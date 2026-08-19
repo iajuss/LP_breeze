@@ -46,7 +46,7 @@ export function DemandSections() {
         </div>
       </section>
 
-      <section className="w-full bg-[var(--foreground)] py-20 text-white" id="como-funciona">
+      <section className="w-full scroll-mt-28 bg-[var(--foreground)] py-20 text-white" id="como-funciona">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Como funciona</p>
           <div className="mt-8 grid gap-8 md:grid-cols-3">
@@ -61,7 +61,7 @@ export function DemandSections() {
         </div>
       </section>
 
-      <section className="w-full py-20" id="empresas">
+      <section className="w-full scroll-mt-28 py-20" id="empresas">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="rounded-3xl bg-[var(--primary)] p-8 text-white lg:p-14">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Para empresas</p>
