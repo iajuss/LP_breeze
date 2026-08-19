@@ -1,9 +1,8 @@
 import type { JSX } from "react";
+import { FeaturedVenues } from "@/components/home/featured-venues";
+import { Hero } from "@/components/home/hero";
+import { Header } from "@/components/layout/header";
 
 export default function HomePage(): JSX.Element {
-  return (
-    <main>
-      <h1>Onde boas ideias ganham cenário.</h1>
-    </main>
-  );
+  return <><Header /><main><Hero /><FeaturedVenues /></main></>;
 }
