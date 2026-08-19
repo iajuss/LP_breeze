@@ -12,7 +12,7 @@ type DesktopSearchFormProps = {
 
 export function DesktopSearchForm({ values, errors, onChange, onSubmit }: DesktopSearchFormProps) {
   return (
-    <form className="hidden w-full grid-cols-[1.15fr_1fr_0.9fr_0.8fr_auto] rounded-2xl bg-white p-2 shadow-xl lg:grid" onSubmit={onSubmit}>
+    <form className="hidden w-full grid-cols-[1.15fr_1fr_0.9fr_0.8fr_auto] rounded-2xl bg-white p-2 text-[var(--foreground)] shadow-xl lg:grid" onSubmit={onSubmit}>
       <label className="border-r border-[var(--border)] px-4 py-2 text-sm font-medium">O que você está planejando?
         <select aria-invalid={Boolean(errors.activity)} className="mt-1 block w-full bg-transparent text-base font-semibold outline-none" onChange={(event) => onChange({ ...values, activity: event.target.value })} value={values.activity}>
           <option value="">Escolha uma ocasião</option>

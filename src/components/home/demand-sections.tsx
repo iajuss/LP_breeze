@@ -7,15 +7,107 @@ import { styles } from "@/data/styles";
 import { trustItems } from "@/data/trust";
 import { Faq } from "./faq";
 
+const categoryPhotos = [
+  "1507504031003-b417219a0fde",
+  "1519167758481-83f550bb49b3",
+  "1497366811353-6870744d04b2",
+  "1497366754035-f200968a6e72",
+];
+
 export function DemandSections() {
-  return <>
-    <section className="bg-[var(--secondary)] py-20"><div className="mx-auto max-w-7xl px-5 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Por ocasião</p><h2 className="mt-3 font-display text-5xl">Encontre um espaço para cada ocasião</h2><div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">{categories.map((category, index) => <Link className="group relative flex min-h-40 items-end overflow-hidden rounded-2xl bg-[var(--foreground)] p-4 text-white" href={`/buscar?activity=${encodeURIComponent(category.name)}`} key={category.id} style={{ backgroundImage: `linear-gradient(0deg, rgba(18,45,38,.82), rgba(18,45,38,.06)), url(https://images.unsplash.com/photo-${["1507504031003-b417219a0fde", "1519167758481-83f550bb49b3", "1497366811353-6870744d04b2", "1497366754035-f200968a6e72"][index % 4]}?auto=format&fit=crop&w=800&q=80)`, backgroundSize: "cover", backgroundPosition: "center" }}><span className="font-display text-2xl">{category.name}</span></Link>)}</div></div></section>
-    <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]"><div><p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Explore por estilo</p><h2 className="mt-3 font-display text-5xl">Qual é o clima do seu evento?</h2><p className="mt-5 max-w-md text-[var(--muted)]">A arquitetura, a luz e a atmosfera também fazem parte da experiência.</p></div><div className="grid grid-cols-2 gap-3">{styles.map((style) => <Link className="rounded-2xl border border-[var(--border)] p-5 text-lg font-semibold transition hover:-translate-y-1 hover:border-[var(--primary)]" href={`/buscar?style=${style.slug}`} key={style.id}>{style.name}<span className="ml-2 text-[var(--accent)]">↗</span></Link>)}</div></div></section>
-    <section className="bg-[var(--foreground)] py-20 text-white" id="como-funciona"><div className="mx-auto max-w-7xl px-5 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Como funciona</p><div className="mt-8 grid gap-8 md:grid-cols-3">{[["01", "Descubra", "Conte o que você está planejando e encontre possibilidades."], ["02", "Compare", "Veja fotos, capacidade e características para decidir com calma."], ["03", "Converse", "Inicie a conversa sobre disponibilidade e condições."]].map(([number, title, description]) => <div key={number}><span className="font-display text-5xl text-[var(--accent)]">{number}</span><h3 className="mt-6 font-display text-3xl">{title}</h3><p className="mt-3 text-white/75">{description}</p></div>)}</div></div></section>
-    <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8" id="empresas"><div className="rounded-3xl bg-[var(--primary)] p-8 text-white lg:p-14"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Para empresas</p><h2 className="mt-4 max-w-2xl font-display text-5xl">Seu próximo evento corporativo começa pelo lugar certo.</h2><p className="mt-5 max-w-xl text-white/80">Confraternizações, lançamentos, workshops, reuniões, treinamentos e experiências de marca começam por uma busca com contexto.</p><Link className="mt-8 inline-flex min-h-11 items-center rounded-xl bg-white px-5 py-3 font-semibold text-[var(--primary)]" href="/buscar?activity=Evento+corporativo">Encontrar espaço para minha empresa</Link></div></section>
-    <section className="border-y border-[var(--border)] bg-[var(--secondary)] py-16"><div className="mx-auto max-w-7xl px-5 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Escolha com clareza</p><div className="mt-7 grid gap-6 md:grid-cols-3">{trustItems.map((item) => <article key={item.id}><p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Demonstração</p><h3 className="mt-3 font-display text-3xl">{item.title}</h3><p className="mt-3 text-[var(--muted)]">{item.description}</p></article>)}</div></div></section>
-    <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Onde procurar</p><h2 className="mt-3 font-display text-5xl">Explore espaços nas principais cidades</h2><div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">{cities.map((city) => <Link className="rounded-2xl border border-[var(--border)] p-5 transition hover:bg-[var(--secondary)]" href={`/espacos/${city.slug}`} key={city.id}><span className="block font-display text-2xl">{city.name}</span><span className="mt-1 block text-sm text-[var(--muted)]">{city.state}</span></Link>)}</div></section>
-    <section className="bg-[var(--secondary)] py-20"><div className="mx-auto max-w-7xl px-5 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Guia Breeze</p><h2 className="mt-3 font-display text-5xl">Ideias para tornar seu evento extraordinário</h2><div className="mt-8 grid gap-4 md:grid-cols-3">{articles.map((article) => <article className="rounded-2xl bg-white p-6" key={article.id}><p className="text-sm text-[var(--muted)]">Conteúdo em breve</p><h3 className="mt-4 font-display text-3xl leading-tight">{article.title}</h3><p className="mt-4 text-[var(--muted)]">{article.excerpt}</p></article>)}</div></div></section>
-    <section className="mx-auto max-w-3xl px-5 py-20"><p className="text-center text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Dúvidas frequentes</p><h2 className="mt-3 text-center font-display text-5xl">Antes de começar</h2><div className="mt-10"><Faq items={faqs} /></div></section>
-  </>;
+  return (
+    <>
+      <section className="w-full bg-[var(--secondary)] py-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Por ocasião</p>
+          <h2 className="mt-3 font-display text-5xl">Encontre um espaço para cada ocasião</h2>
+          <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {categories.map((category, index) => (
+              <Link className="group relative flex min-h-40 items-end overflow-hidden rounded-2xl bg-[var(--foreground)] p-4 text-white" href={`/buscar?activity=${encodeURIComponent(category.name)}`} key={category.id} style={{ backgroundImage: `linear-gradient(0deg, rgba(18,45,38,.82), rgba(18,45,38,.06)), url(https://images.unsplash.com/photo-${categoryPhotos[index % categoryPhotos.length]}?auto=format&fit=crop&w=800&q=80)`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                <span className="font-display text-2xl">{category.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Explore por estilo</p>
+              <h2 className="mt-3 font-display text-5xl">Qual é o clima do seu evento?</h2>
+              <p className="mt-5 max-w-md text-[var(--muted)]">A arquitetura, a luz e a atmosfera também fazem parte da experiência.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {styles.map((style) => <Link className="rounded-2xl border border-[var(--border)] p-5 text-lg font-semibold hover:border-[var(--primary)]" href={`/buscar?style=${style.slug}`} key={style.id}>{style.name}<span className="ml-2 text-[var(--accent)]">↗</span></Link>)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full bg-[var(--foreground)] py-20 text-white" id="como-funciona">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Como funciona</p>
+          <div className="mt-8 grid gap-8 md:grid-cols-3">
+            {[["01", "Descubra", "Conte o que você está planejando e encontre possibilidades."], ["02", "Compare", "Veja fotos, capacidade e características para decidir com calma."], ["03", "Converse", "Inicie a conversa sobre disponibilidade e condições."]].map(([number, title, description]) => (
+              <div key={number}>
+                <span className="font-display text-5xl text-[var(--accent)]">{number}</span>
+                <h3 className="mt-6 font-display text-3xl">{title}</h3>
+                <p className="mt-3 text-white/75">{description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-20" id="empresas">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="rounded-3xl bg-[var(--primary)] p-8 text-white lg:p-14">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Para empresas</p>
+            <h2 className="mt-4 max-w-2xl font-display text-5xl">Seu próximo evento corporativo começa pelo lugar certo.</h2>
+            <p className="mt-5 max-w-xl text-white/80">Confraternizações, lançamentos, workshops, reuniões, treinamentos e experiências de marca começam por uma busca com contexto.</p>
+            <Link className="mt-8 inline-flex min-h-11 items-center rounded-xl bg-white px-5 py-3 font-semibold text-[var(--primary)]" href="/buscar?activity=Evento+corporativo">Encontrar espaço para minha empresa</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full border-y border-[var(--border)] bg-[var(--secondary)] py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Escolha com clareza</p>
+          <div className="mt-7 grid gap-6 md:grid-cols-3">
+            {trustItems.map((item) => <article key={item.id}><p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Demonstração</p><h3 className="mt-3 font-display text-3xl">{item.title}</h3><p className="mt-3 text-[var(--muted)]">{item.description}</p></article>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Onde procurar</p>
+          <h2 className="mt-3 font-display text-5xl">Explore espaços nas principais cidades</h2>
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {cities.map((city) => <Link className="rounded-2xl border border-[var(--border)] p-5 hover:bg-[var(--secondary)]" href={`/espacos/${city.slug}`} key={city.id}><span className="block font-display text-2xl">{city.name}</span><span className="mt-1 block text-sm text-[var(--muted)]">{city.state}</span></Link>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full bg-[var(--secondary)] py-20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Guia Breeze</p>
+          <h2 className="mt-3 font-display text-5xl">Ideias para tornar seu evento extraordinário</h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {articles.map((article) => <article className="rounded-2xl bg-white p-6" key={article.id}><p className="text-sm text-[var(--muted)]">Conteúdo em breve</p><h3 className="mt-4 font-display text-3xl leading-tight">{article.title}</h3><p className="mt-4 text-[var(--muted)]">{article.excerpt}</p></article>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-20">
+        <div className="mx-auto max-w-3xl px-5">
+          <p className="text-center text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Dúvidas frequentes</p>
+          <h2 className="mt-3 text-center font-display text-5xl">Antes de começar</h2>
+          <div className="mt-10"><Faq items={faqs} /></div>
+        </div>
+      </section>
+    </>
+  );
 }

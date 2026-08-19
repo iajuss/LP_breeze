@@ -40,6 +40,30 @@ h3 {
   outline-offset: 3px;
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+a[href] {
+  transition: opacity 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+@media (hover: hover) {
+  button:not(:disabled):hover {
+    filter: brightness(0.96);
+    transform: translateY(-1px);
+  }
+
+  a[href]:hover {
+    opacity: 0.82;
+  }
+}
+
+button:not(:disabled):active {
+  transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

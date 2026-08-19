@@ -9,5 +9,5 @@ it("renders Breeze’s primary destination", () => {
       name: /onde boas ideias ganham cenário/i,
     }),
   ).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: /encontrar um espaço/i })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /encontrar um espaço/i })).toHaveClass("text-[var(--foreground)]");
 });
