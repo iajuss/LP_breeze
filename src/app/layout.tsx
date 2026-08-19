@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Manrope } from "next/font/google";
+import { homeMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const dmSerifDisplay = DM_Serif_Display({
@@ -13,11 +14,7 @@ const manrope = Manrope({
   variable: "--font-sans",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://breeze.example"),
-  title: "Breeze | Espaços para eventos",
-  description: "Encontre espaços singulares para eventos, reuniões, festas e produções.",
-};
+export const metadata: Metadata = { metadataBase: new URL("https://breeze.example"), ...homeMetadata };
 
 export default function RootLayout({
   children,
