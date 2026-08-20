@@ -12,6 +12,9 @@ O projeto não possui fluxos de captação de anfitriões, painel administrativo
 - Busca por local, data e número de convidados, direcionando para `/buscar` com os filtros preenchidos.
 - Interface de busca adequada para desktop e mobile, incluindo seletor de convidados e diálogo mobile com textos de alto contraste, ações explícitas de fechar/cancelar e reinício seguro do fluxo ao reabrir.
 - Descoberta de espaços por ocasião, estilo e cidades, além de cards de espaços em destaque.
+- Trilhos fotográficos circulares para ocasiões, cidades e guias Breeze, com navegação nos dois sentidos, controles visuais consistentes e retorno contínuo ao início.
+- Explorador de estilos com painéis visuais, vitrine interativa para empresas e linha do tempo visual que explica os critérios de escolha.
+- Fotografias de apoio distribuídas de acordo com o objetivo de cada seção, equilibrando espaços, pessoas e detalhes de eventos.
 - Seções de como funciona, soluções para empresas, confiança, conteúdo editorial, FAQ e rodapé.
 - Seções em largura total, com o conteúdo interno preservando uma medida de leitura confortável e altura mínima de viewport no desktop.
 - Revisão mobile-first: hero usa a altura dinâmica da tela, tipografia se adapta a telas estreitas, cartões de ocasião não extrapolam a largura e o carrossel de espaços tem rolagem interna com snap.
@@ -66,9 +69,9 @@ npm run test:e2e
 
 ## Situação de validação
 
-Em 19 de agosto de 2026, passaram:
+Em 20 de agosto de 2026, passaram:
 
-- 12 testes unitários em 8 arquivos;
+- 30 testes unitários e de componentes em 9 arquivos;
 - 5 testes E2E executados em desktop e mobile (mais uma regra exclusivamente desktop ignorada no perfil mobile);
 - validação de tipos TypeScript;
 - lint;
