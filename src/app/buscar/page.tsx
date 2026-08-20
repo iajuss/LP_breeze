@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { VenueCard } from "@/components/home/venue-card";
+import { SearchRefinementForm } from "@/components/search/search-refinement-form";
 import { venues } from "@/data/venues";
 import { filterVenues, type VenueFilters } from "@/lib/venue-results";
 
@@ -49,18 +50,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <FilterGroup label="Cidade" options={cityOptions} parameter="location" values={values} />
             <FilterGroup label="Estilo" options={styleOptions} parameter="style" values={values} />
             <FilterGroup label="Pessoas" options={["80", "150", "250"]} parameter="guests" values={values} />
-            <form action="/buscar" className="space-y-4 border-t border-[var(--border)] pt-6">
-              {values.activity ? <input name="activity" type="hidden" value={values.activity} /> : null}
-              {values.location ? <input name="location" type="hidden" value={values.location} /> : null}
-              {values.style ? <input name="style" type="hidden" value={values.style} /> : null}
-              <label className="block text-sm font-semibold text-[var(--foreground)]">Outra quantidade de pessoas
-                <input className="mt-2 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-medium outline-none transition focus:border-[var(--primary)]" defaultValue={values.guests} max="5000" min="1" name="guests" placeholder="Ex.: 120" type="number" />
-              </label>
-              <label className="block text-sm font-semibold text-[var(--foreground)]">Data do evento
-                <input className="mt-2 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-medium outline-none transition focus:border-[var(--primary)]" defaultValue={values.date} name="date" type="date" />
-              </label>
-              <button className="min-h-11 w-full rounded-xl bg-[var(--primary)] px-4 font-semibold text-white transition hover:bg-[var(--foreground)]" type="submit">Aplicar filtros</button>
-            </form>
+            <SearchRefinementForm values={values} />
           </div>
           {hasFilters ? <Link className="mt-7 inline-flex text-sm font-semibold text-[var(--primary)] underline underline-offset-4" href="/buscar">Limpar filtros</Link> : null}
         </aside>

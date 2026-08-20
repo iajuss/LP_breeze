@@ -20,7 +20,12 @@ test("accepts a manual guest count and a chosen date", async ({ page }) => {
   await page.goto("/buscar?activity=Festa");
 
   await page.getByLabel("Outra quantidade de pessoas").fill("100");
-  await page.getByLabel("Data do evento").fill("2026-12-20");
+  await page.getByLabel("Data do evento").pressSequentially("20122026");
+  await expect(page.getByLabel("Data do evento")).toHaveValue("20/12/2026");
+  await page.getByLabel("Data do evento").press("Escape");
+  await page.getByRole("button", { name: "Abrir calendário" }).click();
+  await expect(page.getByRole("dialog", { name: "Calendário" })).toBeVisible();
+  await page.getByLabel("Data do evento").press("Escape");
   await page.getByRole("button", { name: "Aplicar filtros" }).click();
 
   await expect(page).toHaveURL(/guests=100/);

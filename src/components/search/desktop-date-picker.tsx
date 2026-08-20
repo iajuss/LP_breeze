@@ -38,9 +38,12 @@ function dateFromIso(value: string) {
 type DesktopDatePickerProps = {
   value: string;
   onChange: (value: string) => void;
+  ariaLabel?: string;
+  className?: string;
+  menuClassName?: string;
 };
 
-export function DesktopDatePicker({ value, onChange }: DesktopDatePickerProps) {
+export function DesktopDatePicker({ value, onChange, ariaLabel = "Quando", className = "search-field block w-full rounded-lg bg-transparent py-1 pr-9 text-base font-semibold outline-none transition hover:bg-[var(--secondary)]/70 focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none", menuClassName = "-left-4 -right-4" }: DesktopDatePickerProps) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState(() => formatIsoDate(value));
   const [month, setMonth] = useState(() => value ? dateFromIso(value) : new Date());
@@ -80,11 +83,11 @@ export function DesktopDatePicker({ value, onChange }: DesktopDatePickerProps) {
 
   return (
     <div className="relative mt-1" ref={pickerRef}>
-      <input aria-label="Quando" className="search-field block w-full rounded-lg bg-transparent py-1 pr-9 text-base font-semibold outline-none transition hover:bg-[var(--secondary)]/70 focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none" inputMode="numeric" maxLength={10} onChange={(event) => updateText(event.target.value)} onFocus={() => setOpen(true)} onKeyDown={(event) => { if (event.key === "Escape") setOpen(false); }} placeholder="dd/mm/aaaa" type="text" value={text} />
+      <input aria-label={ariaLabel} className={className} inputMode="numeric" maxLength={10} onChange={(event) => updateText(event.target.value)} onKeyDown={(event) => { if (event.key === "Escape") setOpen(false); }} placeholder="dd/mm/aaaa" type="text" value={text} />
       <button aria-expanded={open} aria-haspopup="dialog" aria-label="Abrir calendário" className="absolute inset-y-0 right-0 inline-flex w-8 items-center justify-center rounded-lg text-[var(--foreground)] hover:bg-[var(--secondary)] focus-visible:bg-[var(--secondary)] focus-visible:outline-none" onClick={() => setOpen((current) => !current)} type="button">
         <svg aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5" /><path d="M8 3v4M16 3v4M3 10h18" /></svg>
       </button>
-      {open ? <div aria-label="Calendário" className="absolute -left-4 -right-4 top-full z-30 mt-2 rounded-xl bg-[var(--primary)] p-3 text-white shadow-2xl shadow-black/20" role="dialog">
+      {open ? <div aria-label="Calendário" className={`absolute ${menuClassName} top-full z-30 mt-2 rounded-xl bg-[var(--primary)] p-3 text-white shadow-2xl shadow-black/20`} role="dialog">
         <div className="flex items-center justify-between gap-2">
           <button aria-label="Mês anterior" className="grid h-8 w-8 place-items-center rounded-lg hover:bg-white/15 focus-visible:outline-white" onClick={() => setMonth((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1))} type="button">‹</button>
           <p className="text-sm font-semibold">{monthNames[month.getMonth()]} de {month.getFullYear()}</p>
