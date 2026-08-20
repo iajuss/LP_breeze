@@ -34,13 +34,15 @@ export function DesktopSearchForm({ values, errors, onChange, onSubmit }: Deskto
     <form className="hidden w-full grid-cols-[1.15fr_1fr_0.9fr_0.8fr_auto] rounded-2xl bg-white p-2 text-[var(--foreground)] shadow-xl lg:grid" onSubmit={onSubmit}>
       <div className="relative border-r border-[var(--border)] px-4 py-2 text-sm font-medium" ref={activityMenuRef}>
         <span>O que você está planejando?</span>
-        <button aria-expanded={activityMenuOpen} aria-haspopup="listbox" aria-label={`O que você está planejando? ${values.activity || "Escolha uma ocasião"}`} className={`mt-1 flex w-full items-center justify-between rounded-lg py-1 text-left text-base font-semibold transition focus-visible:outline-[var(--primary)] ${values.activity ? "bg-[var(--secondary)] text-[var(--primary)]" : "text-[var(--foreground)] hover:bg-[var(--secondary)]/70"}`} onClick={() => setActivityMenuOpen((open) => !open)} onKeyDown={(event) => { if (event.key === "Escape") setActivityMenuOpen(false); if (event.key === "ArrowDown") setActivityMenuOpen(true); }} type="button">
-          <span>{values.activity || "Escolha uma ocasião"}</span>
-          <span aria-hidden="true" className={`ml-3 text-sm transition-transform ${activityMenuOpen ? "rotate-180" : ""}`}>⌄</span>
-        </button>
-        {activityMenuOpen ? <div className="absolute top-full z-30 mt-2 w-full rounded-xl bg-[var(--primary)] p-2 text-white shadow-2xl shadow-black/20" role="listbox">
-          {activities.map((activity) => <button aria-selected={values.activity === activity} className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${values.activity === activity ? "bg-white/15" : ""}`} key={activity} onClick={() => chooseActivity(activity)} role="option" type="button"><span>{activity}</span>{values.activity === activity ? <span aria-label="Selecionada">✓</span> : null}</button>)}
-        </div> : null}
+        <div className="relative">
+          <button aria-expanded={activityMenuOpen} aria-haspopup="listbox" aria-label={`O que você está planejando? ${values.activity || "Escolha uma ocasião"}`} className={`mt-1 flex w-full items-center justify-between rounded-lg py-1 text-left text-base font-semibold transition focus-visible:outline-[var(--primary)] ${values.activity ? "bg-[var(--secondary)] text-[var(--primary)]" : "text-[var(--foreground)] hover:bg-[var(--secondary)]/70"}`} onClick={() => setActivityMenuOpen((open) => !open)} onKeyDown={(event) => { if (event.key === "Escape") setActivityMenuOpen(false); if (event.key === "ArrowDown") setActivityMenuOpen(true); }} type="button">
+            <span>{values.activity || "Escolha uma ocasião"}</span>
+            <span aria-hidden="true" className={`ml-3 text-sm transition-transform ${activityMenuOpen ? "rotate-180" : ""}`}>⌄</span>
+          </button>
+          {activityMenuOpen ? <div className="absolute -left-4 -right-4 top-full z-30 mt-2 rounded-xl bg-[var(--primary)] p-2 text-white shadow-2xl shadow-black/20" role="listbox">
+            {activities.map((activity) => <button aria-selected={values.activity === activity} className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${values.activity === activity ? "bg-white/15" : ""}`} key={activity} onClick={() => chooseActivity(activity)} role="option" type="button"><span>{activity}</span>{values.activity === activity ? <span aria-label="Selecionada">✓</span> : null}</button>)}
+          </div> : null}
+        </div>
       </div>
       <label className="border-r border-[var(--border)] px-4 py-2 text-sm font-medium">Onde?
         <input aria-invalid={Boolean(errors.location)} className="search-field mt-1 block w-full rounded-lg bg-transparent py-1 text-base font-semibold outline-none transition placeholder:text-[var(--muted)] hover:bg-[var(--secondary)]/70 focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none" onChange={(event) => onChange({ ...values, location: event.target.value })} placeholder="Cidade, bairro ou região" value={values.location} />

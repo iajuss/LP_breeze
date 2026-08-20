@@ -13,7 +13,7 @@ describe("VenueSearch", () => {
 
     await user.click(screen.getByRole("button", { name: /escolha uma ocasião/i }));
 
-    expect(screen.getByRole("listbox")).toHaveClass("top-full");
+    expect(screen.getByRole("listbox")).toHaveClass("top-full", "-left-4", "-right-4");
     await user.click(screen.getByRole("option", { name: "Festa" }));
 
     expect(onChange).toHaveBeenCalledWith({ ...emptySearchValues, activity: "Festa" });
@@ -62,7 +62,7 @@ describe("VenueSearch", () => {
 
     await user.click(screen.getByRole("button", { name: /abrir calendário/i }));
 
-    expect(screen.getByRole("dialog", { name: /calendário/i })).toHaveClass("top-full");
+    expect(screen.getByRole("dialog", { name: /calendário/i })).toHaveClass("top-full", "-left-4", "-right-4");
   });
 
   it("aligns each desktop field value with its label", () => {
