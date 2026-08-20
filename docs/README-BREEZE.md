@@ -73,7 +73,7 @@ npm run test:e2e
 Em 20 de agosto de 2026, passaram:
 
 - 34 testes unitários e de componentes em 10 arquivos;
-- 5 testes E2E executados em desktop e mobile (mais uma regra exclusivamente desktop ignorada no perfil mobile);
+- 9 testes E2E executados em desktop e mobile (mais uma regra exclusivamente desktop ignorada no perfil mobile);
 - validação de tipos TypeScript;
 - lint;
 - build de produção do Next.js.
