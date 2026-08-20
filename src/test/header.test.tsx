@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { Header } from "@/components/layout/header";
 
 it("adds a readable background layer after the visitor scrolls", () => {
@@ -14,4 +14,15 @@ it("adds a readable background layer after the visitor scrolls", () => {
   });
 
   expect(header).toHaveAttribute("data-scrolled", "true");
+});
+
+it("keeps homepage shortcuts in page order without an entry action", () => {
+  render(<Header />);
+
+  const navigation = screen.getByRole("navigation", { name: "Principal" });
+  expect(within(navigation).getAllByRole("link").map((link) => link.textContent)).toEqual([
+    "Como funciona",
+    "Para empresas",
+    "Explorar espaços",
+  ]);
 });

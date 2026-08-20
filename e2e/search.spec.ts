@@ -15,3 +15,16 @@ test("lets people refine discovery with a filter option", async ({ page }) => {
   await expect(page).toHaveURL(/activity=Casamento/);
   await expect(page.getByRole("heading", { name: "Casa Pampulha" })).toBeVisible();
 });
+
+test("accepts a manual guest count and a chosen date", async ({ page }) => {
+  await page.goto("/buscar?activity=Festa");
+
+  await page.getByLabel("Outra quantidade de pessoas").fill("100");
+  await page.getByLabel("Data do evento").fill("2026-12-20");
+  await page.getByRole("button", { name: "Aplicar filtros" }).click();
+
+  await expect(page).toHaveURL(/guests=100/);
+  await expect(page).toHaveURL(/date=2026-12-20/);
+  await expect(page.getByText("100", { exact: true })).toBeVisible();
+  await expect(page.getByText("2026-12-20", { exact: true })).toBeVisible();
+});
