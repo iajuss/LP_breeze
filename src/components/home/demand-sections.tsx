@@ -20,8 +20,8 @@ export function DemandSections() {
 
       <section className="w-full py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
-            <div>
+          <div className="grid min-w-0 gap-10 lg:grid-cols-[.8fr_1.2fr]">
+            <div className="min-w-0">
               <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Explore por estilo</p>
               <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Qual é o clima do seu evento?</h2>
               <p className="mt-5 max-w-md text-[var(--muted)]">A arquitetura, a luz e a atmosfera também fazem parte da experiência.</p>

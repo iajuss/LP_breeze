@@ -9,7 +9,7 @@ export function StyleExplorer() {
   const activeStyle = stylePanels.find((style) => style.id === activeStyleId) ?? stylePanels[0];
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 min-w-0">
       <div aria-label="Estilos de espaço" className="flex snap-x gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist">
         {stylePanels.map((style) => (
           <button
