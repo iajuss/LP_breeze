@@ -35,7 +35,7 @@ export function DesktopSearchForm({ values, errors, onChange, onSubmit }: Deskto
       <div className="relative border-r border-[var(--border)] px-4 py-2 text-sm font-medium" ref={activityMenuRef}>
         <span>O que você está planejando?</span>
         <div className="relative">
-          <button aria-expanded={activityMenuOpen} aria-haspopup="listbox" aria-label={`O que você está planejando? ${values.activity || "Escolha uma ocasião"}`} className={`mt-1 flex w-full items-center justify-between rounded-lg py-1 text-left text-base font-semibold transition focus-visible:outline-[var(--primary)] ${values.activity ? "bg-[var(--secondary)] text-[var(--primary)]" : "text-[var(--foreground)] hover:bg-[var(--secondary)]/70"}`} onClick={() => setActivityMenuOpen((open) => !open)} onKeyDown={(event) => { if (event.key === "Escape") setActivityMenuOpen(false); if (event.key === "ArrowDown") setActivityMenuOpen(true); }} type="button">
+          <button aria-expanded={activityMenuOpen} aria-haspopup="listbox" aria-label={`O que você está planejando? ${values.activity || "Escolha uma ocasião"}`} className="mt-1 flex w-full items-center justify-between rounded-lg py-1 text-left text-base font-semibold text-[var(--foreground)] transition hover:bg-[var(--secondary)]/70 focus-visible:outline-[var(--primary)]" onClick={() => setActivityMenuOpen((open) => !open)} onKeyDown={(event) => { if (event.key === "Escape") setActivityMenuOpen(false); if (event.key === "ArrowDown") setActivityMenuOpen(true); }} type="button">
             <span>{values.activity || "Escolha uma ocasião"}</span>
             <span aria-hidden="true" className={`ml-3 text-sm transition-transform ${activityMenuOpen ? "rotate-180" : ""}`}>⌄</span>
           </button>

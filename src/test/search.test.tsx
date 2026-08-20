@@ -20,6 +20,12 @@ describe("VenueSearch", () => {
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 
+  it("does not keep the occasion trigger highlighted after a selection", () => {
+    render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={{ ...emptySearchValues, activity: "Evento corporativo" }} />);
+
+    expect(screen.getByRole("button", { name: /evento corporativo/i })).not.toHaveClass("bg-[var(--secondary)]");
+  });
+
   it("closes the desktop occasion menu with Escape", async () => {
     const user = userEvent.setup();
     render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
