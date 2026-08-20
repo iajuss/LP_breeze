@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { PhotoRail } from "@/components/home/photo-rail";
+import { DemandSections } from "@/components/home/demand-sections";
 
 const items = [
   {
@@ -28,4 +29,12 @@ it("exposes photo-rail controls and preserves card destinations", async () => {
   await user.click(screen.getByRole("button", { name: "Avançar Ocasiões" }));
 
   expect(screen.getByRole("link", { name: /festas/i })).toHaveAttribute("href", "/buscar?activity=Festas");
+});
+
+it("keeps demand destinations in the interactive discovery rails", () => {
+  render(<DemandSections />);
+
+  expect(screen.getByRole("link", { name: /festas/i })).toHaveAttribute("href", "/buscar?activity=Festas");
+  expect(screen.getByRole("link", { name: /são paulo/i })).toHaveAttribute("href", "/espacos/sao-paulo");
+  expect(screen.getByRole("link", { name: /espaço para evento corporativo/i })).toHaveAttribute("href", "/guias/escolher-espaco-evento-corporativo");
 });
