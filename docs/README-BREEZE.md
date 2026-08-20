@@ -17,6 +17,7 @@ O projeto não possui fluxos de captação de anfitriões, painel administrativo
 - Revisão mobile-first: hero usa a altura dinâmica da tela, tipografia se adapta a telas estreitas, cartões de ocasião não extrapolam a largura e o carrossel de espaços tem rolagem interna com snap.
 - Header fixo que ganha camada translúcida e desfoque durante a rolagem.
 - Feedback de hover/foco para controles e transição fluida de abertura e fechamento no FAQ.
+- Seletor de ocasião desktop personalizado, com menu verde aberto para baixo, fechamento por `Esc` ou clique externo e campo de convidados sem setas nativas.
 - Contraste explícito nos controles de busca sobre fundo branco, em desktop e mobile.
 - Ações de favoritos e eventos analíticos estruturados no cliente.
 - SEO técnico: metadados, Open Graph, Twitter card, JSON-LD, `robots.txt` e sitemap.

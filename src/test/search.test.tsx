@@ -1,12 +1,45 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
+import { DesktopSearchForm } from "@/components/search/desktop-search-form";
 import { VenueSearch } from "@/components/search/venue-search";
+import { emptySearchValues } from "@/components/search/search-types";
 
 describe("VenueSearch", () => {
+  it("opens the desktop occasion menu downward and selects an occasion", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<DesktopSearchForm errors={{}} onChange={onChange} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    await user.click(screen.getByRole("button", { name: /escolha uma ocasião/i }));
+
+    expect(screen.getByRole("listbox")).toHaveClass("top-full");
+    await user.click(screen.getByRole("option", { name: "Festa" }));
+
+    expect(onChange).toHaveBeenCalledWith({ ...emptySearchValues, activity: "Festa" });
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+  });
+
+  it("closes the desktop occasion menu with Escape", async () => {
+    const user = userEvent.setup();
+    render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    await user.click(screen.getByRole("button", { name: /escolha uma ocasião/i }));
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+  });
+
+  it("hides the number-input arrows for guest quantity", () => {
+    render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    expect(screen.getByRole("spinbutton", { name: /pessoas/i })).toHaveClass("[appearance:textfield]");
+  });
+
   it("keeps desktop search labels readable over its white surface", () => {
     render(<VenueSearch entryPoint="hero" />);
 
-    expect(screen.getByRole("combobox", { name: /o que você está planejando/i }).closest("form")).toHaveClass("text-[var(--foreground)]");
+    expect(screen.getByRole("button", { name: /o que você está planejando/i }).closest("form")).toHaveClass("text-[var(--foreground)]");
   });
 
   it("keeps mobile selections when returning to an earlier step", async () => {
