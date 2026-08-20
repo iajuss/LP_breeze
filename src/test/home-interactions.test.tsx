@@ -96,5 +96,15 @@ it("updates the active clarity criterion", async () => {
 it("draws the clarity line only between timeline markers", () => {
   render(<TrustTimeline />);
 
-  expect(screen.getAllByTestId("trust-line-segment")).toHaveLength(2);
+  const [firstSegment, secondSegment] = screen.getAllByTestId("trust-line-segment");
+  expect(firstSegment).toHaveClass("w-[calc(50%_-_1.5rem)]");
+  expect(secondSegment).toHaveClass("left-1/2", "w-[calc(50%_-_1.5rem)]");
+  expect(screen.getByRole("button", { name: /conversa direta/i })).toHaveClass("md:items-center");
+  expect(screen.getByRole("button", { name: /apoio na descoberta/i })).toHaveClass("md:items-end");
+});
+
+it("aligns the corporate CTA with the complete scenario control row", () => {
+  render(<CorporateShowcase />);
+
+  expect(screen.getByRole("link", { name: /encontrar espaço para minha empresa/i })).toHaveClass("w-[27.5rem]", "max-w-full");
 });

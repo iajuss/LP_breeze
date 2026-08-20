@@ -32,7 +32,7 @@ export function CorporateShowcase() {
               </button>
             ))}
           </div>
-          <Link className="mt-6 inline-flex min-h-11 items-center rounded-xl bg-white px-5 py-3 font-semibold text-[var(--primary)] hover:bg-[var(--secondary)]" href="/buscar?activity=Evento+corporativo" onClick={() => track("corporate_cta_clicked", { scenario: activeScenario.id })}>
+          <Link className="mt-6 inline-flex min-h-11 w-[27.5rem] max-w-full items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-[var(--primary)] hover:bg-[var(--secondary)]" href="/buscar?activity=Evento+corporativo" onClick={() => track("corporate_cta_clicked", { scenario: activeScenario.id })}>
             Encontrar espaço para minha empresa
           </Link>
         </div>
