@@ -86,6 +86,31 @@ describe("VenueSearch", () => {
     expect(screen.getByRole("button", { name: /o que você está planejando/i }).closest("form")).toHaveClass("text-[var(--foreground)]");
   });
 
+  it("explains which filters are missing when the desktop search is submitted empty", async () => {
+    const user = userEvent.setup();
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
+
+    const feedback = screen.getByRole("alert");
+    expect(feedback).toHaveTextContent("Complete os filtros para buscar espaços.");
+    expect(feedback).toHaveTextContent("Escolha a ocasião do seu evento.");
+    expect(feedback).toHaveTextContent("Informe uma cidade, bairro ou região.");
+    expect(feedback).toHaveTextContent("Informe entre 1 e 5.000 pessoas.");
+    expect(screen.getByRole("textbox", { name: /onde/i })).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("drops each feedback line as soon as the matching filter is filled", async () => {
+    const user = userEvent.setup();
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
+    await user.type(screen.getByRole("textbox", { name: /onde/i }), "São Paulo");
+
+    expect(screen.getByRole("alert")).not.toHaveTextContent("Informe uma cidade, bairro ou região.");
+    expect(screen.getByRole("alert")).toHaveTextContent("Escolha a ocasião do seu evento.");
+  });
+
   it("keeps mobile selections when returning to an earlier step", async () => {
     const user = userEvent.setup();
     render(<VenueSearch entryPoint="hero" />);

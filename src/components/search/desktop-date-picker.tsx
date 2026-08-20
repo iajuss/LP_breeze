@@ -84,7 +84,7 @@ export function DesktopDatePicker({ value, onChange, ariaLabel = "Quando", class
   return (
     <div className="relative mt-1" ref={pickerRef}>
       <input aria-label={ariaLabel} className={className} inputMode="numeric" maxLength={10} onChange={(event) => updateText(event.target.value)} onKeyDown={(event) => { if (event.key === "Escape") setOpen(false); }} placeholder="dd/mm/aaaa" type="text" value={text} />
-      <button aria-expanded={open} aria-haspopup="dialog" aria-label="Abrir calendário" className="absolute inset-y-0 right-0 inline-flex w-8 items-center justify-center rounded-lg text-[var(--foreground)] hover:bg-[var(--secondary)] focus-visible:bg-[var(--secondary)] focus-visible:outline-none" onClick={() => setOpen((current) => !current)} type="button">
+      <button aria-expanded={open} aria-haspopup="dialog" aria-label="Abrir calendário" className={`icon-button absolute inset-y-0 right-0 inline-flex w-8 items-center justify-center rounded-lg bg-transparent focus-visible:outline-none ${open ? "text-[var(--primary)]" : "text-[var(--foreground)]"}`} onClick={() => setOpen((current) => !current)} type="button">
         <svg aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5" /><path d="M8 3v4M16 3v4M3 10h18" /></svg>
       </button>
       {open ? <div aria-label="Calendário" className={`absolute ${menuClassName} top-full z-30 mt-2 rounded-xl bg-[var(--primary)] p-3 text-white shadow-2xl shadow-black/20`} role="dialog">

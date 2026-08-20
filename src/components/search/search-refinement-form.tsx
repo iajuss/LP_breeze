@@ -8,7 +8,7 @@ type SearchRefinementFormProps = {
   values: VenueFilters & { date?: string };
 };
 
-const fieldClassName = "min-h-11 w-full rounded-xl border border-transparent bg-[var(--secondary)] px-3 font-medium text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] hover:bg-[#dce8df] focus:bg-[#dce8df] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none";
+const fieldClassName = "search-field min-h-11 w-full rounded-xl bg-[var(--background)] px-3 font-medium text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] hover:bg-[var(--secondary)] focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none";
 
 export function SearchRefinementForm({ values }: SearchRefinementFormProps) {
   const [date, setDate] = useState(values.date ?? "");
@@ -25,6 +25,6 @@ export function SearchRefinementForm({ values }: SearchRefinementFormProps) {
       <DesktopDatePicker ariaLabel="Data do evento" className={`${fieldClassName} mt-2 pr-10`} menuClassName="left-0 right-0" onChange={setDate} value={date} />
       <input name="date" type="hidden" value={date} />
     </div>
-    <button className="min-h-11 w-full rounded-xl bg-[var(--primary)] px-4 font-semibold text-white transition hover:bg-[var(--foreground)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]" type="submit">Aplicar filtros</button>
+    <button className="search-field min-h-11 w-full rounded-xl bg-[var(--primary)] px-4 font-semibold text-white transition hover:bg-[#103d35] focus-visible:bg-[#103d35] focus-visible:shadow-[inset_0_0_0_2px_#ffffff]" type="submit">Aplicar filtros</button>
   </form>;
 }

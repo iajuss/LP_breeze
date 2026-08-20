@@ -40,13 +40,22 @@ h3 {
   outline-offset: 3px;
 }
 
-.search-field:focus-visible {
+.search-field:focus-visible,
+.icon-button:focus-visible {
   outline: none;
 }
 
 button:not(:disabled) {
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+button.icon-button:not(:disabled):hover,
+button.icon-button:not(:disabled):focus-visible {
+  color: var(--primary);
+  background-color: transparent;
+  filter: none;
+  transform: none;
 }
 
 a[href] {
