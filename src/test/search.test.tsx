@@ -36,6 +36,44 @@ describe("VenueSearch", () => {
     expect(screen.getByRole("spinbutton", { name: /pessoas/i })).toHaveClass("[appearance:textfield]");
   });
 
+  it("uses the occasion field's soft green focus treatment for the remaining desktop inputs", () => {
+    render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    [screen.getByRole("textbox", { name: /onde/i }), screen.getByLabelText(/quando/i), screen.getByRole("spinbutton", { name: /pessoas/i })].forEach((input) => {
+      expect(input).toHaveClass("search-field", "focus:bg-[var(--secondary)]", "focus:outline-none", "focus-visible:outline-none");
+    });
+  });
+
+  it("formats a manually typed date and writes the ISO value used by search", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<DesktopSearchForm errors={{}} onChange={onChange} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    const dateInput = screen.getByLabelText(/quando/i);
+    await user.type(dateInput, "12082026");
+
+    expect(dateInput).toHaveValue("12/08/2026");
+    expect(onChange).toHaveBeenLastCalledWith({ ...emptySearchValues, date: "2026-08-12" });
+  });
+
+  it("opens the desktop calendar below the date field", async () => {
+    const user = userEvent.setup();
+    render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    await user.click(screen.getByRole("button", { name: /abrir calendário/i }));
+
+    expect(screen.getByRole("dialog", { name: /calendário/i })).toHaveClass("top-full");
+  });
+
+  it("aligns each desktop field value with its label", () => {
+    render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
+
+    expect(screen.getByRole("button", { name: /o que você está planejando/i })).not.toHaveClass("px-2");
+    [screen.getByRole("textbox", { name: /onde/i }), screen.getByLabelText(/quando/i), screen.getByRole("spinbutton", { name: /pessoas/i })].forEach((input) => {
+      expect(input).not.toHaveClass("px-2");
+    });
+  });
+
   it("keeps desktop search labels readable over its white surface", () => {
     render(<VenueSearch entryPoint="hero" />);
 

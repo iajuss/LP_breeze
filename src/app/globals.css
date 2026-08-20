@@ -40,6 +40,10 @@ h3 {
   outline-offset: 3px;
 }
 
+.search-field:focus-visible {
+  outline: none;
+}
+
 button:not(:disabled) {
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease, border-color 180ms ease;

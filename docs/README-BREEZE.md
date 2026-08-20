@@ -18,6 +18,7 @@ O projeto não possui fluxos de captação de anfitriões, painel administrativo
 - Header fixo que ganha camada translúcida e desfoque durante a rolagem.
 - Feedback de hover/foco para controles e transição fluida de abertura e fechamento no FAQ.
 - Seletor de ocasião desktop personalizado, com menu verde aberto para baixo, fechamento por `Esc` ou clique externo e campo de convidados sem setas nativas.
+- Campo de data desktop com calendário Breeze aberto para baixo, entrada manual no formato `dd/mm/aaaa` e barras automáticas; todos os valores da busca ficam alinhados aos respectivos rótulos.
 - Contraste explícito nos controles de busca sobre fundo branco, em desktop e mobile.
 - Ações de favoritos e eventos analíticos estruturados no cliente.
 - SEO técnico: metadados, Open Graph, Twitter card, JSON-LD, `robots.txt` e sitemap.
