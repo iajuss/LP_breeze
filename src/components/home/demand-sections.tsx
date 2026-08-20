@@ -6,6 +6,7 @@ import { faqs } from "@/data/faqs";
 import { styles } from "@/data/styles";
 import { trustItems } from "@/data/trust";
 import { Faq } from "./faq";
+import { HowItWorksCarousel } from "./how-it-works-carousel";
 
 const categoryPhotos = [
   "1507504031003-b417219a0fde",
@@ -49,15 +50,7 @@ export function DemandSections() {
       <section className="w-full scroll-mt-28 bg-[var(--foreground)] py-16 text-white sm:py-20 lg:flex lg:min-h-screen lg:items-center" id="como-funciona">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Como funciona</p>
-          <div className="mt-8 grid gap-8 md:grid-cols-3">
-            {[["01", "Descubra", "Conte o que você está planejando e encontre possibilidades."], ["02", "Compare", "Veja fotos, capacidade e características para decidir com calma."], ["03", "Converse", "Inicie a conversa sobre disponibilidade e condições."]].map(([number, title, description]) => (
-              <div key={number}>
-                <span className="font-display text-5xl text-[var(--accent)]">{number}</span>
-                <h3 className="mt-6 font-display text-2xl sm:text-3xl">{title}</h3>
-                <p className="mt-3 text-white/75">{description}</p>
-              </div>
-            ))}
-          </div>
+          <HowItWorksCarousel />
         </div>
       </section>
 
