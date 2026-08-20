@@ -106,5 +106,5 @@ it("draws the clarity line only between timeline markers", () => {
 it("aligns the corporate CTA with the complete scenario control row", () => {
   render(<CorporateShowcase />);
 
-  expect(screen.getByRole("link", { name: /encontrar espaço para minha empresa/i })).toHaveClass("w-[27.5rem]", "max-w-full");
+  expect(screen.getByRole("link", { name: /encontrar espaço para minha empresa/i })).toHaveClass("w-[22rem]", "max-w-full");
 });
