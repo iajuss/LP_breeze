@@ -17,26 +17,26 @@ const categoryPhotos = [
 export function DemandSections() {
   return (
     <>
-      <section className="w-full bg-[var(--secondary)] py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full bg-[var(--secondary)] py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Por ocasião</p>
-          <h2 className="mt-3 font-display text-5xl">Encontre um espaço para cada ocasião</h2>
+          <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Encontre um espaço para cada ocasião</h2>
           <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
             {categories.map((category, index) => (
-              <Link className="group relative flex min-h-40 items-end overflow-hidden rounded-2xl bg-[var(--foreground)] p-4 text-white" href={`/buscar?activity=${encodeURIComponent(category.name)}`} key={category.id} style={{ backgroundImage: `linear-gradient(0deg, rgba(18,45,38,.82), rgba(18,45,38,.06)), url(https://images.unsplash.com/photo-${categoryPhotos[index % categoryPhotos.length]}?auto=format&fit=crop&w=800&q=80)`, backgroundSize: "cover", backgroundPosition: "center" }}>
-                <span className="font-display text-2xl">{category.name}</span>
+              <Link className="group relative flex min-h-40 min-w-0 items-end overflow-hidden rounded-2xl bg-[var(--foreground)] p-4 text-white" href={`/buscar?activity=${encodeURIComponent(category.name)}`} key={category.id} style={{ backgroundImage: `linear-gradient(0deg, rgba(18,45,38,.82), rgba(18,45,38,.06)), url(https://images.unsplash.com/photo-${categoryPhotos[index % categoryPhotos.length]}?auto=format&fit=crop&w=800&q=80)`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                <span className="min-w-0 break-words font-display text-xl leading-tight sm:text-2xl">{category.name}</span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="w-full py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Explore por estilo</p>
-              <h2 className="mt-3 font-display text-5xl">Qual é o clima do seu evento?</h2>
+              <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Qual é o clima do seu evento?</h2>
               <p className="mt-5 max-w-md text-[var(--muted)]">A arquitetura, a luz e a atmosfera também fazem parte da experiência.</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -46,14 +46,14 @@ export function DemandSections() {
         </div>
       </section>
 
-      <section className="w-full scroll-mt-28 bg-[var(--foreground)] py-20 text-white" id="como-funciona">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full scroll-mt-28 bg-[var(--foreground)] py-16 text-white sm:py-20 lg:flex lg:min-h-screen lg:items-center" id="como-funciona">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Como funciona</p>
           <div className="mt-8 grid gap-8 md:grid-cols-3">
             {[["01", "Descubra", "Conte o que você está planejando e encontre possibilidades."], ["02", "Compare", "Veja fotos, capacidade e características para decidir com calma."], ["03", "Converse", "Inicie a conversa sobre disponibilidade e condições."]].map(([number, title, description]) => (
               <div key={number}>
                 <span className="font-display text-5xl text-[var(--accent)]">{number}</span>
-                <h3 className="mt-6 font-display text-3xl">{title}</h3>
+                <h3 className="mt-6 font-display text-2xl sm:text-3xl">{title}</h3>
                 <p className="mt-3 text-white/75">{description}</p>
               </div>
             ))}
@@ -61,19 +61,19 @@ export function DemandSections() {
         </div>
       </section>
 
-      <section className="w-full scroll-mt-28 py-20" id="empresas">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full scroll-mt-28 py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center" id="empresas">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <div className="rounded-3xl bg-[var(--primary)] p-8 text-white lg:p-14">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Para empresas</p>
-            <h2 className="mt-4 max-w-2xl font-display text-5xl">Seu próximo evento corporativo começa pelo lugar certo.</h2>
+            <h2 className="mt-4 max-w-2xl font-display text-4xl leading-[0.98] sm:text-5xl">Seu próximo evento corporativo começa pelo lugar certo.</h2>
             <p className="mt-5 max-w-xl text-white/80">Confraternizações, lançamentos, workshops, reuniões, treinamentos e experiências de marca começam por uma busca com contexto.</p>
             <Link className="mt-8 inline-flex min-h-11 items-center rounded-xl bg-white px-5 py-3 font-semibold text-[var(--primary)]" href="/buscar?activity=Evento+corporativo">Encontrar espaço para minha empresa</Link>
           </div>
         </div>
       </section>
 
-      <section className="w-full border-y border-[var(--border)] bg-[var(--secondary)] py-16">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full border-y border-[var(--border)] bg-[var(--secondary)] py-16 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Escolha com clareza</p>
           <div className="mt-7 grid gap-6 md:grid-cols-3">
             {trustItems.map((item) => <article key={item.id}><p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Demonstração</p><h3 className="mt-3 font-display text-3xl">{item.title}</h3><p className="mt-3 text-[var(--muted)]">{item.description}</p></article>)}
@@ -81,30 +81,30 @@ export function DemandSections() {
         </div>
       </section>
 
-      <section className="w-full py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Onde procurar</p>
-          <h2 className="mt-3 font-display text-5xl">Explore espaços nas principais cidades</h2>
+          <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Explore espaços nas principais cidades</h2>
           <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
             {cities.map((city) => <Link className="rounded-2xl border border-[var(--border)] p-5 hover:bg-[var(--secondary)]" href={`/espacos/${city.slug}`} key={city.id}><span className="block font-display text-2xl">{city.name}</span><span className="mt-1 block text-sm text-[var(--muted)]">{city.state}</span></Link>)}
           </div>
         </div>
       </section>
 
-      <section className="w-full bg-[var(--secondary)] py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="w-full bg-[var(--secondary)] py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Guia Breeze</p>
-          <h2 className="mt-3 font-display text-5xl">Ideias para tornar seu evento extraordinário</h2>
+          <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Ideias para tornar seu evento extraordinário</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {articles.map((article) => <article className="rounded-2xl bg-white p-6" key={article.id}><p className="text-sm text-[var(--muted)]">Conteúdo em breve</p><h3 className="mt-4 font-display text-3xl leading-tight">{article.title}</h3><p className="mt-4 text-[var(--muted)]">{article.excerpt}</p></article>)}
           </div>
         </div>
       </section>
 
-      <section className="w-full py-20">
-        <div className="mx-auto max-w-3xl px-5">
+      <section className="w-full py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-3xl px-5">
           <p className="text-center text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Dúvidas frequentes</p>
-          <h2 className="mt-3 text-center font-display text-5xl">Antes de começar</h2>
+          <h2 className="mt-3 text-center font-display text-4xl leading-[0.98] sm:text-5xl">Antes de começar</h2>
           <div className="mt-10"><Faq items={faqs} /></div>
         </div>
       </section>

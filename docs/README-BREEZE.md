@@ -10,10 +10,11 @@ O projeto não possui fluxos de captação de anfitriões, painel administrativo
 
 - Página inicial responsiva com navegação, hero e busca de espaços.
 - Busca por local, data e número de convidados, direcionando para `/buscar` com os filtros preenchidos.
-- Interface de busca adequada para desktop e mobile, incluindo seletor de convidados e diálogo mobile.
+- Interface de busca adequada para desktop e mobile, incluindo seletor de convidados e diálogo mobile com textos de alto contraste, ações explícitas de fechar/cancelar e reinício seguro do fluxo ao reabrir.
 - Descoberta de espaços por ocasião, estilo e cidades, além de cards de espaços em destaque.
 - Seções de como funciona, soluções para empresas, confiança, conteúdo editorial, FAQ e rodapé.
-- Seções em largura total, com o conteúdo interno preservando uma medida de leitura confortável.
+- Seções em largura total, com o conteúdo interno preservando uma medida de leitura confortável e altura mínima de viewport no desktop.
+- Revisão mobile-first: hero usa a altura dinâmica da tela, tipografia se adapta a telas estreitas, cartões de ocasião não extrapolam a largura e o carrossel de espaços tem rolagem interna com snap.
 - Header fixo que ganha camada translúcida e desfoque durante a rolagem.
 - Feedback de hover/foco para controles e transição fluida de abertura e fechamento no FAQ.
 - Contraste explícito nos controles de busca sobre fundo branco, em desktop e mobile.
@@ -65,8 +66,8 @@ npm run test:e2e
 
 Em 19 de agosto de 2026, passaram:
 
-- 10 testes unitários em 8 arquivos;
-- 2 testes E2E (desktop e mobile);
+- 12 testes unitários em 8 arquivos;
+- 5 testes E2E executados em desktop e mobile (mais uma regra exclusivamente desktop ignorada no perfil mobile);
 - validação de tipos TypeScript;
 - lint;
 - build de produção do Next.js.
