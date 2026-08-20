@@ -92,3 +92,9 @@ it("updates the active clarity criterion", async () => {
   expect(screen.getByRole("heading", { name: "Conversa direta" })).toBeInTheDocument();
   expect(screen.getByText("Demonstração")).toBeInTheDocument();
 });
+
+it("draws the clarity line only between timeline markers", () => {
+  render(<TrustTimeline />);
+
+  expect(screen.getAllByTestId("trust-line-segment")).toHaveLength(2);
+});

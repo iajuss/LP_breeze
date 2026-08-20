@@ -1,8 +1,68 @@
 import Link from "next/link";
+import { VenueCard } from "@/components/home/venue-card";
+import { venues } from "@/data/venues";
+import { filterVenues, type VenueFilters } from "@/lib/venue-results";
 
-type SearchPageProps = { searchParams: Promise<{ activity?: string; location?: string; date?: string; guests?: string }> };
+type SearchPageProps = { searchParams: Promise<VenueFilters & { date?: string }> };
+
+const activityOptions = ["Festa", "Casamento", "Evento corporativo", "Reunião", "Workshop", "Produção"];
+const cityOptions = ["São Paulo", "Rio de Janeiro", "Belo Horizonte"];
+const styleOptions = ["Jardim", "Rooftop", "Industrial", "Histórico"];
+
+function searchHref(values: VenueFilters & { date?: string }, update: Partial<VenueFilters>) {
+  const parameters = new URLSearchParams();
+  const nextValues = { ...values, ...update };
+  Object.entries(nextValues).forEach(([key, value]) => {
+    if (value) parameters.set(key, value);
+  });
+  const query = parameters.toString();
+  return query ? `/buscar?${query}` : "/buscar";
+}
+
+function FilterGroup({ label, options, parameter, values }: { label: string; options: string[]; parameter: keyof VenueFilters; values: VenueFilters & { date?: string } }) {
+  return <div>
+    <p className="text-sm font-semibold text-[var(--foreground)]">{label}</p>
+    <div className="mt-3 flex flex-wrap gap-2">
+      {options.map((option) => {
+        const selected = values[parameter] === option;
+        return <Link aria-pressed={selected} className={`min-h-10 rounded-full border px-4 py-2 text-sm font-semibold transition ${selected ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:text-[var(--primary)]"}`} href={searchHref(values, { [parameter]: selected ? undefined : option })} key={option}>{option}</Link>;
+      })}
+    </div>
+  </div>;
+}
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const values = await searchParams;
-  return <main className="mx-auto min-h-screen max-w-3xl px-6 py-20"><Link className="text-sm font-semibold text-[var(--primary)]" href="/">← Voltar para a Breeze</Link><h1 className="mt-8 font-display text-5xl">Sua busca começa aqui.</h1><p className="mt-4 text-[var(--muted)]">Estamos preparando espaços que combinam com o que você imaginou.</p><dl className="mt-10 grid gap-4 rounded-2xl bg-white p-6 shadow-sm sm:grid-cols-2"><div><dt className="text-sm text-[var(--muted)]">Ocasião</dt><dd className="font-semibold">{values.activity || "A definir"}</dd></div><div><dt className="text-sm text-[var(--muted)]">Local</dt><dd className="font-semibold">{values.location || "A definir"}</dd></div><div><dt className="text-sm text-[var(--muted)]">Data</dt><dd className="font-semibold">{values.date || "A definir"}</dd></div><div><dt className="text-sm text-[var(--muted)]">Pessoas</dt><dd className="font-semibold">{values.guests || "A definir"}</dd></div></dl></main>;
+  const exactResults = filterVenues(venues, values);
+  const results = exactResults.length ? exactResults : venues;
+  const hasFilters = Boolean(values.activity || values.location || values.guests || values.style);
+
+  return <main className="min-h-screen bg-[var(--secondary)] px-5 py-12 sm:py-16">
+    <div className="mx-auto max-w-7xl">
+      <Link className="text-sm font-semibold text-[var(--primary)]" href="/">← Voltar para a Breeze</Link>
+      <div className="mt-8 grid gap-8 lg:grid-cols-[18rem_1fr] lg:items-start">
+        <aside className="rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Refine sua busca</p>
+          <h1 className="mt-3 font-display text-4xl leading-none">Espaços para o seu plano.</h1>
+          <div className="mt-7 space-y-6">
+            <FilterGroup label="Ocasião" options={activityOptions} parameter="activity" values={values} />
+            <FilterGroup label="Cidade" options={cityOptions} parameter="location" values={values} />
+            <FilterGroup label="Estilo" options={styleOptions} parameter="style" values={values} />
+            <FilterGroup label="Pessoas" options={["80", "150", "250"]} parameter="guests" values={values} />
+          </div>
+          {hasFilters ? <Link className="mt-7 inline-flex text-sm font-semibold text-[var(--primary)] underline underline-offset-4" href="/buscar">Limpar filtros</Link> : null}
+        </aside>
+
+        <section aria-live="polite">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Seleção Breeze</p>
+          <h2 className="mt-3 font-display text-4xl leading-none sm:text-5xl">{exactResults.length ? `${exactResults.length} ${exactResults.length === 1 ? "espaço encontrado" : "espaços encontrados"}` : "Sugestões para você"}</h2>
+          {hasFilters ? <dl className="mt-6 grid gap-3 rounded-2xl border border-[var(--border)] bg-white p-5 text-sm sm:grid-cols-2"><div><dt className="text-[var(--muted)]">Ocasião</dt><dd className="mt-1 font-semibold">{values.activity || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Local</dt><dd className="mt-1 font-semibold">{values.location || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Pessoas</dt><dd className="mt-1 font-semibold">{values.guests || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Data</dt><dd className="mt-1 font-semibold">{values.date || "A definir"}</dd></div></dl> : null}
+          {!exactResults.length && hasFilters ? <p className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-5 text-[var(--muted)]">Ainda não há uma combinação exata para esses filtros. Estas opções demonstrativas podem ser um bom ponto de partida.</p> : null}
+          <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+            {results.map((venue) => <VenueCard key={venue.id} venue={venue} />)}
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>;
 }

@@ -9,12 +9,13 @@ export function TrustTimeline() {
 
   return (
     <div className="mt-8">
-      <div aria-label="Critérios para escolher com clareza" className="relative flex snap-x gap-3 overflow-x-auto pb-3 [scrollbar-width:none] md:justify-between [&::-webkit-scrollbar]:hidden" role="group">
-        <div aria-hidden="true" className="absolute left-8 right-8 top-6 hidden h-px bg-[var(--border)] md:block" />
+      <div aria-label="Critérios para escolher com clareza" className="relative flex snap-x gap-3 overflow-x-auto pb-3 [scrollbar-width:none] md:grid md:grid-cols-3 md:gap-0 md:overflow-visible [&::-webkit-scrollbar]:hidden" role="group">
+        <span aria-hidden="true" className="absolute left-6 top-6 hidden h-px w-1/3 bg-[var(--border)] md:block" data-testid="trust-line-segment" />
+        <span aria-hidden="true" className="absolute left-[calc(33.333%+1.5rem)] top-6 hidden h-px w-1/3 bg-[var(--border)] md:block" data-testid="trust-line-segment" />
         {trustTimelineItems.map((item) => (
           <button
             aria-pressed={item.id === activeItem.id}
-            className="relative z-10 flex min-h-14 shrink-0 items-center gap-3 rounded-full bg-[var(--background)] pr-4 text-left transition focus-visible:outline-[var(--primary)] md:bg-transparent md:pr-0"
+            className="relative z-10 flex min-h-14 shrink-0 items-center gap-3 rounded-full bg-[var(--background)] pr-4 text-left transition focus-visible:outline-[var(--primary)] md:flex-col md:items-start md:gap-3 md:bg-transparent md:pr-0"
             key={item.id}
             onClick={() => setActiveItemId(item.id)}
             type="button"

@@ -10,6 +10,7 @@ O projeto não possui fluxos de captação de anfitriões, painel administrativo
 
 - Página inicial responsiva com navegação, hero e busca de espaços.
 - Busca por local, data e número de convidados, direcionando para `/buscar` com os filtros preenchidos.
+- Página `/buscar` com resultados demonstrativos coerentes, filtros clicáveis por ocasião, cidade, estilo e capacidade, além de sugestões quando não há correspondência exata.
 - Interface de busca adequada para desktop e mobile, incluindo seletor de convidados e diálogo mobile com textos de alto contraste, ações explícitas de fechar/cancelar e reinício seguro do fluxo ao reabrir.
 - Descoberta de espaços por ocasião, estilo e cidades, além de cards de espaços em destaque.
 - Trilhos fotográficos circulares para ocasiões, cidades e guias Breeze, com navegação nos dois sentidos, controles visuais consistentes e retorno contínuo ao início.
@@ -71,7 +72,7 @@ npm run test:e2e
 
 Em 20 de agosto de 2026, passaram:
 
-- 30 testes unitários e de componentes em 9 arquivos;
+- 34 testes unitários e de componentes em 10 arquivos;
 - 5 testes E2E executados em desktop e mobile (mais uma regra exclusivamente desktop ignorada no perfil mobile);
 - validação de tipos TypeScript;
 - lint;
