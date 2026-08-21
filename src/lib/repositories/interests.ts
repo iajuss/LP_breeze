@@ -19,6 +19,7 @@ type PendingInterest = {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  interested_region: string | null;
   finalized_interest_id: string | null;
 };
 
@@ -35,6 +36,7 @@ export async function createPendingInterest(payload: InterestPayload): Promise<{
     marketing_consent: payload.marketingConsent,
     event_type: payload.eventType,
     neighborhood: payload.neighborhood,
+    interested_region: payload.regionInterest || null,
     event_date: payload.eventDate || null,
     guest_count: payload.guestCount,
     budget: payload.budget || null,
@@ -61,7 +63,7 @@ export async function finalizePendingInterest(pendingId: string, user: { id: str
   });
   if (profileError) throw new Error("Não foi possível criar seu perfil.");
   const { data: interest, error: interestError } = await supabase.from("rental_interests").insert({
-    user_id: user.id, venue_id: pending.venue_id, event_type: pending.event_type, neighborhood: pending.neighborhood,
+    user_id: user.id, venue_id: pending.venue_id, event_type: pending.event_type, neighborhood: pending.neighborhood, interested_region: pending.interested_region,
     event_date: pending.event_date, guest_count: pending.guest_count, budget: pending.budget,
     displayed_price: "Valor sob consulta", source: pending.source, campaign: pending.campaign, referrer: pending.referrer,
     utm_source: pending.utm_source, utm_medium: pending.utm_medium, utm_campaign: pending.utm_campaign,

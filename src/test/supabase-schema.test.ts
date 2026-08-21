@@ -15,3 +15,9 @@ it("creates the private lead view and the operational demand tables", () => {
   expect(migration).toContain("insert into public.venues");
   expect(migration).not.toContain("'Rio de Janeiro'");
 });
+
+it("stores a user's broader region preference separately from the venue location", () => {
+  const migration = readFileSync(resolve(process.cwd(), "supabase/migrations/202608210002_region_interest.sql"), "utf8");
+  expect(migration).toContain("interested_region");
+  expect(migration).toContain("lead_summary");
+});

@@ -16,6 +16,7 @@ export type Venue = {
   name: string;
   city: string;
   region: string;
+  zone: string;
   capacity: number;
   category: string;
   styles: string[];
