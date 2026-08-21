@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { openSearchEvent } from "@/components/search/search-types";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,7 +26,7 @@ export function Header() {
           <a href="#empresas">Para empresas</a>
           <a href="#espacos">Explorar espaços</a>
         </nav>
-        <a className="min-h-11 rounded-full border border-white/70 px-4 py-2 text-sm font-semibold md:hidden" href="#buscar">Buscar</a>
+        <a className="min-h-11 rounded-full border border-white/70 px-4 py-2 text-sm font-semibold md:hidden" href="#buscar" onClick={() => window.dispatchEvent(new Event(openSearchEvent))}>Buscar</a>
       </div>
     </header>
   );

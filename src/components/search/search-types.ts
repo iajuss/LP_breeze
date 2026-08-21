@@ -1,3 +1,5 @@
+export const openSearchEvent = "breeze:open-search";
+
 export type SearchValues = {
   activity: string;
   location: string;

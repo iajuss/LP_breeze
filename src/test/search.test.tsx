@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { DesktopSearchForm } from "@/components/search/desktop-search-form";
+import { Header } from "@/components/layout/header";
 import { VenueSearch } from "@/components/search/venue-search";
 import { emptySearchValues } from "@/components/search/search-types";
 
@@ -133,6 +134,55 @@ describe("VenueSearch", () => {
 
     await user.click(screen.getByRole("button", { name: /cancelar/i }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("opens the mobile search from the header action", async () => {
+    const user = userEvent.setup();
+    render(<><Header /><VenueSearch entryPoint="hero" /></>);
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: "Buscar" }));
+
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("keeps the caret in the mobile location field while it is typed", async () => {
+    const user = userEvent.setup();
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.click(screen.getByRole("button", { name: /encontrar um espaço/i }));
+    await user.click(screen.getByRole("button", { name: /^festa$/i }));
+    const location = within(screen.getByRole("dialog")).getByPlaceholderText(/cidade, bairro ou região/i);
+    await user.click(location);
+    await user.type(location, "São Paulo, Pinheiros");
+
+    expect(location).toHaveValue("São Paulo, Pinheiros");
+    expect(location).toHaveFocus();
+  });
+
+  it("accepts a typed guest count instead of only the stepper buttons", async () => {
+    const user = userEvent.setup();
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.click(screen.getByRole("button", { name: /encontrar um espaço/i }));
+    await user.click(screen.getByRole("button", { name: /^festa$/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
+    const guests = screen.getByLabelText(/quantidade de pessoas/i);
+    await user.type(guests, "250");
+
+    expect(guests).toHaveValue(250);
+    await user.click(screen.getByRole("button", { name: /diminuir pessoas/i }));
+    expect(guests).toHaveValue(249);
+  });
+
+  it("renders the mobile sheet outside the hero stacking context", async () => {
+    const user = userEvent.setup();
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.click(screen.getByRole("button", { name: /encontrar um espaço/i }));
+
+    expect(screen.getByRole("dialog").closest('[role="presentation"]')?.parentElement).toBe(document.body);
   });
 
   it("restarts the mobile flow after it is closed", async () => {

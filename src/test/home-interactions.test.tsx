@@ -35,6 +35,14 @@ it("exposes photo-rail controls and preserves card destinations", async () => {
   expect(screen.getByRole("link", { name: /festas/i })).toHaveAttribute("href", "/buscar?activity=Festas");
 });
 
+it("fixes the rail card width so a long title cannot stretch it past the screen", () => {
+  render(<PhotoRail ariaLabel="Ocasiões" items={[{ ...items[0], title: "Como escolher um espaço para evento corporativo" }]} />);
+
+  const [card] = screen.getAllByRole("link");
+  expect(card).toHaveClass("w-[78vw]", "sm:w-80", "lg:w-96");
+  expect(card).not.toHaveClass("min-w-[78vw]", "sm:min-w-80", "lg:min-w-96");
+});
+
 it("prepares equivalent copies for a seamless loop and matches arrow colors", () => {
   render(<PhotoRail ariaLabel="Ocasiões" items={items} />);
   const rail = screen.getByRole("region", { name: "Ocasiões" });

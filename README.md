@@ -22,6 +22,9 @@ O projeto não possui fluxos de captação de anfitriões, painel administrativo
 - Contraste explícito nos controles de busca sobre fundo branco, em desktop e mobile.
 - Mensagem de feedback na busca da home quando ocasião, local ou número de pessoas ficam em branco, com cada linha saindo assim que o campo correspondente é preenchido.
 - Filtros da página de resultados com preenchimento neutro em repouso, verde no hover e na seleção, sem borda nem caixa de foco; o ícone de calendário tinge apenas a si mesmo.
+- Busca mobile aberta também pelo botão do header, renderizada em portal no `body` para não ficar sob as seções seguintes, com rolagem da página travada enquanto está aberta.
+- Quantidade de pessoas digitável no fluxo mobile, além dos botões de mais e menos.
+- Cards dos trilhos com largura fixa, para que títulos longos não estiquem o card além da tela.
 - Ações de favoritos e eventos analíticos estruturados no cliente.
 - SEO técnico: metadados, Open Graph, Twitter card, JSON-LD, `robots.txt` e sitemap.
 - Testes unitários e de componentes para busca, SEO, conteúdo, analytics, cards e homepage.

@@ -66,7 +66,7 @@ export function PhotoRail({ ariaLabel, items }: PhotoRailProps) {
           <div aria-hidden={item.copy !== 1} className="contents" key={`${item.copy}-${item.id}`}>
             <Link
               aria-label={`${item.title} — ${item.imageAlt}`}
-              className="group relative flex min-h-80 min-w-[78vw] shrink-0 snap-start items-end overflow-hidden rounded-3xl bg-[var(--foreground)] p-5 text-white sm:min-w-80 lg:min-w-96"
+              className="group relative flex min-h-80 w-[78vw] shrink-0 snap-start items-end overflow-hidden rounded-3xl bg-[var(--foreground)] p-5 text-white sm:w-80 lg:w-96"
               data-loop-copy={item.copy}
               href={item.href}
               style={{ backgroundImage: `linear-gradient(0deg, rgba(18,45,38,.88), rgba(18,45,38,.08)), url(${item.image})`, backgroundPosition: "center", backgroundSize: "cover" }}

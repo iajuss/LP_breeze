@@ -1,11 +1,11 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 import { buildSearchUrl, validateSearch } from "@/lib/search";
 import { DesktopSearchForm } from "./desktop-search-form";
 import { MobileSearchSheet } from "./mobile-search-sheet";
-import { emptySearchValues, type SearchErrors, type SearchValues } from "./search-types";
+import { emptySearchValues, openSearchEvent, type SearchErrors, type SearchValues } from "./search-types";
 
 type VenueSearchProps = { entryPoint: "hero" | "corporate" };
 
@@ -28,6 +28,13 @@ export function VenueSearch({ entryPoint }: VenueSearchProps) {
   };
   const desktopSubmit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); submit(); };
   const begin = () => { track("search_started", { entryPoint }); setOpen(true); };
+
+  useEffect(() => {
+    if (entryPoint !== "hero") return;
+    const openFromHeader = () => { track("search_started", { entryPoint }); setOpen(true); };
+    window.addEventListener(openSearchEvent, openFromHeader);
+    return () => window.removeEventListener(openSearchEvent, openFromHeader);
+  }, [entryPoint]);
 
   return <div className="w-full"><DesktopSearchForm errors={errors} feedbackId={messages.length ? "search-feedback" : undefined} onChange={change} onSubmit={desktopSubmit} values={values} /><button className="flex min-h-14 w-full items-center justify-between rounded-2xl bg-white px-5 text-left text-[var(--foreground)] shadow-xl lg:hidden" onClick={begin} type="button"><span><span className="block text-sm text-[var(--muted)]">Planeje com leveza</span><span className="font-semibold">Encontrar um espaço</span></span><span aria-hidden="true" className="text-xl">→</span></button>{messages.length ? <div className="mt-3 rounded-2xl border border-[var(--destructive)] bg-white p-4 text-left shadow-lg" id="search-feedback" role="alert"><p className="text-sm font-semibold text-[var(--destructive)]">Complete os filtros para buscar espaços.</p><ul className="mt-2 space-y-1 text-sm text-[var(--foreground)]">{messages.map((message) => <li key={message}>· {message}</li>)}</ul></div> : null}<MobileSearchSheet errors={errors} onChange={change} onClose={() => setOpen(false)} onSubmit={submit} open={open} values={values} /></div>;
 }
