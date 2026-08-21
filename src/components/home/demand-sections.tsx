@@ -61,9 +61,9 @@ export function DemandSections() {
 
       <section className="w-full bg-[var(--secondary)] py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Guia Breeze</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Guia Arcora</p>
           <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Ideias para tornar seu evento extraordinário</h2>
-          <PhotoRail ariaLabel="Guias Breeze" items={editorialRailItems} />
+          <PhotoRail ariaLabel="Guias Arcora" items={editorialRailItems} />
         </div>
       </section>
 

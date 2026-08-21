@@ -3,11 +3,10 @@ import { VenueCard } from "@/components/home/venue-card";
 import { SearchRefinementForm } from "@/components/search/search-refinement-form";
 import { venues } from "@/data/venues";
 import { filterVenues, type VenueFilters } from "@/lib/venue-results";
+import { activityOptions, locationOptions } from "@/data/search-options";
 
 type SearchPageProps = { searchParams: Promise<VenueFilters & { date?: string }> };
 
-const activityOptions = ["Festa", "Casamento", "Evento corporativo", "Reunião", "Workshop", "Produção"];
-const cityOptions = ["São Paulo", "Rio de Janeiro", "Belo Horizonte"];
 const styleOptions = ["Jardim", "Rooftop", "Industrial", "Histórico"];
 
 function searchHref(values: VenueFilters & { date?: string }, update: Partial<VenueFilters>) {
@@ -20,7 +19,7 @@ function searchHref(values: VenueFilters & { date?: string }, update: Partial<Ve
   return query ? `/buscar?${query}` : "/buscar";
 }
 
-function FilterGroup({ label, options, parameter, values }: { label: string; options: string[]; parameter: keyof VenueFilters; values: VenueFilters & { date?: string } }) {
+function FilterGroup({ label, options, parameter, values }: { label: string; options: readonly string[]; parameter: keyof VenueFilters; values: VenueFilters & { date?: string } }) {
   return <div>
     <p className="text-sm font-semibold text-[var(--foreground)]">{label}</p>
     <div className="mt-3 flex flex-wrap gap-2">
@@ -35,19 +34,19 @@ function FilterGroup({ label, options, parameter, values }: { label: string; opt
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const values = await searchParams;
   const exactResults = filterVenues(venues, values);
-  const results = exactResults.length ? exactResults : venues;
+  const results = exactResults;
   const hasFilters = Boolean(values.activity || values.location || values.guests || values.style || values.date);
 
   return <main className="min-h-screen bg-[var(--secondary)] px-5 py-12 sm:py-16">
     <div className="mx-auto max-w-7xl">
-      <Link className="text-sm font-semibold text-[var(--primary)]" href="/">← Voltar para a Breeze</Link>
+      <Link className="text-sm font-semibold text-[var(--primary)]" href="/">← Voltar para a Arcora</Link>
       <div className="mt-8 grid gap-8 lg:grid-cols-[18rem_1fr] lg:items-start">
         <aside className="rounded-3xl bg-white p-6 shadow-sm lg:sticky lg:top-24">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Refine sua busca</p>
           <h1 className="mt-3 font-display text-4xl leading-none">Espaços para o seu plano.</h1>
           <div className="mt-7 space-y-6">
             <FilterGroup label="Ocasião" options={activityOptions} parameter="activity" values={values} />
-            <FilterGroup label="Cidade" options={cityOptions} parameter="location" values={values} />
+            <FilterGroup label="Localização" options={[...locationOptions]} parameter="location" values={values} />
             <FilterGroup label="Estilo" options={styleOptions} parameter="style" values={values} />
             <FilterGroup label="Pessoas" options={["80", "150", "250"]} parameter="guests" values={values} />
             <SearchRefinementForm values={values} />
@@ -56,10 +55,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </aside>
 
         <section aria-live="polite">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Seleção Breeze</p>
-          <h2 className="mt-3 font-display text-4xl leading-none sm:text-5xl">{exactResults.length ? `${exactResults.length} ${exactResults.length === 1 ? "espaço encontrado" : "espaços encontrados"}` : "Sugestões para você"}</h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Arcora em São Paulo</p>
+          <h2 className="mt-3 font-display text-4xl leading-none sm:text-5xl">{exactResults.length ? `${exactResults.length} ${exactResults.length === 1 ? "espaço encontrado" : "espaços encontrados"}` : "Nenhum espaço encontrado"}</h2>
           {hasFilters ? <dl className="mt-6 grid gap-3 rounded-2xl border border-[var(--border)] bg-white p-5 text-sm sm:grid-cols-2"><div><dt className="text-[var(--muted)]">Ocasião</dt><dd className="mt-1 font-semibold">{values.activity || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Local</dt><dd className="mt-1 font-semibold">{values.location || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Pessoas</dt><dd className="mt-1 font-semibold">{values.guests || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Data</dt><dd className="mt-1 font-semibold">{values.date || "A definir"}</dd></div></dl> : null}
-          {!exactResults.length && hasFilters ? <p className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-5 text-[var(--muted)]">Ainda não há uma combinação exata para esses filtros. Estas opções demonstrativas podem ser um bom ponto de partida.</p> : null}
+          {!exactResults.length && hasFilters ? <p className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-5 text-[var(--muted)]">Ainda não encontramos um espaço com essa combinação. Ajuste os filtros ou conte um pouco mais sobre o seu evento.</p> : null}
           <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
             {results.map((venue) => <VenueCard key={venue.id} venue={venue} />)}
           </div>

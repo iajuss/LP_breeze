@@ -34,7 +34,7 @@ export function TrustTimeline() {
           style={{ backgroundImage: `linear-gradient(115deg, rgba(18,45,38,.08), rgba(18,45,38,.5)), url(${activeItem.image})` }}
         />
         <article className="flex min-h-64 flex-col justify-center p-7 sm:p-10 lg:p-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Demonstração</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Como funciona</p>
           <h3 className="mt-4 font-display text-4xl leading-none sm:text-5xl">{activeItem.title}</h3>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-[var(--muted)]">{activeItem.description}</p>
         </article>

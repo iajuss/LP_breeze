@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import HomePage from "@/app/page";
 
-it("renders Breeze’s primary destination", () => {
+it("renders Arcora’s primary destination", () => {
   render(<HomePage />);
   expect(
     screen.getByRole("heading", {

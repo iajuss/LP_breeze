@@ -21,9 +21,10 @@ export type Venue = {
   styles: string[];
   image: string;
   imageAlt: string;
-  rating?: number;
-  priceFrom?: number;
-  isDemo: true;
+  slug: string;
+  latitude: number;
+  longitude: number;
+  summary: string;
 };
 
 export type Category = { id: string; name: string; slug: string; image: string; imageAlt: string };
@@ -31,4 +32,4 @@ export type StyleCollection = { id: string; name: string; slug: string; image: s
 export type City = { id: string; name: string; state: string; slug: string; image?: string; imageAlt?: string };
 export type Article = { id: string; title: string; excerpt: string; slug: string; image?: string; imageAlt?: string };
 export type FaqItem = { id: string; question: string; answer: string };
-export type TrustItem = { id: string; title: string; description: string; isDemo: true; source?: string };
+export type TrustItem = { id: string; title: string; description: string; source?: string };
