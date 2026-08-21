@@ -12,4 +12,6 @@ it("creates the private lead view and the operational demand tables", () => {
   });
   expect(migration).toContain("create view public.lead_summary");
   expect(migration).toContain("alter table public.rental_interests enable row level security");
+  expect(migration).toContain("insert into public.venues");
+  expect(migration).not.toContain("'Rio de Janeiro'");
 });

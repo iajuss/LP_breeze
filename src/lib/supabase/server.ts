@@ -4,9 +4,9 @@ import { getPublicSupabaseConfig } from "./browser";
 
 export async function createServerSupabaseClient() {
   const cookieStore = await cookies();
-  const { anonKey, url } = getPublicSupabaseConfig();
+  const { publishableKey, url } = getPublicSupabaseConfig();
 
-  return createServerClient(url, anonKey, {
+  return createServerClient(url, publishableKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {

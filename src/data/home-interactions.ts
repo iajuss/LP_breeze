@@ -64,7 +64,7 @@ export const cityRailItems: PhotoRailItem[] = cities.map((city, index) => ({
 export const editorialRailItems: PhotoRailItem[] = articles.map((article, index) => ({
   id: article.id,
   title: article.title,
-  subtitle: "Guia Breeze",
+  subtitle: "Guia Arcora",
   href: `/guias/${article.slug}`,
   image: unsplash(editorialPhotos[index]),
   imageAlt: `Imagem de apoio para o guia ${article.title}`,

@@ -134,6 +134,23 @@ create policy "public can read venues"
   to anon, authenticated
   using (true);
 
+insert into public.venues (slug, name, city, neighborhood, zone, latitude, longitude, capacity, event_types, amenities, pricing_label)
+values
+  ('casa-jardim-pinheiros', 'Casa Jardim Pinheiros', 'São Paulo', 'Pinheiros', 'Oeste', -23.5614, -46.6912, 120, array['Festa', 'Casamento'], array['Jardim'], 'Valor sob consulta'),
+  ('galpao-da-luz', 'Galpão da Luz', 'São Paulo', 'Luz', 'Centro', -23.5347, -46.6357, 300, array['Produção', 'Workshop'], array['Estrutura flexível'], 'Valor sob consulta'),
+  ('terraco-vila-madalena', 'Terraço Vila Madalena', 'São Paulo', 'Vila Madalena', 'Oeste', -23.5527, -46.6915, 180, array['Evento corporativo', 'Workshop'], array['Terraço'], 'Valor sob consulta'),
+  ('casa-vila-mariana', 'Casa Vila Mariana', 'São Paulo', 'Vila Mariana', 'Sul', -23.5895, -46.6377, 90, array['Casamento', 'Festa'], array['Jardim'], 'Valor sob consulta')
+on conflict (slug) do update set
+  name = excluded.name,
+  neighborhood = excluded.neighborhood,
+  zone = excluded.zone,
+  latitude = excluded.latitude,
+  longitude = excluded.longitude,
+  capacity = excluded.capacity,
+  event_types = excluded.event_types,
+  amenities = excluded.amenities,
+  pricing_label = excluded.pricing_label;
+
 create view public.lead_summary
 with (security_invoker = true)
 as

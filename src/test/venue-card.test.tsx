@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { VenueCard } from "@/components/home/venue-card";
 import { venues } from "@/data/venues";
 
-it("exposes venue details and a labeled favorite action", () => {
+it("links to the venue detail route", () => {
   render(<VenueCard venue={venues[0]} />);
   expect(screen.getByText(venues[0].name)).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: new RegExp(`favoritar ${venues[0].name}`, "i") })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: new RegExp(`ver detalhes de ${venues[0].name}`, "i") })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros");
 });

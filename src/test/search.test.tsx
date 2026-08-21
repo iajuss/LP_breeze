@@ -46,7 +46,7 @@ describe("VenueSearch", () => {
   it("uses the occasion field's soft green focus treatment for the remaining desktop inputs", () => {
     render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
 
-    [screen.getByRole("textbox", { name: /onde/i }), screen.getByLabelText(/quando/i), screen.getByRole("spinbutton", { name: /pessoas/i })].forEach((input) => {
+    [screen.getByRole("combobox", { name: /onde/i }), screen.getByLabelText(/quando/i), screen.getByRole("spinbutton", { name: /pessoas/i })].forEach((input) => {
       expect(input).toHaveClass("search-field", "focus:bg-[var(--secondary)]", "focus:outline-none", "focus-visible:outline-none");
     });
   });
@@ -76,7 +76,7 @@ describe("VenueSearch", () => {
     render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={emptySearchValues} />);
 
     expect(screen.getByRole("button", { name: /o que você está planejando/i })).not.toHaveClass("px-2");
-    [screen.getByRole("textbox", { name: /onde/i }), screen.getByLabelText(/quando/i), screen.getByRole("spinbutton", { name: /pessoas/i })].forEach((input) => {
+    [screen.getByRole("combobox", { name: /onde/i }), screen.getByLabelText(/quando/i), screen.getByRole("spinbutton", { name: /pessoas/i })].forEach((input) => {
       expect(input).not.toHaveClass("px-2");
     });
   });
@@ -96,9 +96,9 @@ describe("VenueSearch", () => {
     const feedback = screen.getByRole("alert");
     expect(feedback).toHaveTextContent("Complete os filtros para buscar espaços.");
     expect(feedback).toHaveTextContent("Escolha a ocasião do seu evento.");
-    expect(feedback).toHaveTextContent("Informe uma cidade, bairro ou região.");
+    expect(feedback).toHaveTextContent("Escolha São Paulo ou um bairro sugerido.");
     expect(feedback).toHaveTextContent("Informe entre 1 e 5.000 pessoas.");
-    expect(screen.getByRole("textbox", { name: /onde/i })).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("combobox", { name: /onde/i })).toHaveAttribute("aria-invalid", "true");
   });
 
   it("drops each feedback line as soon as the matching filter is filled", async () => {
@@ -106,9 +106,9 @@ describe("VenueSearch", () => {
     render(<VenueSearch entryPoint="hero" />);
 
     await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
-    await user.type(screen.getByRole("textbox", { name: /onde/i }), "São Paulo");
+    await user.type(screen.getByRole("combobox", { name: /onde/i }), "São Paulo, SP");
 
-    expect(screen.getByRole("alert")).not.toHaveTextContent("Informe uma cidade, bairro ou região.");
+    expect(screen.getByRole("alert")).not.toHaveTextContent("Escolha São Paulo ou um bairro sugerido.");
     expect(screen.getByRole("alert")).toHaveTextContent("Escolha a ocasião do seu evento.");
   });
 
@@ -152,11 +152,11 @@ describe("VenueSearch", () => {
 
     await user.click(screen.getByRole("button", { name: /encontrar um espaço/i }));
     await user.click(screen.getByRole("button", { name: /^festa$/i }));
-    const location = within(screen.getByRole("dialog")).getByPlaceholderText(/cidade, bairro ou região/i);
+    const location = within(screen.getByRole("dialog")).getByPlaceholderText(/são paulo ou um bairro/i);
     await user.click(location);
-    await user.type(location, "São Paulo, Pinheiros");
+    await user.type(location, "Pinheiros, São Paulo, SP");
 
-    expect(location).toHaveValue("São Paulo, Pinheiros");
+    expect(location).toHaveValue("Pinheiros, São Paulo, SP");
     expect(location).toHaveFocus();
   });
 

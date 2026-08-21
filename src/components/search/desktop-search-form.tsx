@@ -2,9 +2,8 @@
 
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { DesktopDatePicker } from "./desktop-date-picker";
+import { activityOptions, locationOptions } from "@/data/search-options";
 import type { SearchErrors, SearchValues } from "./search-types";
-
-const activities = ["Festa", "Casamento", "Evento corporativo", "Reunião", "Workshop", "Produção"];
 
 type DesktopSearchFormProps = {
   values: SearchValues;
@@ -41,12 +40,13 @@ export function DesktopSearchForm({ values, errors, feedbackId, onChange, onSubm
             <span aria-hidden="true" className={`ml-3 text-sm transition-transform ${activityMenuOpen ? "rotate-180" : ""}`}>⌄</span>
           </button>
           {activityMenuOpen ? <div className="absolute -left-4 -right-4 top-full z-30 mt-2 rounded-xl bg-[var(--primary)] p-2 text-white shadow-2xl shadow-black/20" role="listbox">
-            {activities.map((activity) => <button aria-selected={values.activity === activity} className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${values.activity === activity ? "bg-white/15" : ""}`} key={activity} onClick={() => chooseActivity(activity)} role="option" type="button"><span>{activity}</span>{values.activity === activity ? <span aria-label="Selecionada">✓</span> : null}</button>)}
+            {activityOptions.map((activity) => <button aria-selected={values.activity === activity} className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${values.activity === activity ? "bg-white/15" : ""}`} key={activity} onClick={() => chooseActivity(activity)} role="option" type="button"><span>{activity}</span>{values.activity === activity ? <span aria-label="Selecionada">✓</span> : null}</button>)}
           </div> : null}
         </div>
       </div>
       <label className="border-r border-[var(--border)] px-4 py-2 text-sm font-medium">Onde?
-        <input aria-describedby={errors.location ? feedbackId : undefined} aria-invalid={Boolean(errors.location)} className="search-field mt-1 block w-full rounded-lg bg-transparent py-1 text-base font-semibold outline-none transition placeholder:text-[var(--muted)] hover:bg-[var(--secondary)]/70 focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none" onChange={(event) => onChange({ ...values, location: event.target.value })} placeholder="Cidade, bairro ou região" value={values.location} />
+        <input aria-describedby={errors.location ? feedbackId : undefined} aria-invalid={Boolean(errors.location)} className="search-field mt-1 block w-full rounded-lg bg-transparent py-1 text-base font-semibold outline-none transition placeholder:text-[var(--muted)] hover:bg-[var(--secondary)]/70 focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none" list="sao-paulo-locations" onChange={(event) => onChange({ ...values, location: event.target.value })} placeholder="São Paulo ou um bairro" value={values.location} />
+        <datalist id="sao-paulo-locations">{locationOptions.map((location) => <option key={location} value={location} />)}</datalist>
       </label>
       <div className="border-r border-[var(--border)] px-4 py-2 text-sm font-medium">Quando?
         <DesktopDatePicker onChange={(date) => onChange({ ...values, date })} value={values.date} />

@@ -10,13 +10,13 @@ describe("filterVenues", () => {
       guests: "80",
     });
 
-    expect(results.map((venue) => venue.id)).toEqual(["casa-jardim"]);
+    expect(results.map((venue) => venue.id)).toEqual(["casa-jardim-pinheiros"]);
   });
 
   it("normalizes singular occasion labels used by the search form", () => {
     const results = filterVenues(venues, { activity: "Evento corporativo" });
 
-    expect(results.map((venue) => venue.id)).toEqual(["rooftop-lapa"]);
+    expect(results.map((venue) => venue.id)).toEqual(["terraco-vila-madalena"]);
   });
 
   it("returns no exact result when the requested capacity exceeds every option", () => {

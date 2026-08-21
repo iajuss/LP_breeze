@@ -1,20 +1,20 @@
 export const requiredPublicSupabaseEnvironment = [
   "NEXT_PUBLIC_SUPABASE_URL",
-  "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
 ] as const;
 
 export function getPublicSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
   if (!url) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL.");
-  if (!anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+  if (!publishableKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.");
 
-  return { anonKey, url };
+  return { publishableKey, url };
 }
 
 export function createBrowserSupabaseClient() {
-  const { anonKey, url } = getPublicSupabaseConfig();
-  return createBrowserClient(url, anonKey);
+  const { publishableKey, url } = getPublicSupabaseConfig();
+  return createBrowserClient(url, publishableKey);
 }
 import { createBrowserClient } from "@supabase/ssr";
