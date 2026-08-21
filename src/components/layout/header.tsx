@@ -20,7 +20,7 @@ export function Header() {
       data-scrolled={scrolled}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:py-6 lg:px-8">
-        <Link className="font-display text-2xl md:text-3xl" href="/">Breeze</Link>
+        <Link className="font-display text-2xl md:text-3xl" href="/">Arcora</Link>
         <nav aria-label="Principal" className="hidden items-center gap-7 text-sm font-semibold md:flex">
           <a href="#como-funciona">Como funciona</a>
           <a href="#empresas">Para empresas</a>

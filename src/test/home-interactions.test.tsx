@@ -98,7 +98,7 @@ it("updates the active clarity criterion", async () => {
   await user.click(screen.getByRole("button", { name: /conversa direta/i }));
 
   expect(screen.getByRole("heading", { name: "Conversa direta" })).toBeInTheDocument();
-  expect(screen.getByText("Demonstração")).toBeInTheDocument();
+  expect(screen.getByText("Como funciona")).toBeInTheDocument();
 });
 
 it("draws the clarity line only between timeline markers", () => {

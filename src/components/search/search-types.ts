@@ -1,4 +1,4 @@
-export const openSearchEvent = "breeze:open-search";
+export const openSearchEvent = "arcora:open-search";
 
 export type SearchValues = {
   activity: string;

@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export default function PrivacyPage() {
+  return <main className="min-h-screen bg-[var(--secondary)] px-5 py-14"><article className="mx-auto max-w-3xl rounded-3xl bg-white p-7 sm:p-10"><Link className="text-sm font-semibold text-[var(--primary)]" href="/">← Início</Link><h1 className="mt-8 font-display text-5xl">Privacidade</h1><p className="mt-5 text-[var(--muted)]">A Arcora coleta nome, e-mail, telefone e dados do evento exclusivamente para atender sua solicitação e organizar o acompanhamento comercial.</p><h2 className="mt-8 font-display text-3xl">Como usamos seus dados</h2><p className="mt-3 text-[var(--muted)]">Usamos seus dados para confirmar o interesse por magic link, entrar em contato e responder às perguntas enviadas. O consentimento de novidades é opcional.</p><h2 className="mt-8 font-display text-3xl">Seus direitos</h2><p className="mt-3 text-[var(--muted)]">Para solicitar acesso, correção ou exclusão, responda ao e-mail de atendimento recebido após sua solicitação.</p></article></main>;
+}
