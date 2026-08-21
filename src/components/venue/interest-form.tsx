@@ -2,15 +2,17 @@
 
 import { FormEvent, useState } from "react";
 import { activityOptions, locationOptions } from "@/data/search-options";
+import { interestRegions } from "@/data/regions";
 
 type InterestFormProps = {
   venueSlug: string;
   defaultEventType: string;
   defaultLocation: string;
   defaultGuests: number;
+  defaultInterestRegion?: string;
 };
 
-export function InterestForm({ venueSlug, defaultEventType, defaultLocation, defaultGuests }: InterestFormProps) {
+export function InterestForm({ venueSlug, defaultEventType, defaultLocation, defaultGuests, defaultInterestRegion }: InterestFormProps) {
   const [message, setMessage] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
 
@@ -19,13 +21,15 @@ export function InterestForm({ venueSlug, defaultEventType, defaultLocation, def
     setSubmitting(true);
     setMessage(undefined);
     const form = new FormData(event.currentTarget);
-    const response = await fetch("/api/interests", {
+    try {
+      const response = await fetch("/api/interests", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         venueSlug,
         name: form.get("name"), email: form.get("email"), phone: form.get("phone"),
         eventType: form.get("eventType"), neighborhood: form.get("neighborhood"), eventDate: form.get("eventDate") || undefined,
+        regionInterest: form.get("regionInterest") || undefined,
         guestCount: Number(form.get("guestCount")), budget: form.get("budget") || undefined,
         marketingConsent: form.get("marketingConsent") === "on",
         source: new URLSearchParams(window.location.search).get("source") || undefined,
@@ -35,15 +39,19 @@ export function InterestForm({ venueSlug, defaultEventType, defaultLocation, def
         utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || undefined,
         utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || undefined,
       }),
-    });
-    const body = await response.json() as { error?: string; errors?: Record<string, string> };
-    setSubmitting(false);
-    if (!response.ok) {
-      setMessage(body.error || Object.values(body.errors ?? {})[0] || "Não foi possível enviar seus dados.");
-      return;
+      });
+      const body = await response.json().catch(() => ({})) as { error?: string; errors?: Record<string, string> };
+      if (!response.ok) {
+        setMessage(body.error || Object.values(body.errors ?? {})[0] || "Não foi possível enviar seus dados.");
+        return;
+      }
+      setMessage("Enviamos um magic link para o seu e-mail. Abra-o para confirmar seu interesse.");
+      event.currentTarget.reset();
+    } catch {
+      setMessage("Não conseguimos conectar ao atendimento agora. Tente novamente em instantes.");
+    } finally {
+      setSubmitting(false);
     }
-    setMessage("Enviamos um magic link para o seu e-mail. Abra-o para confirmar seu interesse.");
-    event.currentTarget.reset();
   }
 
   return <form className="grid gap-4 rounded-3xl bg-white p-6 shadow-sm" onSubmit={submit}>
@@ -53,7 +61,8 @@ export function InterestForm({ venueSlug, defaultEventType, defaultLocation, def
     <label className="text-sm font-semibold">Telefone<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="phone" required type="tel" /></label>
     <label className="text-sm font-semibold">Ocasião<select className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultEventType} name="eventType">{activityOptions.map((option) => <option key={option}>{option}</option>)}</select></label>
     <label className="text-sm font-semibold">Localização<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultLocation} list="interest-locations" name="neighborhood" required /><datalist id="interest-locations">{locationOptions.map((option) => <option key={option} value={option} />)}</datalist></label>
-    <div className="grid grid-cols-2 gap-3"><label className="text-sm font-semibold">Data<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="eventDate" type="date" /></label><label className="text-sm font-semibold">Pessoas<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultGuests} min="1" name="guestCount" type="number" /></label></div>
+    <label className="text-sm font-semibold">Região de interesse<select className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultInterestRegion || ""} name="regionInterest"><option value="">Sem preferência</option>{interestRegions.map((region) => <option key={region} value={region}>{region}</option>)}</select></label>
+    <div className="grid gap-3 sm:grid-cols-2"><label className="text-sm font-semibold">Data<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="eventDate" type="date" /></label><label className="text-sm font-semibold">Pessoas<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultGuests} min="1" name="guestCount" type="number" /></label></div>
     <label className="text-sm font-semibold">Faixa de orçamento (opcional)<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="budget" placeholder="Ex.: até R$ 10 mil" /></label>
     <label className="flex gap-2 text-sm text-[var(--muted)]"><input name="marketingConsent" type="checkbox" /> Aceito receber novidades da Arcora.</label>
     <p className="text-xs text-[var(--muted)]">Usamos seus dados para atender esta solicitação. Consulte nossa <a className="underline" href="/privacidade">política de privacidade</a>.</p>

@@ -1,4 +1,5 @@
 import { canonicalLocation } from "@/data/search-options";
+import { isInterestRegion } from "@/data/regions";
 
 export type InterestPayload = {
   venueSlug: string;
@@ -7,6 +8,7 @@ export type InterestPayload = {
   phone: string;
   eventType: string;
   neighborhood: string;
+  regionInterest?: string;
   eventDate?: string;
   guestCount: number;
   budget?: string;
@@ -34,6 +36,7 @@ export function validateInterestPayload(payload: unknown): ValidationResult {
   if (!value.phone?.replace(/\D/g, "").match(/^\d{10,13}$/)) errors.phone = "Informe um telefone válido.";
   if (!value.eventType?.trim()) errors.eventType = "Escolha a ocasião do seu evento.";
   if (!canonicalLocation(value.neighborhood ?? "")) errors.neighborhood = "Selecione uma localização da lista em São Paulo.";
+  if (value.regionInterest && !isInterestRegion(value.regionInterest)) errors.regionInterest = "Selecione uma região válida em São Paulo.";
   if (!Number.isInteger(value.guestCount) || (value.guestCount ?? 0) < 1 || (value.guestCount ?? 0) > 5000) {
     errors.guestCount = "Informe entre 1 e 5.000 pessoas.";
   }
@@ -49,6 +52,7 @@ export function validateInterestPayload(payload: unknown): ValidationResult {
       phone: value.phone!.trim(),
       eventType: value.eventType!.trim(),
       neighborhood: canonicalLocation(value.neighborhood!)!,
+      regionInterest: value.regionInterest || undefined,
       eventDate: value.eventDate || undefined,
       guestCount: value.guestCount!,
       budget: value.budget?.trim() || undefined,
