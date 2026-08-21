@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Manrope } from "next/font/google";
+import { siteConfig } from "@/config/site";
 import { homeMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -14,7 +15,7 @@ const manrope = Manrope({
   variable: "--font-sans",
 });
 
-export const metadata: Metadata = { metadataBase: new URL("https://breeze.example"), ...homeMetadata };
+export const metadata: Metadata = { metadataBase: new URL(siteConfig.url), ...homeMetadata };
 
 export default function RootLayout({
   children,
