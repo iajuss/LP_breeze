@@ -4,6 +4,10 @@ import { validateInterestPayload } from "@/lib/interest-validation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { siteConfig } from "@/config/site";
 
+function isEmailRateLimited(error: unknown) {
+  return typeof error === "object" && error !== null && "code" in error && error.code === "over_email_send_rate_limit";
+}
+
 export async function POST(request: Request) {
   const validation = validateInterestPayload(await request.json());
   if (!validation.ok) return NextResponse.json({ errors: validation.errors }, { status: 422 });
@@ -16,6 +20,9 @@ export async function POST(request: Request) {
       email: validation.value.email,
       options: { emailRedirectTo: redirect.toString(), shouldCreateUser: true },
     });
+    if (isEmailRateLimited(error)) {
+      return NextResponse.json({ error: "Aguarde alguns segundos antes de pedir outro magic link." }, { status: 429 });
+    }
     if (error) throw error;
     return NextResponse.json({ ok: true });
   } catch (error) {
