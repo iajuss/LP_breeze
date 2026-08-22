@@ -13,16 +13,22 @@ type InterestFormProps = {
   defaultInterestRegion?: string;
 };
 
+type FormMessage = {
+  kind: "error" | "success";
+  text: string;
+};
+
 export function InterestForm({ venueSlug, defaultEventType, defaultLocation, defaultGuests, defaultInterestRegion }: InterestFormProps) {
-  const [message, setMessage] = useState<string>();
+  const [message, setMessage] = useState<FormMessage>();
   const [submitting, setSubmitting] = useState(false);
   const [eventDate, setEventDate] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setSubmitting(true);
     setMessage(undefined);
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/interests", {
       method: "POST",
@@ -44,14 +50,14 @@ export function InterestForm({ venueSlug, defaultEventType, defaultLocation, def
       });
       const body = await response.json().catch(() => ({})) as { error?: string; errors?: Record<string, string> };
       if (!response.ok) {
-        setMessage(body.error || Object.values(body.errors ?? {})[0] || "Não foi possível enviar seus dados.");
+        setMessage({ kind: "error", text: body.error || Object.values(body.errors ?? {})[0] || "Não foi possível enviar seus dados." });
         return;
       }
-      setMessage("Enviamos um magic link para o seu e-mail. Abra-o para confirmar seu interesse.");
-      event.currentTarget.reset();
+      setMessage({ kind: "success", text: "Enviamos um link de confirmação para o seu e-mail. Abra-o para confirmar seu interesse." });
+      formElement.reset();
       setEventDate("");
     } catch {
-      setMessage("Não conseguimos conectar ao atendimento agora. Tente novamente em instantes.");
+      setMessage({ kind: "error", text: "Não conseguimos conectar ao atendimento agora. Tente novamente em instantes." });
     } finally {
       setSubmitting(false);
     }
@@ -69,7 +75,7 @@ export function InterestForm({ venueSlug, defaultEventType, defaultLocation, def
     <label className="text-sm font-semibold">Faixa de orçamento (opcional)<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="budget" placeholder="Ex.: até R$ 10 mil" /></label>
     <label className="flex gap-2 text-sm text-[var(--muted)]"><input name="marketingConsent" type="checkbox" /> Aceito receber novidades da Arcora.</label>
     <p className="text-xs text-[var(--muted)]">Usamos seus dados para atender esta solicitação. Consulte nossa <a className="underline" href="/privacidade">política de privacidade</a>.</p>
-    {message ? <p className="rounded-xl bg-[var(--secondary)] p-3 text-sm" role="status">{message}</p> : null}
-    <button className="min-h-12 rounded-xl bg-[var(--primary)] px-5 font-semibold text-white disabled:opacity-60" disabled={submitting} type="submit">{submitting ? "Enviando..." : "Enviar e receber magic link"}</button>
+    {message ? <div className="rounded-xl border border-[var(--border)] bg-[var(--secondary)] p-4 text-sm" role="status">{message.kind === "success" ? <p className="font-semibold text-[var(--primary)]">Pedido enviado</p> : null}<p className={message.kind === "success" ? "mt-1" : undefined}>{message.text}</p></div> : null}
+    <button className="min-h-12 rounded-xl bg-[var(--primary)] px-5 font-semibold text-white disabled:opacity-60" disabled={submitting} type="submit">{submitting ? "Enviando..." : "Enviar link de confirmação"}</button>
   </form>;
 }

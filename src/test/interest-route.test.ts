@@ -23,7 +23,7 @@ it("keeps Supabase configuration errors out of the public interest response", as
   const body = await response.json() as { error?: string; requestId?: string };
 
   expect(response.status).toBe(500);
-  expect(body.error).toBe("Não foi possível enviar o magic link agora. Tente novamente em instantes.");
+  expect(body.error).toBe("Não foi possível enviar o link de confirmação agora. Tente novamente em instantes.");
   expect(body.requestId).toMatch(/^[\da-f-]{36}$/i);
   expect(consoleError).toHaveBeenCalledWith("Interest request failed", expect.objectContaining({ requestId: body.requestId }));
 });

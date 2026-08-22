@@ -25,7 +25,7 @@ it("logs a Supabase failure while returning a safe public interest response", as
   }));
   const body = await response.json() as { error?: string; requestId?: string };
 
-  expect(body.error).toBe("Não foi possível enviar o magic link agora. Tente novamente em instantes.");
+  expect(body.error).toBe("Não foi possível enviar o link de confirmação agora. Tente novamente em instantes.");
   expect(JSON.stringify(body)).not.toContain("Invalid API key");
   expect(consoleError).toHaveBeenCalledWith("Interest request failed", expect.objectContaining({ error, requestId: body.requestId }));
 });

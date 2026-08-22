@@ -32,5 +32,5 @@ it("explains when Supabase temporarily limits another magic-link email", async (
   const body = await response.json() as { error?: string };
 
   expect(response.status).toBe(429);
-  expect(body.error).toBe("Aguarde alguns segundos antes de pedir outro magic link.");
+  expect(body.error).toBe("Aguarde alguns segundos antes de pedir outro link de confirmação.");
 });

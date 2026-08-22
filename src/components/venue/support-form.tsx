@@ -6,12 +6,13 @@ export function SupportForm({ venueSlug }: { venueSlug: string }) {
   const [message, setMessage] = useState<string>();
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/support-inquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ venueSlug, question: form.get("question"), contactEmail: form.get("email") }) });
       const body = await response.json().catch(() => ({})) as { error?: string };
       setMessage(response.ok ? "Pergunta recebida. Retornaremos pelo e-mail informado." : body.error || "Não foi possível enviar sua pergunta agora.");
-      if (response.ok) event.currentTarget.reset();
+      if (response.ok) formElement.reset();
     } catch {
       setMessage("Não conseguimos conectar ao atendimento agora. Tente novamente em instantes.");
     }

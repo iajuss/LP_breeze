@@ -21,13 +21,13 @@ export async function POST(request: Request) {
       options: { emailRedirectTo: redirect.toString(), shouldCreateUser: true },
     });
     if (isEmailRateLimited(error)) {
-      return NextResponse.json({ error: "Aguarde alguns segundos antes de pedir outro magic link." }, { status: 429 });
+      return NextResponse.json({ error: "Aguarde alguns segundos antes de pedir outro link de confirmação." }, { status: 429 });
     }
     if (error) throw error;
     return NextResponse.json({ ok: true });
   } catch (error) {
     const requestId = crypto.randomUUID();
     console.error("Interest request failed", { error, requestId });
-    return NextResponse.json({ error: "Não foi possível enviar o magic link agora. Tente novamente em instantes.", requestId }, { status: 500 });
+    return NextResponse.json({ error: "Não foi possível enviar o link de confirmação agora. Tente novamente em instantes.", requestId }, { status: 500 });
   }
 }
