@@ -25,8 +25,9 @@ type PendingInterest = {
 
 export async function createPendingInterest(payload: InterestPayload): Promise<{ id: string }> {
   const supabase = createServiceRoleSupabaseClient();
-  const { data: venue, error: venueError } = await supabase.from("venues").select("id").eq("slug", payload.venueSlug).single();
-  if (venueError || !venue) throw new Error("Espaço não encontrado.");
+  const { data: venue, error: venueError } = await supabase.from("venues").select("id").eq("slug", payload.venueSlug).maybeSingle();
+  if (venueError) throw new Error(`Falha ao consultar espaço no Supabase: ${venueError.message}`);
+  if (!venue) throw new Error("Espaço não encontrado.");
   const venueId = (venue as { id: string }).id;
   const { data, error } = await supabase.from("pending_interests").insert({
     venue_id: venueId,
