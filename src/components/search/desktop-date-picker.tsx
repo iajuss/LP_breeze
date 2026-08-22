@@ -78,7 +78,7 @@ export function DesktopDatePicker({ value, onChange, ariaLabel = "Quando", class
     setText(formatted);
     const isoDate = parseTypedDate(formatted);
     if (isoDate) onChange(isoDate);
-    if (!formatted) onChange("");
+    if (!isoDate) onChange("");
   };
 
   return (

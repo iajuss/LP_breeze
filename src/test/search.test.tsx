@@ -21,6 +21,14 @@ describe("VenueSearch", () => {
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 
+  it("uses the same chevron shape for the occasion selector and mobile space action", () => {
+    render(<VenueSearch entryPoint="hero" />);
+
+    expect(screen.getAllByTestId("arcora-chevron")).toHaveLength(2);
+    expect(screen.getAllByTestId("arcora-chevron")[0]).toHaveClass("rotate-0");
+    expect(screen.getAllByTestId("arcora-chevron")[1]).toHaveClass("-rotate-90");
+  });
+
   it("does not keep the occasion trigger highlighted after a selection", () => {
     render(<DesktopSearchForm errors={{}} onChange={vi.fn()} onSubmit={vi.fn()} values={{ ...emptySearchValues, activity: "Evento corporativo" }} />);
 

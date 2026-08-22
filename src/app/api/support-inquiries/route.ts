@@ -15,7 +15,9 @@ export async function POST(request: Request) {
     const { error } = await supabase.from("support_inquiries").insert({ venue_id: (venue as { id: string }).id, question: body.question.trim(), contact_email: body.contactEmail.trim().toLowerCase() });
     if (error) throw error;
     return NextResponse.json({ ok: true }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Não foi possível salvar sua pergunta." }, { status: 500 });
+  } catch (error) {
+    const requestId = crypto.randomUUID();
+    console.error("Support inquiry failed", { error, requestId });
+    return NextResponse.json({ error: "Não foi possível salvar sua pergunta. Tente novamente em instantes.", requestId }, { status: 500 });
   }
 }

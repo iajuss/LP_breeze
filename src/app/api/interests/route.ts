@@ -19,6 +19,8 @@ export async function POST(request: Request) {
     if (error) throw error;
     return NextResponse.json({ ok: true });
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Não foi possível enviar o magic link." }, { status: 500 });
+    const requestId = crypto.randomUUID();
+    console.error("Interest request failed", { error, requestId });
+    return NextResponse.json({ error: "Não foi possível enviar o magic link agora. Tente novamente em instantes.", requestId }, { status: 500 });
   }
 }

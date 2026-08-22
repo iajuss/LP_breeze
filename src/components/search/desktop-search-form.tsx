@@ -3,6 +3,7 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { DesktopDatePicker } from "./desktop-date-picker";
 import { activityOptions, locationOptions } from "@/data/search-options";
+import { ChevronIcon } from "@/components/ui/chevron-icon";
 import type { SearchErrors, SearchValues } from "./search-types";
 
 type DesktopSearchFormProps = {
@@ -37,7 +38,7 @@ export function DesktopSearchForm({ values, errors, feedbackId, onChange, onSubm
         <div className="relative">
           <button aria-describedby={errors.activity ? feedbackId : undefined} aria-expanded={activityMenuOpen} aria-haspopup="listbox" aria-label={`O que você está planejando? ${values.activity || "Escolha uma ocasião"}`} className="mt-1 flex w-full items-center justify-between rounded-lg py-1 text-left text-base font-semibold text-[var(--foreground)] transition hover:bg-[var(--secondary)]/70 focus-visible:outline-[var(--primary)]" onClick={() => setActivityMenuOpen((open) => !open)} onKeyDown={(event) => { if (event.key === "Escape") setActivityMenuOpen(false); if (event.key === "ArrowDown") setActivityMenuOpen(true); }} type="button">
             <span>{values.activity || "Escolha uma ocasião"}</span>
-            <span aria-hidden="true" className={`ml-3 text-sm transition-transform ${activityMenuOpen ? "rotate-180" : ""}`}>⌄</span>
+            <ChevronIcon className="ml-3" direction={activityMenuOpen ? "up" : "down"} />
           </button>
           {activityMenuOpen ? <div className="absolute -left-4 -right-4 top-full z-30 mt-2 rounded-xl bg-[var(--primary)] p-2 text-white shadow-2xl shadow-black/20" role="listbox">
             {activityOptions.map((activity) => <button aria-selected={values.activity === activity} className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${values.activity === activity ? "bg-white/15" : ""}`} key={activity} onClick={() => chooseActivity(activity)} role="option" type="button"><span>{activity}</span>{values.activity === activity ? <span aria-label="Selecionada">✓</span> : null}</button>)}
