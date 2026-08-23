@@ -3,8 +3,9 @@
 import Link from "next/link";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { interestRegions, type InterestRegion } from "@/data/regions";
+import { track } from "@/lib/analytics";
 
 const regionCoordinates: Record<InterestRegion, [number, number]> = {
   Centro: [-46.6337, -23.5505],
@@ -17,7 +18,17 @@ const regionCoordinates: Record<InterestRegion, [number, number]> = {
 export function RegionInterestMap() {
   const container = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<InterestRegion>();
+  const lastRegistered = useRef<InterestRegion>(undefined);
   const href = selected ? `/buscar?regionInterest=${encodeURIComponent(selected)}` : undefined;
+
+  // Registra a preferencia assim que ela e escolhida, de forma anonima. Quem
+  // desiste antes de enviar o formulario de interesse ainda deixa o sinal.
+  const selectRegion = useCallback((region: InterestRegion) => {
+    setSelected(region);
+    if (lastRegistered.current === region) return;
+    lastRegistered.current = region;
+    track("region_interest_selected", { regionInterest: region });
+  }, []);
 
   useEffect(() => {
     if (!container.current || !maplibregl.Map || navigator.userAgent.includes("jsdom")) return;
@@ -40,12 +51,12 @@ export function RegionInterestMap() {
       marker.ariaLabel = `Selecionar região ${region}`;
       marker.className = "min-h-11 min-w-11 rounded-full bg-[var(--primary)] px-3 text-sm font-semibold text-white shadow-lg";
       marker.textContent = region;
-      marker.addEventListener("click", () => setSelected(region));
+      marker.addEventListener("click", () => selectRegion(region));
       new maplibregl.Marker({ element: marker }).setLngLat(regionCoordinates[region]).addTo(map);
     });
 
     return () => map.remove();
-  }, []);
+  }, [selectRegion]);
 
   return (
     <div className="mt-8 grid gap-5 lg:grid-cols-2 lg:gap-8">
@@ -58,7 +69,7 @@ export function RegionInterestMap() {
               aria-pressed={selected === region}
               className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-semibold transition focus-visible:outline-[var(--primary)] ${selected === region ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border)] bg-white hover:border-[var(--primary)]"}`}
               key={region}
-              onClick={() => setSelected(region)}
+              onClick={() => selectRegion(region)}
               type="button"
             >
               {region}

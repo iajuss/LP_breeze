@@ -9,7 +9,9 @@ import { isInterestRegion } from "@/data/regions";
 type SearchValues = VenueFilters & { date?: string; regionInterest?: string };
 type SearchPageProps = { searchParams: Promise<SearchValues> };
 
-const styleOptions = ["Jardim", "Rooftop", "Industrial", "Histórico"];
+const styleOptions = ["Jardim", "Rooftop", "Industrial", "Histórico", "Estúdio"];
+
+const shortLocation = (option: string) => option.replace(/, São Paulo, SP$/, "");
 
 function searchHref(values: SearchValues, update: Partial<VenueFilters>) {
   const parameters = new URLSearchParams();
@@ -21,13 +23,13 @@ function searchHref(values: SearchValues, update: Partial<VenueFilters>) {
   return query ? `/buscar?${query}` : "/buscar";
 }
 
-function FilterGroup({ label, options, parameter, values }: { label: string; options: readonly string[]; parameter: keyof VenueFilters; values: SearchValues }) {
+function FilterGroup({ label, options, parameter, values, formatOption }: { label: string; options: readonly string[]; parameter: keyof VenueFilters; values: SearchValues; formatOption?: (option: string) => string }) {
   return <div>
     <p className="text-sm font-semibold text-[var(--foreground)]">{label}</p>
     <div className="mt-3 flex flex-wrap gap-2">
       {options.map((option) => {
         const selected = values[parameter] === option;
-        return <Link aria-pressed={selected} className={`min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition ${selected ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:text-[var(--primary)]"}`} href={searchHref(values, { [parameter]: selected ? undefined : option })} key={option}>{option}</Link>;
+        return <Link aria-pressed={selected} className={`min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition ${selected ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:text-[var(--primary)]"}`} href={searchHref(values, { [parameter]: selected ? undefined : option })} key={option}>{formatOption ? formatOption(option) : option}</Link>;
       })}
     </div>
   </div>;
@@ -49,7 +51,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <h1 className="mt-3 font-display text-4xl leading-none">Espaços para o seu plano.</h1>
           <div className="mt-7 space-y-6">
             <FilterGroup label="Ocasião" options={activityOptions} parameter="activity" values={values} />
-            <FilterGroup label="Localização" options={[...locationOptions]} parameter="location" values={values} />
+            <FilterGroup formatOption={shortLocation} label="Localização" options={[...locationOptions]} parameter="location" values={values} />
             <FilterGroup label="Estilo" options={styleOptions} parameter="style" values={values} />
             <FilterGroup label="Pessoas" options={["80", "150", "250"]} parameter="guests" values={values} />
             <SearchRefinementForm values={{ ...values, regionInterest }} />

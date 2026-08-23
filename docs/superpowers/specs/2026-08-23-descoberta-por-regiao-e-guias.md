@@ -7,9 +7,9 @@ Permitir que uma pessoa expresse, de forma clara e acessível, a região de São
 ## Decisões aprovadas
 
 - O mapa será uma seção própria na página inicial, com cinco regiões selecionáveis: Centro, Norte, Sul, Leste e Oeste.
-- A interação com o mapa **não** cria evento ou registro anônimo no banco.
+- A interação com o mapa registra a preferência de forma anônima em `funnel_events`, para que quem não conclui o fluxo de interesse ainda deixe o sinal. O registro não referencia perfil nem `auth.users`; carrega apenas um identificador de sessão que nasce e morre com a aba. *(Revisto em 23/08/2026: a decisão original era não registrar nada.)*
 - Ao selecionar uma região, a pessoa abre a busca com a preferência na URL. Ao abrir um espaço, a preferência é mantida na URL e pré-selecionada no formulário.
-- A preferência é persistida exclusivamente no fluxo existente de interesse confirmado; as colunas `interested_region` de `pending_interests` e `rental_interests` já suportam isso. Não será criada migration.
+- A preferência confirmada continua em `pending_interests` e `rental_interests`. A escolha no mapa passa a ter também a coluna `interested_region` em `funnel_events`, criada pela migration `202608230001_region_discovery.sql`. *(Revisto em 23/08/2026: a decisão original dispensava migration.)*
 - O mapa terá também cinco botões de região. Eles são a alternativa acessível e o caminho mais simples no celular.
 - O catálogo continua centrado em São Paulo. A seção hoje chamada “principais cidades” passa a apresentar regiões de São Paulo com cartões distintos, sem links para slugs de cidades inexistentes.
 - “Produções”, “Ensaios” e “Lançamentos” passam a ser opções selecionáveis e utilizam a mesma taxonomia nos cartões e nos filtros. Ensaios e Lançamentos devem retornar espaços compatíveis, sem deixar a busca vazia por divergência de texto.
@@ -48,5 +48,5 @@ Permitir que uma pessoa expresse, de forma clara e acessível, a região de São
 
 - Limites geográficos em polígonos ou cálculo de distância por bairro.
 - Registro de analytics para cliques no mapa.
-- Novas cidades ou cadastro de novos espaços no Supabase.
+- Novas cidades. *(Revisto em 23/08/2026: o catálogo passou de 4 para 12 espaços em São Paulo, cobrindo as cinco zonas; continua sem outras cidades.)*
 - Alterações ao fluxo de e-mail/Supabase SMTP.

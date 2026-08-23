@@ -8,6 +8,7 @@ export type AnalyticsEvent =
   | "venue_card_clicked"
   | "category_clicked"
   | "city_clicked"
+  | "region_interest_selected"
   | "corporate_cta_clicked"
   | "signup_clicked";
 

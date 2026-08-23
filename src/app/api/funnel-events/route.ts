@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/admin";
+import { isInterestRegion } from "@/data/regions";
 
 const eventNames = new Set([
   "search_started", "search_submitted", "activity_selected", "location_selected", "date_selected",
   "guest_count_selected", "venue_card_clicked", "category_clicked", "city_clicked", "corporate_cta_clicked", "signup_clicked",
+  "region_interest_selected",
 ]);
 
 export async function POST(request: Request) {
@@ -12,6 +14,7 @@ export async function POST(request: Request) {
   const properties = payload.properties ?? {};
   try {
     const supabase = createServiceRoleSupabaseClient();
+    const region = typeof properties.regionInterest === "string" && isInterestRegion(properties.regionInterest) ? properties.regionInterest : null;
     const { error } = await supabase.from("funnel_events").insert({
       event_name: payload.event,
       venue_id: typeof properties.venueId === "string" ? properties.venueId : null,
@@ -25,6 +28,7 @@ export async function POST(request: Request) {
       campaign: typeof properties.campaign === "string" ? properties.campaign : null,
       session_id: typeof properties.sessionId === "string" ? properties.sessionId : null,
       occurred_at: new Date().toISOString(),
+      ...(region ? { interested_region: region } : {}),
     });
     if (error) throw error;
     return NextResponse.json({ ok: true }, { status: 201 });

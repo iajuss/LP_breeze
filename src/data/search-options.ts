@@ -11,10 +11,18 @@ export const activityOptions = [
 
 export const locationOptions = [
   "São Paulo, SP",
+  "Bela Vista, São Paulo, SP",
+  "Casa Verde, São Paulo, SP",
+  "Luz, São Paulo, SP",
+  "Moema, São Paulo, SP",
+  "Mooca, São Paulo, SP",
+  "Perdizes, São Paulo, SP",
   "Pinheiros, São Paulo, SP",
+  "Santana, São Paulo, SP",
+  "Santo Amaro, São Paulo, SP",
+  "Tatuapé, São Paulo, SP",
   "Vila Madalena, São Paulo, SP",
   "Vila Mariana, São Paulo, SP",
-  "Luz, São Paulo, SP",
 ] as const;
 
 const normalize = (value: string) => value

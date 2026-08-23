@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { VenueSearch } from "@/components/search/venue-search";
 import { emptySearchValues } from "@/components/search/search-types";
 import SearchPage from "@/app/buscar/page";
+import { venues } from "@/data/venues";
 
 describe("SearchPage", () => {
   it("shows a regional preference without filtering the discovered venues", async () => {
@@ -13,7 +14,7 @@ describe("SearchPage", () => {
 
     expect(screen.getByText("Região de interesse")).toBeInTheDocument();
     expect(screen.getByText("Oeste")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "4 espaços encontrados" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: `${venues.length} espaços encontrados` })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /ver detalhes de casa jardim pinheiros/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
   });
 
