@@ -16,6 +16,13 @@ describe("SearchPage", () => {
     expect(screen.getByRole("heading", { name: "4 espaços encontrados" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /ver detalhes de casa jardim pinheiros/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
   });
+
+  it("keeps refinement links at the 44px touch target", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({}) }));
+
+    const occasionFilter = screen.getAllByRole("link", { name: "Festa" }).find((link) => link.getAttribute("href") === "/buscar?activity=Festa");
+    expect(occasionFilter).toHaveClass("min-h-11");
+  });
 });
 
 describe("VenueSearch", () => {

@@ -11,6 +11,21 @@ it("collects a separate region of interest", () => {
   expect(screen.getByRole("combobox", { name: "Região de interesse" })).toBeInTheDocument();
 });
 
+it("keeps branded selector triggers at the 44px touch target", () => {
+  render(form);
+
+  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveClass("min-h-11");
+  expect(screen.getByRole("combobox", { name: "Região de interesse" })).toHaveClass("min-h-11");
+});
+
+it("keeps branded selector options at the 44px touch target", async () => {
+  const user = userEvent.setup();
+  render(form);
+
+  await user.click(screen.getByRole("combobox", { name: "Ocasião" }));
+  expect(screen.getByRole("option", { name: "Ensaio" })).toHaveClass("min-h-11");
+});
+
 it("preselects the region carried from the discovery map", () => {
   render(<InterestForm defaultEventType="Festa" defaultGuests={80} defaultLocation="Pinheiros, São Paulo, SP" defaultInterestRegion="Leste" venueSlug="casa-jardim-pinheiros" />);
 

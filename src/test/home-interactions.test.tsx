@@ -6,6 +6,8 @@ import { DemandSections } from "@/components/home/demand-sections";
 import { StyleExplorer } from "@/components/home/style-explorer";
 import { TrustTimeline } from "@/components/home/trust-timeline";
 import { venues } from "@/data/venues";
+import { categoryRailItems } from "@/data/home-interactions";
+import { filterVenues } from "@/lib/venue-results";
 
 const items = [
   {
@@ -64,6 +66,16 @@ it("keeps demand destinations in the interactive discovery rails", () => {
   expect(screen.getByRole("link", { name: /espaço para evento corporativo/i })).toHaveAttribute("href", "/guias/escolher-espaco-evento-corporativo");
 });
 
+it("keeps each plural category card connected to matching venues", () => {
+  ["Produções", "Ensaios", "Lançamentos"].forEach((title) => {
+    const card = categoryRailItems.find((item) => item.title === title);
+    const activity = new URL(card?.href ?? "", "https://arcora.local").searchParams.get("activity");
+
+    expect(activity).toBe(title);
+    expect(filterVenues(venues, { activity: activity ?? undefined })).not.toEqual([]);
+  });
+});
+
 it("links the regional discovery cards to the search with the declared preference", () => {
   render(<DemandSections />);
 
@@ -76,6 +88,7 @@ it("names the regional discovery rail for São Paulo regions", () => {
   render(<DemandSections />);
 
   expect(screen.getByRole("heading", { name: "Explore espaços por região em São Paulo" })).toBeInTheDocument();
+  expect(screen.getByRole("region", { name: "Regiões de São Paulo" })).toBeInTheDocument();
 });
 
 it("keeps the homepage focused exclusively on people looking for spaces", () => {

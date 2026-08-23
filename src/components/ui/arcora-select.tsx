@@ -79,7 +79,7 @@ export function ArcoraSelect({ label, name, options, defaultValue }: ArcoraSelec
       <span>{selected?.label}</span><ChevronIcon direction={open ? "up" : "down"} />
     </button>
     {open ? <div aria-label={label} className="absolute top-full z-20 mt-1 w-full rounded-xl bg-[var(--primary)] p-1 text-white shadow-lg" id={listboxId} role="listbox">
-      {normalizedOptions.map((option, index) => <button aria-selected={option.value === value} className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${option.value === value ? "bg-white/15" : ""}`} key={option.value} onClick={() => choose(option.value)} onKeyDown={(event) => {
+      {normalizedOptions.map((option, index) => <button aria-selected={option.value === value} className={`flex min-h-11 w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition hover:bg-white/15 focus-visible:outline-white ${option.value === value ? "bg-white/15" : ""}`} key={option.value} onClick={() => choose(option.value)} onKeyDown={(event) => {
         if (event.key === "Escape") {
           event.preventDefault();
           setOpen(false);

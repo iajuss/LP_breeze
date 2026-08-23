@@ -27,7 +27,7 @@ function FilterGroup({ label, options, parameter, values }: { label: string; opt
     <div className="mt-3 flex flex-wrap gap-2">
       {options.map((option) => {
         const selected = values[parameter] === option;
-        return <Link aria-pressed={selected} className={`min-h-10 rounded-full border px-4 py-2 text-sm font-semibold transition ${selected ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:text-[var(--primary)]"}`} href={searchHref(values, { [parameter]: selected ? undefined : option })} key={option}>{option}</Link>;
+        return <Link aria-pressed={selected} className={`min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition ${selected ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:text-[var(--primary)]"}`} href={searchHref(values, { [parameter]: selected ? undefined : option })} key={option}>{option}</Link>;
       })}
     </div>
   </div>;

@@ -23,7 +23,10 @@ const matchesText = (source: string, query?: string) => {
 
 const activityAliases: Record<string, string> = {
   Ensaio: "Produção",
+  Ensaios: "Produção",
   Lançamento: "Evento corporativo",
+  Lançamentos: "Evento corporativo",
+  Produções: "Produção",
 };
 
 export function filterVenues(venues: Venue[], filters: VenueFilters): Venue[] {
