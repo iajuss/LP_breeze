@@ -20,6 +20,7 @@ export function ArcoraSelect({ label, name, options, defaultValue }: ArcoraSelec
   const initialValue = normalizedOptions.some((option) => option.value === defaultValue) ? defaultValue! : normalizedOptions[0]?.value ?? "";
   const [value, setValue] = useState(initialValue);
   const [open, setOpen] = useState(false);
+  const [focusSelectedWhenOpen, setFocusSelectedWhenOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -34,13 +35,26 @@ export function ArcoraSelect({ label, name, options, defaultValue }: ArcoraSelec
     return () => document.removeEventListener("mousedown", closeOnOutsidePointer);
   }, []);
 
+  useEffect(() => {
+    const form = rootRef.current?.closest("form");
+    const resetValue = () => setValue(initialValue);
+    form?.addEventListener("reset", resetValue);
+    return () => form?.removeEventListener("reset", resetValue);
+  }, [initialValue]);
+
+  useEffect(() => {
+    if (!open || !focusSelectedWhenOpen) return;
+    optionRefs.current[Math.max(normalizedOptions.findIndex((option) => option.value === value), 0)]?.focus();
+    setFocusSelectedWhenOpen(false);
+  }, [focusSelectedWhenOpen, normalizedOptions, open, value]);
+
   const focusOption = (index: number) => {
     optionRefs.current[(index + normalizedOptions.length) % normalizedOptions.length]?.focus();
   };
 
   const openMenu = () => {
     setOpen(true);
-    requestAnimationFrame(() => focusOption(Math.max(normalizedOptions.findIndex((option) => option.value === value), 0)));
+    setFocusSelectedWhenOpen(true);
   };
 
   const choose = (nextValue: string) => {

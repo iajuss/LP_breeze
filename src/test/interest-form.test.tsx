@@ -72,6 +72,26 @@ it("selects an occasion with the keyboard", async () => {
   expect(trigger).toHaveFocus();
 });
 
+it("restores both branded selectors to their defaults after a successful request", async () => {
+  const user = userEvent.setup();
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) }));
+  render(<InterestForm defaultEventType="Festa" defaultGuests={80} defaultInterestRegion="Oeste" defaultLocation="Pinheiros, São Paulo, SP" venueSlug="casa-jardim-pinheiros" />);
+
+  await user.click(screen.getByRole("combobox", { name: "Ocasião" }));
+  await user.click(screen.getByRole("option", { name: "Ensaio" }));
+  await user.click(screen.getByRole("combobox", { name: "Região de interesse" }));
+  await user.click(screen.getByRole("option", { name: "Leste" }));
+  await user.type(screen.getByLabelText("Nome"), "Ana Souza");
+  await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
+  await user.type(screen.getByLabelText("Telefone"), "11999999999");
+  await user.click(screen.getByRole("button", { name: /enviar link de confirmação/i }));
+
+  await screen.findByRole("status");
+  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveTextContent("Festa");
+  expect(screen.getByRole("combobox", { name: "Região de interesse" })).toHaveTextContent("Oeste");
+  vi.unstubAllGlobals();
+});
+
 it("shows a recoverable message when the interest request cannot reach the server", async () => {
   const user = userEvent.setup();
   vi.stubGlobal("fetch", vi.fn().mockRejectedValueOnce(new TypeError("Failed to fetch")));
