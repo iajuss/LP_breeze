@@ -18,6 +18,28 @@ describe("SearchPage", () => {
     expect(screen.getByRole("link", { name: /ver detalhes de casa jardim pinheiros/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
   });
 
+  it("marca a pílula certa quando o atalho da home chega no plural", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({ activity: "Reuniões" }) }));
+
+    const marcadas = screen.getAllByRole("link").filter((link) => link.getAttribute("aria-pressed") === "true");
+    expect(marcadas.map((link) => link.textContent)).toEqual(["Reunião"]);
+    expect(screen.getByRole("heading", { name: "1 espaço encontrado" })).toBeInTheDocument();
+  });
+
+  it("marca a pílula de estilo quando o atalho chega como slug", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({ style: "rooftop" }) }));
+
+    const marcadas = screen.getAllByRole("link").filter((link) => link.getAttribute("aria-pressed") === "true");
+    expect(marcadas.map((link) => link.textContent)).toEqual(["Rooftop"]);
+  });
+
+  it("filtra por bairro em vez de devolver a busca vazia", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({ location: "Vila Mariana, São Paulo, SP" }) }));
+
+    expect(screen.getByRole("heading", { name: "1 espaço encontrado" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /ver detalhes de casa vila mariana/i })).toBeInTheDocument();
+  });
+
   it("keeps refinement links at the 44px touch target", async () => {
     render(await SearchPage({ searchParams: Promise.resolve({}) }));
 

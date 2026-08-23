@@ -2,8 +2,9 @@ import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { venues } from "@/data/venues";
+import { filterVenues, venueLocation } from "@/lib/venue-results";
 import { interestRegions } from "@/data/regions";
-import { canonicalLocation } from "@/data/search-options";
+import { canonicalLocation, locationOptions } from "@/data/search-options";
 
 const migrations = readdirSync(resolve(process.cwd(), "supabase/migrations"))
   .map((file) => readFileSync(resolve(process.cwd(), "supabase/migrations", file), "utf8"))
@@ -25,6 +26,19 @@ describe("catálogo de espaços", () => {
   it("mantém o bairro de cada espaço aceito pela validação do formulário", () => {
     venues.forEach((venue) => {
       expect(canonicalLocation(`${venue.region}, São Paulo, SP`), `bairro de ${venue.slug} fora de locationOptions`).toBeTruthy();
+    });
+  });
+
+  it("encontra cada espaço pela sua própria localização", () => {
+    venues.forEach((venue) => {
+      const encontrados = filterVenues(venues, { location: venueLocation(venue) }).map((item) => item.id);
+      expect(encontrados, `${venue.slug} não é encontrado por "${venueLocation(venue)}"`).toContain(venue.id);
+    });
+  });
+
+  it("não deixa nenhuma opção do filtro de localização sem resultado", () => {
+    locationOptions.forEach((option) => {
+      expect(filterVenues(venues, { location: option }).length, `"${option}" não retorna espaço algum`).toBeGreaterThan(0);
     });
   });
 

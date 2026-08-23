@@ -1,3 +1,5 @@
+import { styles } from "./styles";
+
 export const activityOptions = [
   "Festa",
   "Casamento",
@@ -34,4 +36,28 @@ const normalize = (value: string) => value
 
 export function canonicalLocation(value: string): string | undefined {
   return locationOptions.find((option) => normalize(option) === normalize(value));
+}
+
+// Os cartoes de atalho da home exibem o plural ("Festas"), mas o filtro trabalha
+// com o singular. O corte de "s" final do normalize nao resolve plurais em
+// ao/oes, entao a correspondencia precisa ser explicita.
+const activityPlurals: Record<string, string> = {
+  "Festas": "Festa",
+  "Casamentos": "Casamento",
+  "Eventos corporativos": "Evento corporativo",
+  "Reuniões": "Reunião",
+  "Workshops": "Workshop",
+  "Produções": "Produção",
+  "Ensaios": "Ensaio",
+  "Lançamentos": "Lançamento",
+};
+
+export function canonicalActivity(value: string): string | undefined {
+  const direct = activityOptions.find((option) => normalize(option) === normalize(value));
+  if (direct) return direct;
+  return Object.entries(activityPlurals).find(([plural]) => normalize(plural) === normalize(value))?.[1];
+}
+
+export function canonicalStyle(value: string): string | undefined {
+  return styles.find((style) => normalize(style.name) === normalize(value) || normalize(style.slug) === normalize(value))?.name;
 }

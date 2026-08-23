@@ -29,13 +29,18 @@ const activityAliases: Record<string, string> = {
   Produções: "Produção",
 };
 
+/** Localizacao do espaco no mesmo formato das opcoes de busca: "Bairro, Cidade, SP". */
+export function venueLocation(venue: Pick<Venue, "city" | "region">): string {
+  return venue.region === venue.city ? `${venue.city}, SP` : `${venue.region}, ${venue.city}, SP`;
+}
+
 export function filterVenues(venues: Venue[], filters: VenueFilters): Venue[] {
   const requestedGuests = Number(filters.guests);
   const activity = filters.activity ? activityAliases[filters.activity] ?? filters.activity : undefined;
 
   return venues.filter((venue) => (
     matchesText(venue.category, activity)
-    && matchesText(`${venue.city} ${venue.region}`, filters.location)
+    && matchesText(venueLocation(venue), filters.location)
     && matchesText(venue.styles.join(" "), filters.style)
     && (!Number.isFinite(requestedGuests) || requestedGuests < 1 || venue.capacity >= requestedGuests)
   ));

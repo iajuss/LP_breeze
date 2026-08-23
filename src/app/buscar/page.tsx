@@ -3,7 +3,7 @@ import { VenueCard } from "@/components/home/venue-card";
 import { SearchRefinementForm } from "@/components/search/search-refinement-form";
 import { venues } from "@/data/venues";
 import { filterVenues, type VenueFilters } from "@/lib/venue-results";
-import { activityOptions, locationOptions } from "@/data/search-options";
+import { activityOptions, canonicalActivity, canonicalLocation, canonicalStyle, locationOptions } from "@/data/search-options";
 import { isInterestRegion } from "@/data/regions";
 
 type SearchValues = VenueFilters & { date?: string; regionInterest?: string };
@@ -36,8 +36,17 @@ function FilterGroup({ label, options, parameter, values, formatOption }: { labe
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const values = await searchParams;
-  const regionInterest = isInterestRegion(values.regionInterest) ? values.regionInterest : undefined;
+  const requested = await searchParams;
+  const regionInterest = isInterestRegion(requested.regionInterest) ? requested.regionInterest : undefined;
+  // Atalhos da home chegam no plural ou por slug; a busca trabalha com o rotulo
+  // canonico, tanto para filtrar quanto para marcar a pilula correspondente.
+  const values: SearchValues = {
+    ...requested,
+    regionInterest,
+    activity: requested.activity ? canonicalActivity(requested.activity) ?? requested.activity : undefined,
+    location: requested.location ? canonicalLocation(requested.location) ?? requested.location : undefined,
+    style: requested.style ? canonicalStyle(requested.style) ?? requested.style : undefined,
+  };
   const exactResults = filterVenues(venues, values);
   const results = exactResults;
   const hasFilters = Boolean(values.activity || values.location || values.guests || values.style || values.date || regionInterest);
@@ -54,7 +63,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <FilterGroup formatOption={shortLocation} label="Localização" options={[...locationOptions]} parameter="location" values={values} />
             <FilterGroup label="Estilo" options={styleOptions} parameter="style" values={values} />
             <FilterGroup label="Pessoas" options={["80", "150", "250"]} parameter="guests" values={values} />
-            <SearchRefinementForm values={{ ...values, regionInterest }} />
+            <SearchRefinementForm values={values} />
           </div>
           {hasFilters ? <Link className="mt-7 inline-flex text-sm font-semibold text-[var(--primary)] underline underline-offset-4" href="/buscar">Limpar filtros</Link> : null}
         </aside>
