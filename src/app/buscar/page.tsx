@@ -52,7 +52,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <FilterGroup label="Localização" options={[...locationOptions]} parameter="location" values={values} />
             <FilterGroup label="Estilo" options={styleOptions} parameter="style" values={values} />
             <FilterGroup label="Pessoas" options={["80", "150", "250"]} parameter="guests" values={values} />
-            <SearchRefinementForm values={values} />
+            <SearchRefinementForm values={{ ...values, regionInterest }} />
           </div>
           {hasFilters ? <Link className="mt-7 inline-flex text-sm font-semibold text-[var(--primary)] underline underline-offset-4" href="/buscar">Limpar filtros</Link> : null}
         </aside>
