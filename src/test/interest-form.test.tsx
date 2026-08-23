@@ -8,23 +8,68 @@ const form = <InterestForm defaultEventType="Festa" defaultGuests={80} defaultLo
 
 it("collects a separate region of interest", () => {
   render(form);
-  expect(screen.getByLabelText("Região de interesse")).toBeInTheDocument();
+  expect(screen.getByRole("combobox", { name: "Região de interesse" })).toBeInTheDocument();
 });
 
 it("preselects the region carried from the discovery map", () => {
   render(<InterestForm defaultEventType="Festa" defaultGuests={80} defaultLocation="Pinheiros, São Paulo, SP" defaultInterestRegion="Leste" venueSlug="casa-jardim-pinheiros" />);
 
-  expect(screen.getByLabelText("Região de interesse")).toHaveValue("Leste");
+  expect(screen.getByRole("combobox", { name: "Região de interesse" })).toHaveTextContent("Leste");
 });
 
 it("uses only a valid regional preference from the venue query", async () => {
   render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ regionInterest: "Leste" }) }));
-  expect(screen.getByLabelText("Região de interesse")).toHaveValue("Leste");
+  expect(screen.getByRole("combobox", { name: "Região de interesse" })).toHaveTextContent("Leste");
 });
 
 it("keeps the venue zone when the regional preference query is invalid", async () => {
   render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ regionInterest: "Fora-do-mapa" }) }));
-  expect(screen.getByLabelText("Região de interesse")).toHaveValue("Oeste");
+  expect(screen.getByRole("combobox", { name: "Região de interesse" })).toHaveTextContent("Oeste");
+});
+
+it("uses the branded occasion selector and submits its selected value", async () => {
+  const user = userEvent.setup();
+  const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+  vi.stubGlobal("fetch", fetchMock);
+  render(form);
+
+  await user.click(screen.getByRole("combobox", { name: "Ocasião" }));
+  expect(screen.getByRole("listbox", { name: "Ocasião" })).toHaveClass("top-full", "bg-[var(--primary)]");
+  await user.click(screen.getByRole("option", { name: "Ensaio" }));
+  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveFocus();
+  await user.type(screen.getByLabelText("Nome"), "Ana Souza");
+  await user.type(screen.getByLabelText("E-mail"), "ana@example.com");
+  await user.type(screen.getByLabelText("Telefone"), "11999999999");
+  await user.click(screen.getByRole("button", { name: /enviar link de confirmação/i }));
+
+  expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toMatchObject({ eventType: "Ensaio" });
+  vi.unstubAllGlobals();
+});
+
+it("closes the occasion selector with Escape", async () => {
+  const user = userEvent.setup();
+  render(form);
+
+  const trigger = screen.getByRole("combobox", { name: "Ocasião" });
+  await user.click(trigger);
+  await user.keyboard("{Escape}");
+
+  expect(screen.queryByRole("listbox", { name: "Ocasião" })).not.toBeInTheDocument();
+  expect(trigger).toHaveFocus();
+});
+
+it("selects an occasion with the keyboard", async () => {
+  const user = userEvent.setup();
+  render(form);
+
+  const trigger = screen.getByRole("combobox", { name: "Ocasião" });
+  trigger.focus();
+  await user.keyboard("{Enter}");
+  expect(screen.getByRole("listbox", { name: "Ocasião" })).toBeInTheDocument();
+  await user.keyboard("{ArrowDown}{Enter}");
+
+  expect(trigger).toHaveTextContent("Casamento");
+  expect(trigger).toHaveFocus();
 });
 
 it("shows a recoverable message when the interest request cannot reach the server", async () => {

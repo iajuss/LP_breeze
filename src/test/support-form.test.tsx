@@ -3,6 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { SupportForm } from "@/components/venue/support-form";
 
+it("uses the filled primary treatment for the support CTA", () => {
+  render(<SupportForm venueSlug="casa-jardim-pinheiros" />);
+  expect(screen.getByRole("button", { name: "Enviar pergunta" })).toHaveClass("min-h-12", "bg-[var(--primary)]", "text-white");
+});
+
 it("shows the safe error returned by the support API", async () => {
   const user = userEvent.setup();
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, json: async () => ({ error: "Não foi possível salvar sua pergunta." }) }));

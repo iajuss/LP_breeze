@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { activityOptions, locationOptions } from "@/data/search-options";
 import { interestRegions } from "@/data/regions";
 import { DesktopDatePicker } from "@/components/search/desktop-date-picker";
+import { ArcoraSelect } from "@/components/ui/arcora-select";
 
 type InterestFormProps = {
   venueSlug: string;
@@ -68,9 +69,9 @@ export function InterestForm({ venueSlug, defaultEventType, defaultLocation, def
     <label className="text-sm font-semibold">Nome<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="name" required /></label>
     <label className="text-sm font-semibold">E-mail<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="email" required type="email" /></label>
     <label className="text-sm font-semibold">Telefone<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="phone" required type="tel" /></label>
-    <label className="text-sm font-semibold">Ocasião<select className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultEventType} name="eventType">{activityOptions.map((option) => <option key={option}>{option}</option>)}</select></label>
+    <div className="text-sm font-semibold">Ocasião<ArcoraSelect label="Ocasião" name="eventType" options={activityOptions} defaultValue={defaultEventType} /></div>
     <label className="text-sm font-semibold">Localização<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultLocation} list="interest-locations" name="neighborhood" required /><datalist id="interest-locations">{locationOptions.map((option) => <option key={option} value={option} />)}</datalist></label>
-    <label className="text-sm font-semibold">Região de interesse<select className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultInterestRegion || ""} name="regionInterest"><option value="">Sem preferência</option>{interestRegions.map((region) => <option key={region} value={region}>{region}</option>)}</select></label>
+    <div className="text-sm font-semibold">Região de interesse<ArcoraSelect label="Região de interesse" name="regionInterest" options={[{ label: "Sem preferência", value: "" }, ...interestRegions]} defaultValue={defaultInterestRegion} /></div>
     <div className="grid gap-3 sm:grid-cols-2"><div className="text-sm font-semibold">Data<DesktopDatePicker ariaLabel="Data" className="min-h-11 w-full rounded-xl border border-[var(--border)] px-3 pr-9 font-normal focus:border-[var(--primary)] focus:outline-none" menuClassName="left-0 min-w-[17rem]" onChange={setEventDate} value={eventDate} /></div><label className="text-sm font-semibold">Pessoas<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" defaultValue={defaultGuests} min="1" name="guestCount" type="number" /></label></div>
     <label className="text-sm font-semibold">Faixa de orçamento (opcional)<input className="mt-1 min-h-11 w-full rounded-xl border border-[var(--border)] px-3 font-normal" name="budget" placeholder="Ex.: até R$ 10 mil" /></label>
     <label className="flex gap-2 text-sm text-[var(--muted)]"><input name="marketingConsent" type="checkbox" /> Aceito receber novidades da Arcora.</label>
