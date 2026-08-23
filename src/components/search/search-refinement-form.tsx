@@ -5,7 +5,7 @@ import { DesktopDatePicker } from "@/components/search/desktop-date-picker";
 import type { VenueFilters } from "@/lib/venue-results";
 
 type SearchRefinementFormProps = {
-  values: VenueFilters & { date?: string };
+  values: VenueFilters & { date?: string; regionInterest?: string };
 };
 
 const fieldClassName = "search-field min-h-11 w-full rounded-xl bg-[var(--background)] px-3 font-medium text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] hover:bg-[var(--secondary)] focus:bg-[var(--secondary)] focus:text-[var(--primary)] focus:outline-none focus-visible:outline-none";
@@ -17,6 +17,7 @@ export function SearchRefinementForm({ values }: SearchRefinementFormProps) {
     {values.activity ? <input name="activity" type="hidden" value={values.activity} /> : null}
     {values.location ? <input name="location" type="hidden" value={values.location} /> : null}
     {values.style ? <input name="style" type="hidden" value={values.style} /> : null}
+    {values.regionInterest ? <input name="regionInterest" type="hidden" value={values.regionInterest} /> : null}
     <label className="block text-sm font-semibold text-[var(--foreground)]">Outra quantidade de pessoas
       <input aria-label="Outra quantidade de pessoas" className={`${fieldClassName} mt-2 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`} defaultValue={values.guests} inputMode="numeric" max="5000" min="1" name="guests" placeholder="Ex.: 120" type="number" />
     </label>

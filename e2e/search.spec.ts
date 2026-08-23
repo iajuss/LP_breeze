@@ -13,7 +13,7 @@ test("lets people refine discovery with a filter option", async ({ page }) => {
   await page.getByRole("link", { name: "Casamento", exact: true }).click();
 
   await expect(page).toHaveURL(/activity=Casamento/);
-  await expect(page.getByRole("heading", { name: "Casa Pampulha" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Casa Vila Mariana" })).toBeVisible();
 });
 
 test("accepts a manual guest count and a chosen date", async ({ page }) => {

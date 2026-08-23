@@ -7,3 +7,9 @@ it("links to the venue detail route", () => {
   expect(screen.getByText(venues[0].name)).toBeInTheDocument();
   expect(screen.getByRole("link", { name: new RegExp(`ver detalhes de ${venues[0].name}`, "i") })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros");
 });
+
+it("preserves a declared region in the venue detail link", () => {
+  render(<VenueCard venue={venues[0]} regionInterest="Oeste" />);
+
+  expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
+});

@@ -5,6 +5,8 @@ export const activityOptions = [
   "Reunião",
   "Workshop",
   "Produção",
+  "Ensaio",
+  "Lançamento",
 ] as const;
 
 export const locationOptions = [

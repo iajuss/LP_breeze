@@ -26,4 +26,12 @@ describe("SearchRefinementForm", () => {
     expect(trigger).toHaveClass("icon-button", "bg-transparent");
     expect(trigger).not.toHaveClass("hover:bg-[var(--secondary)]", "focus-visible:bg-[var(--secondary)]");
   });
+
+  it("keeps the regional preference in the submitted refinement query", () => {
+    render(<SearchRefinementForm values={{ activity: "Festa", regionInterest: "Oeste" }} />);
+
+    const form = screen.getByRole("button", { name: "Aplicar filtros" }).closest("form")!;
+    const query = new URLSearchParams(new FormData(form) as unknown as string[][]);
+    expect(`${form.getAttribute("action")}?${query}`).toContain("regionInterest=Oeste");
+  });
 });

@@ -5,6 +5,25 @@ import { DesktopSearchForm } from "@/components/search/desktop-search-form";
 import { Header } from "@/components/layout/header";
 import { VenueSearch } from "@/components/search/venue-search";
 import { emptySearchValues } from "@/components/search/search-types";
+import SearchPage from "@/app/buscar/page";
+
+describe("SearchPage", () => {
+  it("shows a regional preference without filtering the discovered venues", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({ regionInterest: "Oeste" }) }));
+
+    expect(screen.getByText("Região de interesse")).toBeInTheDocument();
+    expect(screen.getByText("Oeste")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "4 espaços encontrados" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /ver detalhes de casa jardim pinheiros/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
+  });
+
+  it("keeps refinement links at the 44px touch target", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({}) }));
+
+    const occasionFilter = screen.getAllByRole("link", { name: "Festa" }).find((link) => link.getAttribute("href") === "/buscar?activity=Festa");
+    expect(occasionFilter).toHaveClass("min-h-11");
+  });
+});
 
 describe("VenueSearch", () => {
   it("opens the desktop occasion menu downward and selects an occasion", async () => {

@@ -21,11 +21,20 @@ const matchesText = (source: string, query?: string) => {
   return normalize(query).split(/\s+/).every((term) => normalizedSource.includes(term));
 };
 
+const activityAliases: Record<string, string> = {
+  Ensaio: "Produção",
+  Ensaios: "Produção",
+  Lançamento: "Evento corporativo",
+  Lançamentos: "Evento corporativo",
+  Produções: "Produção",
+};
+
 export function filterVenues(venues: Venue[], filters: VenueFilters): Venue[] {
   const requestedGuests = Number(filters.guests);
+  const activity = filters.activity ? activityAliases[filters.activity] ?? filters.activity : undefined;
 
   return venues.filter((venue) => (
-    matchesText(venue.category, filters.activity)
+    matchesText(venue.category, activity)
     && matchesText(`${venue.city} ${venue.region}`, filters.location)
     && matchesText(venue.styles.join(" "), filters.style)
     && (!Number.isFinite(requestedGuests) || requestedGuests < 1 || venue.capacity >= requestedGuests)
