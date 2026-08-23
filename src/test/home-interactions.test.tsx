@@ -60,8 +60,16 @@ it("keeps demand destinations in the interactive discovery rails", () => {
   render(<DemandSections />);
 
   expect(screen.getByRole("link", { name: /festas/i })).toHaveAttribute("href", "/buscar?activity=Festas");
-  expect(screen.getByRole("link", { name: /são paulo/i })).toHaveAttribute("href", "/espacos/sao-paulo");
+  expect(screen.getAllByRole("link", { name: /centro/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Centro");
   expect(screen.getByRole("link", { name: /espaço para evento corporativo/i })).toHaveAttribute("href", "/guias/escolher-espaco-evento-corporativo");
+});
+
+it("links the regional discovery cards to the search with the declared preference", () => {
+  render(<DemandSections />);
+
+  expect(screen.getAllByRole("link", { name: /centro/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Centro");
+  expect(screen.getAllByRole("link", { name: /oeste/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Oeste");
+  expect(screen.getAllByRole("link", { name: /sul/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Sul");
 });
 
 it("keeps the homepage focused exclusively on people looking for spaces", () => {

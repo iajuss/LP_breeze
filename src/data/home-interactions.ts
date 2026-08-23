@@ -1,6 +1,5 @@
 import { articles } from "./editorial";
 import { categories } from "./categories";
-import { cities } from "./cities";
 import { styles } from "./styles";
 import { trustItems } from "./trust";
 
@@ -26,17 +25,6 @@ const categoryPhotos = [
   "1531058020387-3be344556be6",
 ];
 
-const cityPhotos = [
-  "1519125323398-675f0ddb6308",
-  "1483729558449-99ef09a8c325",
-  "1529260830199-42c24126f198",
-  "1522083165195-3424ed129620",
-  "1500534314209-a25ddb2bd429",
-  "1520301255226-bf5f144451c1",
-  "1494526585095-c41746248156",
-  "1526772662000-3f88f10405ff",
-];
-
 const editorialPhotos = [
   "1497366216548-37526070297c",
   "1519167758481-83f550bb49b3",
@@ -52,14 +40,11 @@ export const categoryRailItems: PhotoRailItem[] = categories.map((category, inde
   imageAlt: category.imageAlt,
 }));
 
-export const cityRailItems: PhotoRailItem[] = cities.map((city, index) => ({
-  id: city.id,
-  title: city.name,
-  subtitle: city.state,
-  href: `/espacos/${city.slug}`,
-  image: unsplash(cityPhotos[index]),
-  imageAlt: `Vista de ${city.name}`,
-}));
+export const cityRailItems: PhotoRailItem[] = [
+  { id: "centro", title: "Centro", subtitle: "São Paulo", href: "/buscar?regionInterest=Centro", image: unsplash("1522083165195-3424ed129620"), imageAlt: "Centro de São Paulo" },
+  { id: "oeste", title: "Oeste", subtitle: "São Paulo", href: "/buscar?regionInterest=Oeste", image: unsplash("1500534314209-a25ddb2bd429"), imageAlt: "Região oeste de São Paulo" },
+  { id: "sul", title: "Sul", subtitle: "São Paulo", href: "/buscar?regionInterest=Sul", image: unsplash("1520301255226-bf5f144451c1"), imageAlt: "Região sul de São Paulo" },
+];
 
 export const editorialRailItems: PhotoRailItem[] = articles.map((article, index) => ({
   id: article.id,
