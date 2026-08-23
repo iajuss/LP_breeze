@@ -2,12 +2,29 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { InterestForm } from "@/components/venue/interest-form";
+import VenuePage from "@/app/espacos/[slug]/page";
 
 const form = <InterestForm defaultEventType="Festa" defaultGuests={80} defaultLocation="Pinheiros, São Paulo, SP" venueSlug="casa-jardim-pinheiros" />;
 
 it("collects a separate region of interest", () => {
   render(form);
   expect(screen.getByLabelText("Região de interesse")).toBeInTheDocument();
+});
+
+it("preselects the region carried from the discovery map", () => {
+  render(<InterestForm defaultEventType="Festa" defaultGuests={80} defaultLocation="Pinheiros, São Paulo, SP" defaultInterestRegion="Leste" venueSlug="casa-jardim-pinheiros" />);
+
+  expect(screen.getByLabelText("Região de interesse")).toHaveValue("Leste");
+});
+
+it("uses only a valid regional preference from the venue query", async () => {
+  render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ regionInterest: "Leste" }) }));
+  expect(screen.getByLabelText("Região de interesse")).toHaveValue("Leste");
+});
+
+it("keeps the venue zone when the regional preference query is invalid", async () => {
+  render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ regionInterest: "Fora-do-mapa" }) }));
+  expect(screen.getByLabelText("Região de interesse")).toHaveValue("Oeste");
 });
 
 it("shows a recoverable message when the interest request cannot reach the server", async () => {
