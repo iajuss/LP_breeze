@@ -40,12 +40,6 @@ export const categoryRailItems: PhotoRailItem[] = categories.map((category, inde
   imageAlt: category.imageAlt,
 }));
 
-export const cityRailItems: PhotoRailItem[] = [
-  { id: "centro", title: "Centro", subtitle: "São Paulo", href: "/buscar?regionInterest=Centro", image: unsplash("1522083165195-3424ed129620"), imageAlt: "Centro de São Paulo" },
-  { id: "oeste", title: "Oeste", subtitle: "São Paulo", href: "/buscar?regionInterest=Oeste", image: unsplash("1500534314209-a25ddb2bd429"), imageAlt: "Região oeste de São Paulo" },
-  { id: "sul", title: "Sul", subtitle: "São Paulo", href: "/buscar?regionInterest=Sul", image: unsplash("1520301255226-bf5f144451c1"), imageAlt: "Região sul de São Paulo" },
-];
-
 export const editorialRailItems: PhotoRailItem[] = articles.map((article, index) => ({
   id: article.id,
   title: article.title,

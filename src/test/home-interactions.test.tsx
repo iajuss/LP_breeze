@@ -62,7 +62,6 @@ it("keeps demand destinations in the interactive discovery rails", () => {
   render(<DemandSections />);
 
   expect(screen.getByRole("link", { name: /festas/i })).toHaveAttribute("href", "/buscar?activity=Festas");
-  expect(screen.getAllByRole("link", { name: /centro/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Centro");
   expect(screen.getByRole("link", { name: /espaço para evento corporativo/i })).toHaveAttribute("href", "/guias/escolher-espaco-evento-corporativo");
 });
 
@@ -76,19 +75,12 @@ it("keeps each plural category card connected to matching venues", () => {
   });
 });
 
-it("links the regional discovery cards to the search with the declared preference", () => {
+it("leaves regional discovery to the map, without a duplicate rail", () => {
   render(<DemandSections />);
 
-  expect(screen.getAllByRole("link", { name: /centro/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Centro");
-  expect(screen.getAllByRole("link", { name: /oeste/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Oeste");
-  expect(screen.getAllByRole("link", { name: /sul/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Sul");
-});
-
-it("names the regional discovery rail for São Paulo regions", () => {
-  render(<DemandSections />);
-
-  expect(screen.getByRole("heading", { name: "Explore espaços por região em São Paulo" })).toBeInTheDocument();
-  expect(screen.getByRole("region", { name: "Regiões de São Paulo" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Onde você quer realizar seu evento?" })).toBeInTheDocument();
+  expect(screen.queryByRole("region", { name: "Regiões de São Paulo" })).not.toBeInTheDocument();
+  expect(screen.queryByText("Onde procurar")).not.toBeInTheDocument();
 });
 
 it("keeps the homepage focused exclusively on people looking for spaces", () => {
