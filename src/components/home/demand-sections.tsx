@@ -6,6 +6,7 @@ import { HowItWorksCarousel } from "./how-it-works-carousel";
 import { PhotoRail } from "./photo-rail";
 import { StyleExplorer } from "./style-explorer";
 import { TrustTimeline } from "./trust-timeline";
+import { RegionInterestMap } from "./region-interest-map";
 
 export function DemandSections() {
   return (
@@ -15,6 +16,14 @@ export function DemandSections() {
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Por ocasião</p>
           <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Encontre um espaço para cada ocasião</h2>
           <PhotoRail ariaLabel="Ocasiões" items={categoryRailItems} />
+        </div>
+      </section>
+
+      <section className="w-full py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
+        <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Por região</p>
+          <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Onde você quer realizar seu evento?</h2>
+          <RegionInterestMap />
         </div>
       </section>
 
