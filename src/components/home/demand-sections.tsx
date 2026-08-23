@@ -63,7 +63,7 @@ export function DemandSections() {
       <section className="w-full py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center">
         <div className="mx-auto w-full max-w-7xl px-5 lg:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Onde procurar</p>
-          <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Explore espaços nas principais cidades</h2>
+          <h2 className="mt-3 font-display text-4xl leading-[0.98] sm:text-5xl">Explore espaços por região em São Paulo</h2>
           <PhotoRail ariaLabel="Cidades" items={cityRailItems} />
         </div>
       </section>

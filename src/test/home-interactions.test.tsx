@@ -72,6 +72,12 @@ it("links the regional discovery cards to the search with the declared preferenc
   expect(screen.getAllByRole("link", { name: /sul/i })[0]).toHaveAttribute("href", "/buscar?regionInterest=Sul");
 });
 
+it("names the regional discovery rail for São Paulo regions", () => {
+  render(<DemandSections />);
+
+  expect(screen.getByRole("heading", { name: "Explore espaços por região em São Paulo" })).toBeInTheDocument();
+});
+
 it("keeps the homepage focused exclusively on people looking for spaces", () => {
   render(<DemandSections />);
 
