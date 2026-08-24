@@ -20,7 +20,7 @@ it("logs a Supabase failure while returning a safe public interest response", as
     method: "POST",
     body: JSON.stringify({
       venueSlug: "casa-vila-mariana", name: "Ana Souza", email: "ana@example.com", phone: "11999999999",
-      eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", guestCount: 80, marketingConsent: false,
+      eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", residentNeighborhood: "Moema", guestCount: 80, marketingConsent: false,
     }),
   }));
   const body = await response.json() as { error?: string; requestId?: string };

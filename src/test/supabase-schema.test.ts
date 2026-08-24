@@ -21,3 +21,16 @@ it("stores a user's broader region preference separately from the venue location
   expect(migration).toContain("interested_region");
   expect(migration).toContain("lead_summary");
 });
+
+it("declares separate event and resident neighborhoods in the lead view", () => {
+  const migration = readFileSync(resolve(process.cwd(), "supabase/migrations/202608240001_catalog_multiple_and_demand_origin.sql"), "utf8");
+  expect(migration).toContain("event_neighborhood");
+  expect(migration).toContain("resident_neighborhood");
+  expect(migration).toContain("grant select on public.lead_summary to service_role");
+});
+
+it("seeds every new illustrative venue and its event types", () => {
+  const migration = readFileSync(resolve(process.cwd(), "supabase/migrations/202608240001_catalog_multiple_and_demand_origin.sql"), "utf8");
+  ["espaco-pompeia", "villa-butanta", "casa-aclimacao", "estudio-berrini", "pavilhao-ibirapuera", "sala-consolacao", "armazem-bras", "jardim-analia"].forEach((slug) => expect(migration).toContain(slug));
+  expect(migration).toContain("event_types = excluded.event_types");
+});
