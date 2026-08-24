@@ -5,7 +5,7 @@ vi.mock("@/lib/supabase/admin", () => ({
 }));
 
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/admin";
-import { createPendingInterest } from "@/lib/repositories/interests";
+import { createPendingInterest, finalizePendingInterest } from "@/lib/repositories/interests";
 
 afterEach(() => vi.clearAllMocks());
 
@@ -18,7 +18,7 @@ it("preserves a Supabase venue-query failure for the server log", async () => {
 
   await expect(createPendingInterest({
     venueSlug: "casa-vila-mariana", name: "Ana Souza", email: "ana@example.com", phone: "11999999999",
-    eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", guestCount: 80, marketingConsent: false,
+    eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", residentNeighborhood: "Moema", guestCount: 80, marketingConsent: false,
   })).rejects.toThrow("Falha ao consultar espaço no Supabase: Invalid API key");
 });
 
@@ -31,6 +31,34 @@ it("keeps a missing venue distinct from a Supabase query failure", async () => {
 
   await expect(createPendingInterest({
     venueSlug: "espaco-inexistente", name: "Ana Souza", email: "ana@example.com", phone: "11999999999",
-    eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", guestCount: 80, marketingConsent: false,
+    eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", residentNeighborhood: "Moema", guestCount: 80, marketingConsent: false,
   })).rejects.toThrow("Espaço não encontrado.");
+});
+
+it("persists the resident neighborhood while creating and finalizing an interest", async () => {
+  const pendingInsert = vi.fn().mockReturnValue({ select: vi.fn().mockReturnValue({ single: vi.fn().mockResolvedValue({ data: { id: "pending-id" }, error: null }) }) });
+  const rentalInsert = vi.fn().mockReturnValue({ select: vi.fn().mockReturnValue({ single: vi.fn().mockResolvedValue({ data: { id: "interest-id" }, error: null }) }) });
+  const update = vi.fn().mockReturnValue({ eq: vi.fn().mockResolvedValue({ error: null }) });
+  const pending = {
+    id: "pending-id", venue_id: "venue-id", name: "Ana Souza", email: "ana@example.com", phone: "11999999999",
+    marketing_consent: false, event_type: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", resident_neighborhood: "Moema",
+    interested_region: null, event_date: null, guest_count: 80, budget: null, source: null, campaign: null, referrer: null,
+    utm_source: null, utm_medium: null, utm_campaign: null, finalized_interest_id: null,
+  };
+  const from = vi.fn((table: string) => {
+    if (table === "venues") return { select: vi.fn().mockReturnValue({ eq: vi.fn().mockReturnValue({ maybeSingle: vi.fn().mockResolvedValue({ data: { id: "venue-id" }, error: null }) }) }) };
+    if (table === "pending_interests") return { insert: pendingInsert, select: vi.fn().mockReturnValue({ eq: vi.fn().mockReturnValue({ single: vi.fn().mockResolvedValue({ data: pending, error: null }) }) }), update };
+    if (table === "profiles") return { upsert: vi.fn().mockResolvedValue({ error: null }) };
+    return { insert: rentalInsert };
+  });
+  vi.mocked(createServiceRoleSupabaseClient).mockReturnValue({ from } as never);
+
+  await createPendingInterest({
+    venueSlug: "casa-vila-mariana", name: "Ana Souza", email: "ana@example.com", phone: "11999999999",
+    eventType: "Festa", neighborhood: "Vila Mariana, São Paulo, SP", residentNeighborhood: "Moema", guestCount: 80, marketingConsent: false,
+  });
+  await finalizePendingInterest("pending-id", { id: "user-id", email: "ana@example.com" });
+
+  expect(pendingInsert).toHaveBeenCalledWith(expect.objectContaining({ resident_neighborhood: "Moema" }));
+  expect(rentalInsert).toHaveBeenCalledWith(expect.objectContaining({ resident_neighborhood: "Moema" }));
 });

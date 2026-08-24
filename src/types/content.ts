@@ -20,6 +20,7 @@ export type Venue = {
   zone: string;
   capacity: number;
   category: string;
+  eventTypes: string[];
   styles: string[];
   image: string;
   imageAlt: string;

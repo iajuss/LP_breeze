@@ -17,7 +17,7 @@ it("keeps Supabase configuration errors out of the public interest response", as
     method: "POST",
     body: JSON.stringify({
       venueSlug: "casa-jardim-pinheiros", name: "Ana Souza", email: "ana@example.com", phone: "11999999999",
-      eventType: "Festa", neighborhood: "Pinheiros, São Paulo, SP", guestCount: 80, marketingConsent: false,
+      eventType: "Festa", neighborhood: "Pinheiros, São Paulo, SP", residentNeighborhood: "Moema", guestCount: 80, marketingConsent: false,
     }),
   }));
   const body = await response.json() as { error?: string; requestId?: string };

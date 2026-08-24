@@ -13,3 +13,28 @@ it("preserves a declared region in the venue detail link", () => {
 
   expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
 });
+
+it("preserves the selected compatible occasion when opening a venue", () => {
+  render(<VenueCard venue={venues[0]} activity="Casamento" />);
+
+  expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?activity=Casamento");
+});
+
+it("preserves the compatible occasion together with the regional preference", () => {
+  render(<VenueCard venue={venues[0]} activity="Casamento" regionInterest="Oeste" />);
+
+  expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?activity=Casamento&regionInterest=Oeste");
+});
+
+it("does not add an incompatible occasion to the venue detail link", () => {
+  render(<VenueCard venue={venues[0]} activity="Workshop" />);
+
+  expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros");
+});
+
+it("keeps the primary category visible while the venue offers multiple occasions", () => {
+  render(<VenueCard venue={venues[0]} />);
+
+  expect(screen.getByText(/120 pessoas · Festa/)).toBeInTheDocument();
+  expect(venues[0].eventTypes).toContain("Casamento");
+});

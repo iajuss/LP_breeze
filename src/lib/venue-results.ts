@@ -21,14 +21,6 @@ const matchesText = (source: string, query?: string) => {
   return normalize(query).split(/\s+/).every((term) => normalizedSource.includes(term));
 };
 
-const activityAliases: Record<string, string> = {
-  Ensaio: "Produção",
-  Ensaios: "Produção",
-  Lançamento: "Evento corporativo",
-  Lançamentos: "Evento corporativo",
-  Produções: "Produção",
-};
-
 /** Localizacao do espaco no mesmo formato das opcoes de busca: "Bairro, Cidade, SP". */
 export function venueLocation(venue: Pick<Venue, "city" | "region">): string {
   return venue.region === venue.city ? `${venue.city}, SP` : `${venue.region}, ${venue.city}, SP`;
@@ -36,10 +28,10 @@ export function venueLocation(venue: Pick<Venue, "city" | "region">): string {
 
 export function filterVenues(venues: Venue[], filters: VenueFilters): Venue[] {
   const requestedGuests = Number(filters.guests);
-  const activity = filters.activity ? activityAliases[filters.activity] ?? filters.activity : undefined;
+  const activity = filters.activity;
 
   return venues.filter((venue) => (
-    matchesText(venue.category, activity)
+    matchesText(venue.eventTypes.join(" "), activity)
     && matchesText(venueLocation(venue), filters.location)
     && matchesText(venue.styles.join(" "), filters.style)
     && (!Number.isFinite(requestedGuests) || requestedGuests < 1 || venue.capacity >= requestedGuests)

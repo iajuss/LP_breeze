@@ -8,6 +8,7 @@ const validPayload = {
   phone: "11999999999",
   eventType: "Festa",
   neighborhood: "Pinheiros, São Paulo, SP",
+  residentNeighborhood: "Moema",
   eventDate: "2026-12-12",
   guestCount: 80,
   marketingConsent: false,
@@ -25,6 +26,24 @@ describe("validateInterestPayload", () => {
         email: "Informe um e-mail válido.",
         neighborhood: "Selecione uma localização da lista em São Paulo.",
       },
+    });
+  });
+
+  it("requires and normalizes the resident neighborhood", () => {
+    expect(validateInterestPayload({ ...validPayload, residentNeighborhood: "   Moema  " })).toMatchObject({
+      ok: true,
+      value: { residentNeighborhood: "Moema" },
+    });
+    expect(validateInterestPayload({ ...validPayload, residentNeighborhood: "" })).toEqual({
+      ok: false,
+      errors: { residentNeighborhood: "Informe o bairro onde você mora." },
+    });
+  });
+
+  it("limits the resident neighborhood to 100 characters", () => {
+    expect(validateInterestPayload({ ...validPayload, residentNeighborhood: "a".repeat(101) })).toEqual({
+      ok: false,
+      errors: { residentNeighborhood: "Informe um bairro com até 100 caracteres." },
     });
   });
 });
