@@ -34,6 +34,20 @@ it("confirms the question when the support request succeeds", async () => {
   vi.unstubAllGlobals();
 });
 
+it("does not send the resident neighborhood with support questions", async () => {
+  const user = userEvent.setup();
+  const fetchMock = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) });
+  vi.stubGlobal("fetch", fetchMock);
+  render(<SupportForm venueSlug="casa-jardim-pinheiros" />);
+
+  await user.type(screen.getByLabelText("Sua pergunta"), "Quero saber se há estacionamento.");
+  await user.type(screen.getByLabelText("E-mail para resposta"), "ana@example.com");
+  await user.click(screen.getByRole("button", { name: /enviar pergunta/i }));
+
+  expect(JSON.parse(fetchMock.mock.calls[0][1].body)).not.toHaveProperty("residentNeighborhood");
+  vi.unstubAllGlobals();
+});
+
 it("shows a recoverable message when the support request cannot reach the server", async () => {
   const user = userEvent.setup();
   vi.stubGlobal("fetch", vi.fn().mockRejectedValueOnce(new TypeError("Failed to fetch")));
