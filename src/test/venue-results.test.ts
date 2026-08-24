@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { activityOptions } from "@/data/search-options";
 import { venues } from "@/data/venues";
-import { filterVenues } from "@/lib/venue-results";
+import { filterVenues, recommendVenues } from "@/lib/venue-results";
 
 describe("filterVenues", () => {
   it("combines occasion, location and guest filters into coherent results", () => {
@@ -47,5 +47,12 @@ describe("filterVenues", () => {
 
   it("returns no exact result when the requested capacity exceeds every option", () => {
     expect(filterVenues(venues, { guests: "5000" })).toEqual([]);
+  });
+
+  it("recommends spaces that preserve the requested occasion when an exact search has no result", () => {
+    const recommendations = recommendVenues(venues, { activity: "Casamento", guests: "5000" });
+
+    expect(recommendations).toHaveLength(3);
+    expect(recommendations.every((venue) => venue.eventTypes.includes("Casamento"))).toBe(true);
   });
 });

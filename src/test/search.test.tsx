@@ -40,6 +40,14 @@ describe("SearchPage", () => {
     expect(screen.getByRole("link", { name: /ver detalhes de casa vila mariana/i })).toBeInTheDocument();
   });
 
+  it("recommends compatible spaces when no exact result is found", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({ activity: "Casamento", guests: "5000" }) }));
+
+    expect(screen.getByRole("heading", { name: "Nenhum espaço encontrado" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Sugestões para o seu evento" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /ver detalhes de casa jardim pinheiros/i })).toBeInTheDocument();
+  });
+
   it("keeps refinement links at the 44px touch target", async () => {
     render(await SearchPage({ searchParams: Promise.resolve({}) }));
 

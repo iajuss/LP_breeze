@@ -21,19 +21,40 @@ const matchesText = (source: string, query?: string) => {
   return normalize(query).split(/\s+/).every((term) => normalizedSource.includes(term));
 };
 
+const matchesGuestCount = (venue: Pick<Venue, "capacity">, guests?: string) => {
+  const requestedGuests = Number(guests);
+  return !Number.isFinite(requestedGuests) || requestedGuests < 1 || venue.capacity >= requestedGuests;
+};
+
 /** Localizacao do espaco no mesmo formato das opcoes de busca: "Bairro, Cidade, SP". */
 export function venueLocation(venue: Pick<Venue, "city" | "region">): string {
   return venue.region === venue.city ? `${venue.city}, SP` : `${venue.region}, ${venue.city}, SP`;
 }
 
 export function filterVenues(venues: Venue[], filters: VenueFilters): Venue[] {
-  const requestedGuests = Number(filters.guests);
   const activity = filters.activity;
 
   return venues.filter((venue) => (
     matchesText(venue.eventTypes.join(" "), activity)
     && matchesText(venueLocation(venue), filters.location)
     && matchesText(venue.styles.join(" "), filters.style)
-    && (!Number.isFinite(requestedGuests) || requestedGuests < 1 || venue.capacity >= requestedGuests)
+    && matchesGuestCount(venue, filters.guests)
   ));
+}
+
+export function recommendVenues(venues: Venue[], filters: VenueFilters, limit = 3): Venue[] {
+  return venues
+    .map((venue, index) => {
+      let score = 0;
+
+      if (filters.activity && matchesText(venue.eventTypes.join(" "), filters.activity)) score += 4;
+      if (filters.guests && matchesGuestCount(venue, filters.guests)) score += 3;
+      if (filters.location && matchesText(venueLocation(venue), filters.location)) score += 2;
+      if (filters.style && matchesText(venue.styles.join(" "), filters.style)) score += 1;
+
+      return { venue, index, score };
+    })
+    .sort((left, right) => right.score - left.score || left.index - right.index)
+    .slice(0, limit)
+    .map(({ venue }) => venue);
 }

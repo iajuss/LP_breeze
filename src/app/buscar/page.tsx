@@ -2,7 +2,7 @@ import Link from "next/link";
 import { VenueCard } from "@/components/home/venue-card";
 import { SearchRefinementForm } from "@/components/search/search-refinement-form";
 import { venues } from "@/data/venues";
-import { filterVenues, type VenueFilters } from "@/lib/venue-results";
+import { filterVenues, recommendVenues, type VenueFilters } from "@/lib/venue-results";
 import { activityOptions, canonicalActivity, canonicalLocation, canonicalStyle, locationOptions } from "@/data/search-options";
 import { isInterestRegion } from "@/data/regions";
 
@@ -50,6 +50,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const exactResults = filterVenues(venues, values);
   const results = exactResults;
   const hasFilters = Boolean(values.activity || values.location || values.guests || values.style || values.date || regionInterest);
+  const recommendations = !exactResults.length && hasFilters ? recommendVenues(venues, values) : [];
 
   return <main className="min-h-screen bg-[var(--secondary)] px-5 py-12 sm:py-16">
     <div className="mx-auto max-w-7xl">
@@ -76,6 +77,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
             {results.map((venue) => <VenueCard activity={values.activity} key={venue.id} regionInterest={regionInterest} venue={venue} />)}
           </div>
+          {recommendations.length ? <section className="mt-12" aria-labelledby="recommendations-heading">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary)]">Uma alternativa para você</p>
+            <h3 className="mt-3 font-display text-3xl leading-none sm:text-4xl" id="recommendations-heading">Sugestões para o seu evento</h3>
+            <p className="mt-3 max-w-2xl text-[var(--muted)]">Não são correspondências exatas, mas estes espaços se aproximam dos filtros escolhidos.</p>
+            <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+              {recommendations.map((venue) => <VenueCard activity={values.activity} key={venue.id} regionInterest={regionInterest} venue={venue} />)}
+            </div>
+          </section> : null}
         </section>
       </div>
     </div>
