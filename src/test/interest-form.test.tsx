@@ -42,6 +42,24 @@ it("keeps the venue zone when the regional preference query is invalid", async (
   expect(screen.getByRole("combobox", { name: "Região de interesse" })).toHaveTextContent("Oeste");
 });
 
+it("uses the requested compatible activity as the interest form default", async () => {
+  render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ activity: "Casamento" }) }));
+
+  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveTextContent("Casamento");
+});
+
+it("falls back to the venue category when the requested activity is incompatible", async () => {
+  render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ activity: "Workshop" }) }));
+
+  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveTextContent("Festa");
+});
+
+it("shows every occasion supported by the venue", async () => {
+  render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({}) }));
+
+  expect(screen.getByText("Festa · Casamento · Ensaio")).toBeInTheDocument();
+});
+
 it("uses the branded occasion selector and submits its selected value", async () => {
   const user = userEvent.setup();
   const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });

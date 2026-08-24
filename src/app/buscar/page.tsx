@@ -74,7 +74,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {hasFilters ? <dl className="mt-6 grid gap-3 rounded-2xl border border-[var(--border)] bg-white p-5 text-sm sm:grid-cols-2"><div><dt className="text-[var(--muted)]">Ocasião</dt><dd className="mt-1 font-semibold">{values.activity || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Local</dt><dd className="mt-1 font-semibold">{values.location || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Pessoas</dt><dd className="mt-1 font-semibold">{values.guests || "A definir"}</dd></div><div><dt className="text-[var(--muted)]">Data</dt><dd className="mt-1 font-semibold">{values.date || "A definir"}</dd></div>{regionInterest ? <div><dt className="text-[var(--muted)]">Região de interesse</dt><dd className="mt-1 font-semibold">{regionInterest}</dd></div> : null}</dl> : null}
           {!exactResults.length && hasFilters ? <p className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-5 text-[var(--muted)]">Ainda não encontramos um espaço com essa combinação. Ajuste os filtros ou conte um pouco mais sobre o seu evento.</p> : null}
           <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
-            {results.map((venue) => <VenueCard key={venue.id} regionInterest={regionInterest} venue={venue} />)}
+            {results.map((venue) => <VenueCard activity={values.activity} key={venue.id} regionInterest={regionInterest} venue={venue} />)}
           </div>
         </section>
       </div>
