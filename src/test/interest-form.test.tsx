@@ -18,6 +18,12 @@ it("collects a separate region of interest", () => {
   expect(screen.getByRole("combobox", { name: "Região de interesse" })).toBeInTheDocument();
 });
 
+it("does not show explanatory copy below the resident neighborhood field", () => {
+  render(form);
+
+  expect(screen.queryByText("Usamos esta informação para entender de onde vem a demanda.")).not.toBeInTheDocument();
+});
+
 it("keeps branded selector triggers at the 44px touch target", () => {
   render(form);
 
