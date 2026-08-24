@@ -18,6 +18,14 @@ it("collects a separate region of interest", () => {
   expect(screen.getByRole("combobox", { name: "Região de interesse" })).toBeInTheDocument();
 });
 
+it("keeps the resident neighborhood as a free-text field for anywhere in Brazil", () => {
+  render(form);
+
+  const residentNeighborhood = screen.getByLabelText("Em que bairro você mora?");
+  expect(residentNeighborhood).not.toHaveAttribute("list");
+  expect(residentNeighborhood).toHaveAttribute("placeholder", "Ex.: Recife, PE");
+});
+
 it("does not show explanatory copy below the resident neighborhood field", () => {
   render(form);
 
