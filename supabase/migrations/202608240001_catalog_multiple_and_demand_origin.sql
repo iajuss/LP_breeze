@@ -32,14 +32,14 @@ values
   ('armazem-mooca', 'Armazém Mooca', 'São Paulo', 'Mooca', 'Leste', -23.5540, -46.5990, 400, array['Produção', 'Festa', 'Lançamento'], array['Industrial', 'Estúdio'], 'Valor sob consulta'),
   ('jardim-moema', 'Jardim Moema', 'São Paulo', 'Moema', 'Sul', -23.6010, -46.6650, 130, array['Casamento', 'Festa', 'Ensaio'], array['Jardim', 'Rooftop'], 'Valor sob consulta'),
   ('estudio-santo-amaro', 'Estúdio Santo Amaro', 'São Paulo', 'Santo Amaro', 'Sul', -23.6540, -46.7080, 80, array['Produção', 'Ensaio', 'Workshop'], array['Estúdio', 'Industrial'], 'Valor sob consulta'),
-  ('espaco-pompeia', 'Espaço Pompeia', 'São Paulo', 'Pompeia', 'Oeste', -23.5290, -46.6850, 220, array['Festa', 'Evento corporativo', 'Lançamento'], array['Área ampla', 'Projeção'], 'Valor sob consulta'),
+  ('espaco-pompeia', 'Espaço Pompeia', 'São Paulo', 'Pompeia', 'Oeste', -23.5290, -46.6900, 220, array['Festa', 'Evento corporativo', 'Lançamento'], array['Área ampla', 'Projeção'], 'Valor sob consulta'),
   ('villa-butanta', 'Villa Butantã', 'São Paulo', 'Butantã', 'Oeste', -23.5710, -46.7080, 150, array['Casamento', 'Festa', 'Ensaio'], array['Jardim', 'Plano B coberto'], 'Valor sob consulta'),
   ('casa-aclimacao', 'Casa Aclimação', 'São Paulo', 'Aclimação', 'Centro', -23.5740, -46.6320, 100, array['Casamento', 'Festa', 'Workshop'], array['Casa histórica', 'Área externa'], 'Valor sob consulta'),
   ('estudio-berrini', 'Estúdio Berrini', 'São Paulo', 'Brooklin', 'Sul', -23.6100, -46.6970, 120, array['Produção', 'Evento corporativo', 'Lançamento'], array['Estúdio', 'Estacionamento'], 'Valor sob consulta'),
   ('pavilhao-ibirapuera', 'Pavilhão Ibirapuera', 'São Paulo', 'Ibirapuera', 'Sul', -23.5870, -46.6570, 350, array['Evento corporativo', 'Lançamento', 'Festa'], array['Pavilhão', 'Acessibilidade'], 'Valor sob consulta'),
-  ('sala-consolacao', 'Sala Consolação', 'São Paulo', 'Consolação', 'Centro', -23.5540, -46.6600, 60, array['Reunião', 'Workshop'], array['Sala reservada', 'Internet'], 'Valor sob consulta'),
-  ('armazem-bras', 'Armazém Brás', 'São Paulo', 'Brás', 'Centro', -23.5450, -46.6070, 450, array['Produção', 'Lançamento', 'Festa'], array['Doca de carga', 'Pé-direito alto'], 'Valor sob consulta'),
-  ('jardim-analia', 'Jardim Anália', 'São Paulo', 'Anália Franco', 'Leste', -23.5590, -46.5660, 140, array['Casamento', 'Festa', 'Ensaio'], array['Jardim', 'Terraço'], 'Valor sob consulta')
+  ('sala-consolacao', 'Sala Consolação', 'São Paulo', 'Consolação', 'Centro', -23.5530, -46.6600, 60, array['Reunião', 'Workshop'], array['Sala reservada', 'Internet'], 'Valor sob consulta'),
+  ('armazem-bras', 'Armazém Brás', 'São Paulo', 'Brás', 'Centro', -23.5470, -46.6160, 450, array['Produção', 'Lançamento', 'Festa'], array['Doca de carga', 'Pé-direito alto'], 'Valor sob consulta'),
+  ('jardim-analia', 'Jardim Anália', 'São Paulo', 'Anália Franco', 'Leste', -23.5600, -46.5650, 140, array['Casamento', 'Festa', 'Ensaio'], array['Jardim', 'Terraço'], 'Valor sob consulta')
 on conflict (slug) do update set
   name = excluded.name,
   neighborhood = excluded.neighborhood,
@@ -65,21 +65,21 @@ select
   venue.slug as venue_slug,
   venue.neighborhood as venue_neighborhood,
   interest.event_type,
-  interest.neighborhood as event_neighborhood,
-  interest.resident_neighborhood,
   interest.event_date,
   interest.guest_count,
   interest.budget,
   interest.displayed_price,
   interest.source,
   interest.campaign,
+  count(inquiry.id)::integer as inquiry_count,
+  max(inquiry.created_at) as latest_inquiry_at,
+  interest.interested_region,
+  interest.neighborhood as event_neighborhood,
+  interest.resident_neighborhood,
   interest.referrer,
   interest.utm_source,
   interest.utm_medium,
-  interest.utm_campaign,
-  interest.interested_region,
-  count(inquiry.id)::integer as inquiry_count,
-  max(inquiry.created_at) as latest_inquiry_at
+  interest.utm_campaign
 from public.rental_interests as interest
 join public.profiles as profile on profile.id = interest.user_id
 join public.venues as venue on venue.id = interest.venue_id
