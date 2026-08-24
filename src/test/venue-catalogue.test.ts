@@ -46,4 +46,12 @@ describe("catálogo de espaços", () => {
     expect(new Set(venues.map((venue) => venue.slug)).size).toBe(venues.length);
     expect(new Set(venues.map((venue) => venue.id)).size).toBe(venues.length);
   });
+
+  it("mantém fotos únicas e coerentes para o catálogo ampliado", () => {
+    expect(venues).toHaveLength(28);
+    expect(new Set(venues.map((venue) => venue.image)).size).toBe(venues.length);
+
+    const salaoBelaVista = venues.find((venue) => venue.slug === "salao-bela-vista");
+    expect(salaoBelaVista?.imageAlt).toMatch(/reunião|workshop/i);
+  });
 });

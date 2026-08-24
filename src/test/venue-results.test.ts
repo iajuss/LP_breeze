@@ -25,8 +25,8 @@ describe("filterVenues", () => {
     });
   });
 
-  it("exposes the twenty illustrative spaces with more than one occasion where configured", () => {
-    expect(venues).toHaveLength(20);
+  it("exposes the twenty-eight illustrative spaces with more than one occasion where configured", () => {
+    expect(venues).toHaveLength(28);
     expect(venues.filter((venue) => venue.eventTypes.length > 1)).not.toEqual([]);
   });
 
