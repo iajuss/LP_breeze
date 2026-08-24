@@ -13,3 +13,10 @@ it("preserves a declared region in the venue detail link", () => {
 
   expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
 });
+
+it("keeps the primary category visible while the venue offers multiple occasions", () => {
+  render(<VenueCard venue={venues[0]} />);
+
+  expect(screen.getByText(/120 pessoas · Festa/)).toBeInTheDocument();
+  expect(venues[0].eventTypes).toContain("Casamento");
+});
