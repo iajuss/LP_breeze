@@ -8,6 +8,7 @@ import { TrustTimeline } from "@/components/home/trust-timeline";
 import { venues } from "@/data/venues";
 import { categoryRailItems } from "@/data/home-interactions";
 import { filterVenues } from "@/lib/venue-results";
+import { canonicalActivity } from "@/data/search-options";
 
 const items = [
   {
@@ -66,12 +67,15 @@ it("keeps demand destinations in the interactive discovery rails", () => {
 });
 
 it("keeps each plural category card connected to matching venues", () => {
-  ["Produções", "Ensaios", "Lançamentos"].forEach((title) => {
+  const canonicalActivities = { "Produções": "Produção", "Ensaios": "Ensaio", "Lançamentos": "Lançamento" };
+
+  Object.entries(canonicalActivities).forEach(([title, expectedActivity]) => {
     const card = categoryRailItems.find((item) => item.title === title);
     const activity = new URL(card?.href ?? "", "https://arcora.local").searchParams.get("activity");
 
     expect(activity).toBe(title);
-    expect(filterVenues(venues, { activity: activity ?? undefined })).not.toEqual([]);
+    expect(canonicalActivity(activity ?? "")).toBe(expectedActivity);
+    expect(filterVenues(venues, { activity: expectedActivity })).not.toEqual([]);
   });
 });
 

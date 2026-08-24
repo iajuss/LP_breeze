@@ -27,7 +27,7 @@ describe("validateSearch", () => {
 
 describe("filterVenues", () => {
   it("finds production venues for the new rehearsal activity", () => {
-    expect(filterVenues(venues, { activity: "Ensaio" })).toContainEqual(expect.objectContaining({ slug: "galpao-da-luz" }));
+    expect(filterVenues(venues, { activity: "Ensaio" })).toContainEqual(expect.objectContaining({ slug: "estudio-santo-amaro" }));
   });
 
   it("finds corporate venues for the new launch activity", () => {

@@ -23,9 +23,11 @@
 - GREEN: `npm test -- src/test/interest-form.test.tsx src/test/interest-route.test.ts src/test/interest-route-logging.test.ts src/test/support-form.test.tsx` — 4 arquivos, 25 testes aprovados.
 - `npm run lint` — aprovado.
 - `npm run build` — aprovado, com o aviso preexistente do Next.js sobre múltiplos lockfiles.
-- `npm test` completo — 133 de 136 testes aprovados; falhas fora do escopo da Task 4 em `search-utils.test.ts`, `home-interactions.test.tsx` e `search.test.tsx`, relacionadas às expectativas do catálogo/atalhos de ocasiões.
+- Correção posterior de expectativas legadas: `search-utils.test.ts` passou a validar um espaço de ensaio compatível; `home-interactions.test.tsx` resolve os atalhos plurais antes de filtrar; `search.test.tsx` reconhece os três resultados de Reunião.
+- `npm test` completo — 28 arquivos e 136 testes aprovados.
+- `npm run lint`, `npx tsc --noEmit` e `npm run build` — aprovados. O build mantém apenas o aviso do Next.js sobre múltiplos lockfiles.
 
 ## Riscos
 
-- A suíte completa ainda requer ajuste das expectativas do catálogo das Tasks 1–3 antes de poder ficar totalmente verde.
 - O bairro residencial continua texto livre por decisão do brief; a API já normaliza e valida o valor.
+- O build informa múltiplos lockfiles no diretório pai e no worktree; é um aviso de configuração, sem falha de compilação.
