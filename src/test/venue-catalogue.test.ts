@@ -4,11 +4,12 @@ import { describe, expect, it } from "vitest";
 import { venues } from "@/data/venues";
 import { filterVenues, venueLocation } from "@/lib/venue-results";
 import { interestRegions } from "@/data/regions";
-import { canonicalLocation, locationOptions } from "@/data/search-options";
+import { activityOptions, canonicalLocation, locationOptions } from "@/data/search-options";
 
 const migrations = readdirSync(resolve(process.cwd(), "supabase/migrations"))
   .map((file) => readFileSync(resolve(process.cwd(), "supabase/migrations", file), "utf8"))
   .join("\n");
+const flexibleCoverageMigration = readFileSync(resolve(process.cwd(), "supabase/migrations/202608260001_flexible_event_coverage.sql"), "utf8");
 
 describe("catálogo de espaços", () => {
   it("oferece ao menos um espaço em cada região selecionável no mapa", () => {
@@ -39,6 +40,24 @@ describe("catálogo de espaços", () => {
   it("não deixa nenhuma opção do filtro de localização sem resultado", () => {
     locationOptions.forEach((option) => {
       expect(filterVenues(venues, { location: option }).length, `"${option}" não retorna espaço algum`).toBeGreaterThan(0);
+    });
+  });
+
+  it("encontra pelo menos um espaço para cada ocasião em cada localidade", () => {
+    locationOptions.forEach((location) => {
+      activityOptions.forEach((activity) => {
+        expect(
+          filterVenues(venues, { location, activity }),
+          `${activity} em ${location}`,
+        ).not.toHaveLength(0);
+      });
+    });
+  });
+
+  it("semeia a cobertura completa das ocasiões no Supabase", () => {
+    expect(flexibleCoverageMigration).toMatch(/set event_types = array\[/i);
+    activityOptions.forEach((activity) => {
+      expect(flexibleCoverageMigration).toContain(`'${activity}'`);
     });
   });
 

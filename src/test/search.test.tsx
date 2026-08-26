@@ -23,7 +23,7 @@ describe("SearchPage", () => {
 
     const marcadas = screen.getAllByRole("link").filter((link) => link.getAttribute("aria-pressed") === "true");
     expect(marcadas.map((link) => link.textContent)).toEqual(["Reunião"]);
-    expect(screen.getByRole("heading", { name: "6 espaços encontrados" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: `${venues.filter((venue) => venue.eventTypes.includes("Reunião")).length} espaços encontrados` })).toBeInTheDocument();
   });
 
   it("marca a pílula de estilo quando o atalho chega como slug", async () => {

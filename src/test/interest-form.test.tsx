@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { InterestForm } from "@/components/venue/interest-form";
 import VenuePage from "@/app/espacos/[slug]/page";
+import { activityOptions } from "@/data/search-options";
 
 const form = <InterestForm defaultEventType="Festa" defaultGuests={80} defaultLocation="Pinheiros, São Paulo, SP" venueSlug="casa-jardim-pinheiros" />;
 
@@ -69,16 +70,16 @@ it("uses the requested compatible activity as the interest form default", async 
   expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveTextContent("Casamento");
 });
 
-it("falls back to the venue category when the requested activity is incompatible", async () => {
+it("uses the requested activity when the venue accepts every occasion", async () => {
   render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({ activity: "Workshop" }) }));
 
-  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveTextContent("Festa");
+  expect(screen.getByRole("combobox", { name: "Ocasião" })).toHaveTextContent("Workshop");
 });
 
 it("shows every occasion supported by the venue", async () => {
   render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({}) }));
 
-  expect(screen.getByText("Festa · Casamento · Ensaio")).toBeInTheDocument();
+  expect(screen.getByText(activityOptions.join(" · "))).toBeInTheDocument();
 });
 
 it("uses the branded occasion selector and submits its selected value", async () => {

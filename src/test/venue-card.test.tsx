@@ -26,10 +26,10 @@ it("preserves the compatible occasion together with the regional preference", ()
   expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?activity=Casamento&regionInterest=Oeste");
 });
 
-it("does not add an incompatible occasion to the venue detail link", () => {
+it("preserves any selected occasion in the venue detail link", () => {
   render(<VenueCard venue={venues[0]} activity="Workshop" />);
 
-  expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros");
+  expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?activity=Workshop");
 });
 
 it("keeps the primary category visible while the venue offers multiple occasions", () => {
@@ -37,4 +37,28 @@ it("keeps the primary category visible while the venue offers multiple occasions
 
   expect(screen.getByText(/120 pessoas · Festa/)).toBeInTheDocument();
   expect(venues[0].eventTypes).toContain("Casamento");
+});
+
+it("resumes as ocasiões extras sem esconder a lista completa de tecnologias assistivas", () => {
+  const flexibleVenue = {
+    ...venues[0],
+    eventTypes: [
+      "Festa",
+      "Casamento",
+      "Evento corporativo",
+      "Reunião",
+      "Workshop",
+      "Produção",
+      "Ensaio",
+      "Lançamento",
+    ],
+  };
+
+  render(<VenueCard venue={flexibleVenue} />);
+
+  expect(screen.getByText("Festa")).toBeInTheDocument();
+  expect(screen.getByText("Casamento")).toBeInTheDocument();
+  expect(screen.getAllByTestId("occasion-chip")).toHaveLength(2);
+  expect(screen.getByTestId("more-occasion-types")).toHaveAccessibleName("Mais 6 tipos: Evento corporativo, Reunião, Workshop, Produção, Ensaio, Lançamento");
+  expect(screen.getByTestId("more-occasion-types")).toHaveTextContent("+6");
 });

@@ -2,6 +2,22 @@ import type { Venue } from "@/types/content";
 
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1600&q=85`;
 
+const supportedEventTypes = [
+  "Festa",
+  "Casamento",
+  "Evento corporativo",
+  "Reunião",
+  "Workshop",
+  "Produção",
+  "Ensaio",
+  "Lançamento",
+];
+
+const eventTypesFor = (primaryType: string) => [
+  primaryType,
+  ...supportedEventTypes.filter((eventType) => eventType !== primaryType),
+];
+
 export const venues: Venue[] = [
   { id: "casa-jardim-pinheiros", slug: "casa-jardim-pinheiros", name: "Casa Jardim Pinheiros", city: "São Paulo", region: "Pinheiros", zone: "Oeste", capacity: 120, category: "Festa", eventTypes: ["Festa", "Casamento", "Ensaio"], styles: ["Jardim", "Moderno"], image: photo("1519167758481-83f550bb49b3"), imageAlt: "Casa com jardim para eventos", latitude: -23.5614, longitude: -46.6912, summary: "Casa com área externa para encontros, celebrações e eventos diurnos." },
   { id: "galpao-da-luz", slug: "galpao-da-luz", name: "Galpão da Luz", city: "São Paulo", region: "Luz", zone: "Centro", capacity: 300, category: "Produção", eventTypes: ["Produção", "Workshop", "Lançamento"], styles: ["Industrial", "Estúdio"], image: photo("1497366811353-6870744d04b2"), imageAlt: "Galpão industrial amplo", latitude: -23.5347, longitude: -46.6357, summary: "Galpão amplo, com estrutura flexível para produções e ativações." },
@@ -31,4 +47,7 @@ export const venues: Venue[] = [
   { id: "casa-campo-belo", slug: "casa-campo-belo", name: "Casa Campo Belo", city: "São Paulo", region: "Campo Belo", zone: "Sul", capacity: 110, category: "Casamento", eventTypes: ["Casamento", "Festa", "Ensaio"], styles: ["Jardim", "Rooftop"], image: photo("1519225421980-715cb0215aed"), imageAlt: "Casa com jardim para casamento no Campo Belo", latitude: -23.617, longitude: -46.675, summary: "Casa com jardim e terraço para celebrações leves, cerimônias e ensaios." },
   { id: "pavilhao-penha", slug: "pavilhao-penha", name: "Pavilhão Penha", city: "São Paulo", region: "Penha", zone: "Leste", capacity: 320, category: "Festa", eventTypes: ["Festa", "Produção", "Lançamento"], styles: ["Industrial", "Moderno"], image: photo("1519671482749-fd09be7ccebf"), imageAlt: "Pavilhão amplo para festa na Penha", latitude: -23.524, longitude: -46.547, summary: "Pavilhão de grande porte para festas, produções e apresentações de marca." },
   { id: "sala-itaim", slug: "sala-itaim", name: "Sala Itaim", city: "São Paulo", region: "Itaim Bibi", zone: "Sul", capacity: 70, category: "Reunião", eventTypes: ["Reunião", "Workshop", "Evento corporativo"], styles: ["Moderno", "Estúdio"], image: photo("1497215842964-222b430dc094"), imageAlt: "Sala contemporânea para reunião no Itaim", latitude: -23.585, longitude: -46.677, summary: "Sala reservada para reuniões, workshops compactos e encontros de equipes." },
-];
+].map((venue) => ({
+  ...venue,
+  eventTypes: eventTypesFor(venue.category),
+}));
