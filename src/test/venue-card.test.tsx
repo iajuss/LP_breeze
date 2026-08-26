@@ -32,11 +32,12 @@ it("preserves any selected occasion in the venue detail link", () => {
   expect(screen.getByRole("link", { name: /ver detalhes/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?activity=Workshop");
 });
 
-it("keeps the primary category visible while the venue offers multiple occasions", () => {
+it("shows the primary category only in the event-type chips", () => {
   render(<VenueCard venue={venues[0]} />);
 
-  expect(screen.getByText(/120 pessoas · Festa/)).toBeInTheDocument();
-  expect(venues[0].eventTypes).toContain("Casamento");
+  expect(screen.getByText("Até 120 pessoas")).toBeInTheDocument();
+  expect(screen.getByText("Até 120 pessoas")).not.toHaveTextContent("Festa");
+  expect(screen.getAllByTestId("occasion-chip")[0]).toHaveTextContent("Festa");
 });
 
 it("resumes as ocasiões extras sem esconder a lista completa de tecnologias assistivas", () => {
