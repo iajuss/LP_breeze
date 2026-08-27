@@ -13,7 +13,7 @@ describe("SearchPage", () => {
     render(await SearchPage({ searchParams: Promise.resolve({ regionInterest: "Oeste" }) }));
 
     expect(screen.getByText("Região de interesse")).toBeInTheDocument();
-    expect(screen.getByText("Oeste")).toBeInTheDocument();
+    expect(within(screen.getByText("Região de interesse").parentElement!).getByText("Oeste")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: `${venues.length} espaços encontrados` })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /ver detalhes de casa jardim pinheiros/i })).toHaveAttribute("href", "/espacos/casa-jardim-pinheiros?regionInterest=Oeste");
   });
@@ -31,6 +31,14 @@ describe("SearchPage", () => {
 
     const marcadas = screen.getAllByRole("link").filter((link) => link.getAttribute("aria-pressed") === "true");
     expect(marcadas.map((link) => link.textContent)).toEqual(["Rooftop"]);
+  });
+
+  it("filters results and marks the selected zone in the sidebar", async () => {
+    render(await SearchPage({ searchParams: Promise.resolve({ zone: "Norte" } as never) }));
+
+    const northVenues = venues.filter((venue) => venue.zone === "Norte");
+    expect(screen.getByRole("heading", { name: `${northVenues.length} espaços encontrados` })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Norte" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("filtra por bairro em vez de devolver a busca vazia", async () => {

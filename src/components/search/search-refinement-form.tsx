@@ -16,6 +16,7 @@ export function SearchRefinementForm({ values }: SearchRefinementFormProps) {
   return <form action="/buscar" className="space-y-4 border-t border-[var(--border)] pt-6">
     {values.activity ? <input name="activity" type="hidden" value={values.activity} /> : null}
     {values.location ? <input name="location" type="hidden" value={values.location} /> : null}
+    {values.zone ? <input name="zone" type="hidden" value={values.zone} /> : null}
     {values.style ? <input name="style" type="hidden" value={values.style} /> : null}
     {values.regionInterest ? <input name="regionInterest" type="hidden" value={values.regionInterest} /> : null}
     <label className="block text-sm font-semibold text-[var(--foreground)]">Outra quantidade de pessoas

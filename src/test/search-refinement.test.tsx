@@ -34,4 +34,12 @@ describe("SearchRefinementForm", () => {
     const query = new URLSearchParams(new FormData(form) as unknown as string[][]);
     expect(`${form.getAttribute("action")}?${query}`).toContain("regionInterest=Oeste");
   });
+
+  it("keeps the selected zone in the submitted refinement query", () => {
+    render(<SearchRefinementForm values={{ activity: "Festa", zone: "Oeste" } as never} />);
+
+    const form = screen.getByRole("button", { name: "Aplicar filtros" }).closest("form")!;
+    const query = new URLSearchParams(new FormData(form) as unknown as string[][]);
+    expect(`${form.getAttribute("action")}?${query}`).toContain("zone=Oeste");
+  });
 });

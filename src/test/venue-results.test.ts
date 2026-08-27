@@ -45,6 +45,13 @@ describe("filterVenues", () => {
     expect(filterVenues(venues, { regionInterest: "Norte" } as never)).toHaveLength(venues.length);
   });
 
+  it("filters venues by the selected zone", () => {
+    const results = filterVenues(venues, { zone: "Norte" } as never);
+
+    expect(results).not.toHaveLength(0);
+    expect(results.every((venue) => venue.zone === "Norte")).toBe(true);
+  });
+
   it("returns no exact result when the requested capacity exceeds every option", () => {
     expect(filterVenues(venues, { guests: "5000" })).toEqual([]);
   });

@@ -3,6 +3,7 @@ import type { Venue } from "@/types/content";
 export type VenueFilters = {
   activity?: string;
   location?: string;
+  zone?: string;
   guests?: string;
   style?: string;
 };
@@ -37,6 +38,7 @@ export function filterVenues(venues: Venue[], filters: VenueFilters): Venue[] {
   return venues.filter((venue) => (
     matchesText(venue.eventTypes.join(" "), activity)
     && matchesText(venueLocation(venue), filters.location)
+    && matchesText(venue.zone, filters.zone)
     && matchesText(venue.styles.join(" "), filters.style)
     && matchesGuestCount(venue, filters.guests)
   ));
@@ -50,6 +52,7 @@ export function recommendVenues(venues: Venue[], filters: VenueFilters, limit = 
       if (filters.activity && matchesText(venue.eventTypes.join(" "), filters.activity)) score += 4;
       if (filters.guests && matchesGuestCount(venue, filters.guests)) score += 3;
       if (filters.location && matchesText(venueLocation(venue), filters.location)) score += 2;
+      if (filters.zone && matchesText(venue.zone, filters.zone)) score += 2;
       if (filters.style && matchesText(venue.styles.join(" "), filters.style)) score += 1;
 
       return { venue, index, score };
