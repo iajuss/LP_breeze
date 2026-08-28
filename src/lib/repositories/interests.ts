@@ -1,5 +1,6 @@
 import { createServiceRoleSupabaseClient } from "@/lib/supabase/admin";
 import type { InterestPayload } from "@/lib/interest-validation";
+import { startingPriceLabel } from "@/data/venue-pricing";
 
 type PendingInterest = {
   id: string;
@@ -65,10 +66,14 @@ export async function finalizePendingInterest(pendingId: string, user: { id: str
     id: user.id, name: pending.name, email: pending.email, phone: pending.phone, marketing_consent: pending.marketing_consent,
   });
   if (profileError) throw new Error("Não foi possível criar seu perfil.");
+  // O valor exibido vem do slug do espaco. Se a consulta falhar, o lead ainda
+  // e confirmado: perder o rotulo do preco e menos grave que perder o lead.
+  const { data: venue } = await supabase.from("venues").select("slug").eq("id", pending.venue_id).maybeSingle();
+  const displayedPrice = startingPriceLabel((venue as { slug?: string } | null)?.slug ?? "");
   const { data: interest, error: interestError } = await supabase.from("rental_interests").insert({
     user_id: user.id, venue_id: pending.venue_id, event_type: pending.event_type, neighborhood: pending.neighborhood, resident_neighborhood: pending.resident_neighborhood, interested_region: pending.interested_region,
     event_date: pending.event_date, guest_count: pending.guest_count, budget: pending.budget,
-    displayed_price: "Valor sob consulta", source: pending.source, campaign: pending.campaign, referrer: pending.referrer,
+    displayed_price: displayedPrice, source: pending.source, campaign: pending.campaign, referrer: pending.referrer,
     utm_source: pending.utm_source, utm_medium: pending.utm_medium, utm_campaign: pending.utm_campaign,
   }).select("id").single();
   if (interestError || !interest) throw new Error("Não foi possível confirmar seu interesse.");

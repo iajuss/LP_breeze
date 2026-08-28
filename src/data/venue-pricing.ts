@@ -59,3 +59,13 @@ export function priceFrom(slug: string): number | undefined {
 export function formatPriceFrom(value: number): string {
   return `R$ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 }
+
+/**
+ * Rótulo exibido para o valor de partida, em texto puro. É o mesmo texto que
+ * vai para `displayed_price` no lead, para o banco registrar o que a pessoa
+ * de fato viu na tela.
+ */
+export function startingPriceLabel(slug: string): string {
+  const value = priceFrom(slug);
+  return value ? `A partir de ${formatPriceFrom(value)}` : "Valor sob consulta";
+}
