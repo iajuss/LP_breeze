@@ -14,10 +14,12 @@ export function buildSearchUrl(values: SearchValues): string {
 
 export function validateSearch(values: SearchValues): SearchErrors {
   const errors: SearchErrors = {};
-  if (!values.activity) errors.activity = "Escolha a ocasião do seu evento.";
-  if (!values.location.trim()) errors.location = "Escolha São Paulo ou um bairro sugerido.";
-  else if (!canonicalLocation(values.location)) errors.location = "Selecione uma localização da lista em São Paulo.";
-  if (!Number.isInteger(values.guests) || values.guests < 1 || values.guests > 5000) {
+  // Nenhum filtro e obrigatorio: buscar sem preencher nada leva ao catalogo
+  // inteiro. O que estiver preenchido, porem, precisa ser utilizavel.
+  if (values.location.trim() && !canonicalLocation(values.location)) {
+    errors.location = "Selecione uma localização da lista em São Paulo.";
+  }
+  if (values.guests && (!Number.isInteger(values.guests) || values.guests < 1 || values.guests > 5000)) {
     errors.guests = "Informe entre 1 e 5.000 pessoas.";
   }
   return errors;

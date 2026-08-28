@@ -153,29 +153,48 @@ describe("VenueSearch", () => {
     expect(screen.getByRole("button", { name: /o que você está planejando/i }).closest("form")).toHaveClass("text-[var(--foreground)]");
   });
 
-  it("explains which filters are missing when the desktop search is submitted empty", async () => {
+  it("leva ao catálogo inteiro quando a busca é enviada sem nenhum filtro", async () => {
     const user = userEvent.setup();
+    const original = window.location;
+    const assign = vi.fn();
+    Object.defineProperty(window, "location", { configurable: true, value: { ...original, assign } });
     render(<VenueSearch entryPoint="hero" />);
 
     await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
 
-    const feedback = screen.getByRole("alert");
-    expect(feedback).toHaveTextContent("Complete os filtros para buscar espaços.");
-    expect(feedback).toHaveTextContent("Escolha a ocasião do seu evento.");
-    expect(feedback).toHaveTextContent("Escolha São Paulo ou um bairro sugerido.");
-    expect(feedback).toHaveTextContent("Informe entre 1 e 5.000 pessoas.");
-    expect(screen.getByRole("combobox", { name: /onde/i })).toHaveAttribute("aria-invalid", "true");
+    expect(assign).toHaveBeenCalledWith("/buscar");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    Object.defineProperty(window, "location", { configurable: true, value: original });
   });
 
-  it("drops each feedback line as soon as the matching filter is filled", async () => {
+  it("ainda recusa um local que não existe no catálogo", async () => {
+    const user = userEvent.setup();
+    const original = window.location;
+    const assign = vi.fn();
+    Object.defineProperty(window, "location", { configurable: true, value: { ...original, assign } });
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.type(screen.getByRole("combobox", { name: /onde/i }), "Rio de Janeiro");
+    await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
+
+    expect(assign).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent("Selecione uma localização da lista em São Paulo.");
+    expect(screen.getByRole("combobox", { name: /onde/i })).toHaveAttribute("aria-invalid", "true");
+    Object.defineProperty(window, "location", { configurable: true, value: original });
+  });
+
+  it("limpa o aviso assim que o local passa a ser válido", async () => {
     const user = userEvent.setup();
     render(<VenueSearch entryPoint="hero" />);
 
+    await user.type(screen.getByRole("combobox", { name: /onde/i }), "Rio de Janeiro");
     await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
-    await user.type(screen.getByRole("combobox", { name: /onde/i }), "São Paulo, SP");
+    expect(screen.getByRole("alert")).toBeInTheDocument();
 
-    expect(screen.getByRole("alert")).not.toHaveTextContent("Escolha São Paulo ou um bairro sugerido.");
-    expect(screen.getByRole("alert")).toHaveTextContent("Escolha a ocasião do seu evento.");
+    await user.clear(screen.getByRole("combobox", { name: /onde/i }));
+    await user.type(screen.getByRole("combobox", { name: /onde/i }), "Moema, São Paulo, SP");
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("keeps mobile selections when returning to an earlier step", async () => {

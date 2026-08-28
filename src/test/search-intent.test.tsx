@@ -62,9 +62,24 @@ describe("captação de intenção na busca", () => {
     const user = userEvent.setup();
     render(<VenueSearch entryPoint="hero" />);
 
+    await user.type(screen.getByPlaceholderText(/são paulo ou um bairro/i), "Rio de Janeiro");
     await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
 
     expect(eventos.some((e) => e.event === "search_submitted")).toBe(false);
     expect(assign).not.toHaveBeenCalled();
+  });
+
+  it("registra a busca vazia, sem mandar campo em branco para o banco", async () => {
+    const user = userEvent.setup();
+    render(<VenueSearch entryPoint="hero" />);
+
+    await user.click(screen.getByRole("button", { name: "Buscar espaços" }));
+
+    expect(assign).toHaveBeenCalledWith("/buscar");
+    const enviado = eventos.find((e) => e.event === "search_submitted");
+    expect(enviado?.properties).toMatchObject({ source: "hero" });
+    ["eventType", "neighborhood", "guestCount", "eventDate"].forEach((campo) => {
+      expect(enviado?.properties, `${campo} nao deveria ir vazio`).not.toHaveProperty(campo);
+    });
   });
 });

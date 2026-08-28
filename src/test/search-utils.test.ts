@@ -19,6 +19,20 @@ describe("buildSearchUrl", () => {
 });
 
 describe("validateSearch", () => {
+  it("aceita uma busca sem nenhum filtro preenchido", () => {
+    expect(validateSearch({ activity: "", location: "", date: "", guests: 0 })).toEqual({});
+  });
+
+  it("aceita filtros parciais, sem exigir os demais", () => {
+    expect(validateSearch({ activity: "Festa", location: "", date: "", guests: 0 })).toEqual({});
+    expect(validateSearch({ activity: "", location: "Moema, São Paulo, SP", date: "", guests: 0 })).toEqual({});
+  });
+
+  it("recusa uma quantidade de pessoas fora da faixa, quando informada", () => {
+    expect(validateSearch({ activity: "", location: "", date: "", guests: 9000 }).guests)
+      .toBe("Informe entre 1 e 5.000 pessoas.");
+  });
+
   it("rejects a location that was not selected from the São Paulo catalogue", () => {
     expect(validateSearch({ activity: "Festa", location: "Rio de Janeiro", date: "", guests: 80 }).location)
       .toBe("Selecione uma localização da lista em São Paulo.");
