@@ -3,6 +3,7 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 import { buildSearchUrl, validateSearch } from "@/lib/search";
+import { canonicalLocation } from "@/data/search-options";
 import { DesktopSearchForm } from "./desktop-search-form";
 import { MobileSearchSheet } from "./mobile-search-sheet";
 import { emptySearchValues, openSearchEvent, type SearchErrors, type SearchValues } from "./search-types";
@@ -24,7 +25,16 @@ export function VenueSearch({ entryPoint }: VenueSearchProps) {
     const nextErrors = validateSearch(values);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
-    track("search_submitted", { entryPoint });
+    // A busca so chega aqui validada, entao ocasiao, local e pessoas existem.
+    // Sem isso a linha gravada nao dizia nem a vertical nem a praca procurada.
+    track("search_submitted", {
+      entryPoint,
+      source: entryPoint,
+      eventType: values.activity,
+      neighborhood: canonicalLocation(values.location) ?? values.location,
+      guestCount: values.guests,
+      ...(values.date ? { eventDate: values.date } : {}),
+    });
     window.location.assign(buildSearchUrl(values));
   };
   const desktopSubmit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); submit(); };

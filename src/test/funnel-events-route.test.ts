@@ -50,3 +50,31 @@ it("recusa um evento que não pertence ao funil", async () => {
   expect(response.status).toBe(422);
   expect(insert).not.toHaveBeenCalled();
 });
+
+it("grava vertical e praça de uma busca enviada, sem usuário algum", async () => {
+  insert.mockResolvedValue({ error: null });
+
+  await post({ event: "search_submitted", properties: { eventType: "Casamento", neighborhood: "Pinheiros, São Paulo, SP", guestCount: 150, eventDate: "2026-08-12", source: "hero", sessionId: "anon-7" } });
+
+  const row = insert.mock.calls[0][0] as Record<string, unknown>;
+  expect(row).toMatchObject({
+    event_name: "search_submitted",
+    event_type: "Casamento",
+    neighborhood: "Pinheiros, São Paulo, SP",
+    guest_count: 150,
+    event_date: "2026-08-12",
+    source: "hero",
+    session_id: "anon-7",
+  });
+  expect(Object.keys(row)).not.toContain("user_id");
+});
+
+it("anula data vazia e contagem fora de faixa, que violariam as restrições da coluna", async () => {
+  insert.mockResolvedValue({ error: null });
+
+  await post({ event: "search_submitted", properties: { eventDate: "", guestCount: 0 } });
+
+  const row = insert.mock.calls[0][0] as Record<string, unknown>;
+  expect(row.event_date).toBeNull();
+  expect(row.guest_count).toBeNull();
+});
