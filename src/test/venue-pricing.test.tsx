@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { VenueCard } from "@/components/home/venue-card";
+import VenuePage from "@/app/espacos/[slug]/page";
 import { venues } from "@/data/venues";
 import { formatPriceFrom, priceFrom, venuePriceFrom } from "@/data/venue-pricing";
 
@@ -51,5 +52,26 @@ describe("cartão de espaço", () => {
 
     expect(screen.getByText("Valor sob consulta")).toBeInTheDocument();
     expect(screen.queryByText(/A partir de/)).not.toBeInTheDocument();
+  });
+});
+
+describe("página do espaço", () => {
+  it("mostra o mesmo valor de partida que o cartão da busca, e não mais Sob consulta", async () => {
+    render(await VenuePage({ params: Promise.resolve({ slug: "casa-jardim-pinheiros" }), searchParams: Promise.resolve({}) }));
+
+    expect(screen.getByText(/A partir de R\$ 6\.000/)).toBeInTheDocument();
+    expect(screen.queryByText("Sob consulta")).not.toBeInTheDocument();
+  });
+
+  it("mantém o mesmo número nos dois lugares para o mesmo espaço", async () => {
+    const espaco = venues.find((v) => v.slug === "terraco-vila-madalena")!;
+    const esperado = formatPriceFrom(priceFrom(espaco.slug)!);
+
+    const pagina = render(await VenuePage({ params: Promise.resolve({ slug: espaco.slug }), searchParams: Promise.resolve({}) }));
+    expect(pagina.container.textContent).toContain(`A partir de ${esperado}`);
+    pagina.unmount();
+
+    const cartao = render(<VenueCard showPrice venue={espaco} />);
+    expect(cartao.container.textContent).toContain(`A partir de ${esperado}`);
   });
 });
